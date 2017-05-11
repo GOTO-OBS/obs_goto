@@ -1,0 +1,1 @@
+config.filterMap['g'] = 'v'

@@ -1,0 +1,325 @@
+#<?cfg paf policy ?>
+
+#This makes CameraMapper look for a calibration registry.
+needCalibRegistry: true
+
+camera:	   "../camera"
+
+#The following "levels", "defaultLevel", and "defaulSubLevels"
+#are not required for the Mapper to run.
+#levels: {  
+#	run: "camcol" "field" "filter" 
+#}
+defaultLevel: "Ccd" 
+#defaultSubLevels: {
+#	run: "filter"
+#}
+
+#exposures/sci; datasets/icSrc_scheme, src_schema, processCcd_config is the absolute minimum
+#needed for mapper to run.
+exposures: {
+#    Sci: {
+#   	 template:    "SCI/%(dateObs)s/%(ccd)s/%(filter)s/%(ccd)s_%(frameId)s.fts"
+#	 python:      "lsst.afw.image.DecoratedImageU"
+#	 persistable:         "DecoratedImageU"
+#	 storage:     "FitsStorage"
+#	 level:       "Ccd"
+#	 tables:      "raw"
+#	 tables:      "raw_visit"
+#	 }
+    raw: {
+         template:    "raw/%(dateObs)s/%(filter)s/%(ccd)s_%(dataType)s_%(visit)s.fts"
+	 python:      "lsst.afw.image.DecoratedImageU"
+	 persistable:         "DecoratedImageU"
+	 storage:     "FitsStorage"
+	 level:       "Ccd"
+	 tables:      "raw"
+	 tables:      "raw_visit"
+	 }
+    Mask: {
+         template: "raw/%(dateObs)s/%(ccd)s/%(filter)s/%(ccd)s_%(dataType)s_001823101.fts"
+         python:     "lsst.afw.image.ImageU"
+	 persistable:         "ImageU"
+	 storage:     "FitsStorage"
+	 level:       "None"
+	 tables:        raw
+	 tables:        raw_skyTile
+	 }
+    icExp: {
+         template:      "sci-results/%(dateObs)s/%(filter)s/%(ccd)s/icExp/icExp-%(visit)s-%(ccd)s.fits"
+	 python:        "lsst.afw.image.ExposureF"
+	 persistable:        "ExposureF"
+	 storage:    "FitsStorage"
+	 level:       "None"
+	 tables:        raw
+	 tables:        raw_skyTile
+	 }
+    postISRCCD: {
+         template:      "postISRCCD/%(dataType)s/%(dateObs)s/%(filter)s/%(ccd)s/postISRCCD-%(visit)s.fits"
+	 python:        "lsst.afw.image.ExposureF"
+	 persistable:        "ExposureF"
+	 storage:    "FitsStorage"
+	 level:       "None"
+	 tables:        raw
+	 tables:        raw_visit
+	 }
+    calexp: {
+         template:      "sci-results/%(dateObs)s/%(filter)s/%(ccd)s/calexp/calexp-%(visit)s-%(ccd)s.fits"
+	}
+	
+    deepCoadd_tempExp: {
+          template:    "deepCoadd/%(tract)d/%(patch)s/%(filter)s/warp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits"
+	  }
+	  
+    deepDiff_differenceExp: {
+         template:      "deepDiff/%(dateObs)s/%(filter)s/%(ccd)s/diffexp-%(visit)s.fits"
+         python:        "lsst.afw.image.ExposureF"
+         persistable:        "ExposureF"
+         storage:    "FitsStorage"
+         tables: raw
+           }
+
+    deepCoadd_diff: {
+        template:    "deepCoadd-diff/%(filter)s/%(tract)d/diff-%(filter)s-%(tract)d-%(patch)s.fits"
+        python:      "lsst.afw.image.ExposureF"
+        persistable: "ExposureF"
+        storage:     "FitsStorage"
+        #level:       "Skytile"
+        #tables:      raw_skytile
+           }
+    deepCoadd_tempExp_diff: {
+        template:    "deepCoadd-diff/%(filter)s/%(tract)d/%(patch)s/diff-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits"
+        python:      "lsst.afw.image.ExposureF"
+        persistable: "ExposureF"
+        storage:     "FitsStorage"
+        #level:       "Skytile"
+        #tables:      raw_skytile
+             }
+
+      
+      }
+
+
+calibrations:{
+#It seems that the default %(filter)s for constructBias.py is "NONE".	
+	bias:{
+         template:   "BIAS/NONE/%(ccd)s_BIAS_%(calibDate)s.fits"
+	 python:     "lsst.afw.image.ImageF"
+	 persistable:"ImageF"
+	 storage:    "FitsStorage"
+	 level:      "Ccd"
+	 tables:     "bias"
+	 columns:    "ccd"
+	 columns:    "taiObs"
+	 reference:  "raw_visit"
+	 refCols:    "ccd"
+	 refCols:    "filter"
+	 validRange: true
+	 validStartName: validStart
+	 validEndName: validEnd
+	 }
+
+    dark:{
+         template:   "DARK/NONE/%(ccd)s_DARK_%(calibDate)s.fits"
+	 python:     "lsst.afw.image.ImageF"
+	 persistable:"ImageF"
+	 storage:    "FitsStorage"
+	 level:      "Ccd"
+	 tables:     "dark"
+	 columns:    "ccd"
+	 columns:    "taiObs"
+	 reference:  "raw_visit"
+	 refCols:    "ccd"
+	 refCols:    "filter"
+	 validRange: true
+	 validStartName: validStart
+	 validEndName: validEnd
+	 }
+
+    flat:{	 
+         template:   "FLAT/%(filter)s/%(ccd)s_FLAT_%(calibDate)s.fits"
+	 python:     "lsst.afw.image.ImageF"
+	 persistable:"ImageF"
+	 storage:    "FitsStorage"
+	 level:      "Ccd"
+	 tables:     "flat"
+	 columns:    "ccd"
+	 columns:    "taiObs"
+	 reference:  "raw_visit"
+	 refCols:    "ccd"
+	 refCols:    "filter"
+	 validRange: true
+	 validStartName: validStart
+	 validEndName: validEnd
+	 }
+}
+
+datasets:{
+    icSrc_schema: {
+	 template:      "schema/icSrc.fits"
+	 python:        "lsst.afw.table.SourceCatalog"
+	 persistable:        "ignored"
+	 storage:    "FitsCatalogStorage"
+	 tables:        raw
+	 tables:        raw_skyTile
+	 }
+    src_schema: {
+         template:      "schema/src.fits"
+	 python:        "lsst.afw.table.SourceCatalog"
+	 persistable:        "ignored"
+	 storage:    "FitsCatalogStorage"
+	 tables:        raw
+	 tables:        raw_skyTile
+	 }
+    processCcd_config: {
+         template:      "config/processCcd.py"
+	 python:        "lsst.pipe.tasks.processCcd.ProcessCcdConfig"
+	 persistable:      "Config"
+	 storage:    "ConfigStorage"
+	 tables:        raw
+	 tables:        raw_skyTile
+	 }
+
+    processCcd_metadata: {
+	 template:      "processCcd_metadata/%(ccd)s/g/calexp-%(visit)s-%(ccd)s.boost"
+	 python:        "lsst.daf.base.PropertySet"
+	 persistable:        "PropertySet"
+	 storage:    "BoostStorage"
+	 tables:        raw
+	 }
+
+    singleFrameDriver_metadata: {
+        template:      "singleFrameDriver_metadata/%(dateObs)s/%(filter)s/%(ccd)s/g/calexp-%(visit)s-%(ccd)s.boost"
+        python:        "lsst.daf.base.PropertySet"
+        persistable:        "PropertySet"
+        storage:    "BoostStorage"
+        tables:        raw
+       	}
+    deepDiff_metadata: {
+        template:      "deepDiff/%(dateObs)s/%(filter)s/%(ccd)s/diff-%(visit)s-%(ccd)s.boost"
+        python:        "lsst.daf.base.PropertySet"
+        persistable:        "PropertySet"
+        storage:    "BoostStorage"
+        tables:        raw
+          }
+    WCS: {
+    	 template:   "SCI/%(dateObs)s/%(ccd)s/%(filter)s/%(ccd)s_%(frameId)s.fts"
+	 python:     "lsst.afw.image.Wcs"
+	 persistable: "ignored"
+	 storage:     "FitsStorage"
+	 tables:        raw
+	 }
+    tsField: {
+    	 template:   "SCI/%(dateObs)s/%(ccd)s/%(filter)s/%(ccd)s_%(visit)s.fts"
+	 python:     "lsst.afw.image.Calib"
+	 persistable: "ignored"
+	 storage:     "FitsStorage"
+	 tables:        raw
+	 }
+    icSrc: {
+    	 template:      "sci-results/%(dateObs)s/%(filter)s/%(ccd)s/icSrc/icSrc-%(visit)s-%(ccd)s.fits"
+	 python:        "lsst.afw.table.SourceCatalog"
+	 persistable:        "ignored"
+	 storage:    "FitsCatalogStorage"
+	 tables:        raw
+	 tables:        raw_skyTile
+	 }			 
+    icExpBackground: {
+         template:      "sci-results/%(dateObs)s/%(filter)s/%(ccd)s/icExp/bkgd-icExp-%(visit)s-%(ccd)s.fits"
+	 python:        "lsst.afw.math.BackgroundList"
+	 persistable:   "PurePythonClass"
+	 storage:       "FitsCatalogStorage"
+	 tables:        raw
+	 tables:        raw_skyTile
+	 }					    
+     src: {
+         template:      "sci-results/%(dateObs)s/%(filter)s/%(ccd)s/src/src-%(visit)s-%(ccd)s.fits"
+	 python:        "lsst.afw.table.SourceCatalog"
+	 persistable:        "ignored"
+	 storage:    "FitsCatalogStorage"
+	 tables:        raw
+	 #tables:        raw_skyTile
+	 }
+     deepDiff_diaSrc: {
+        template:      "deepDiff/%(dateObs)s/%(filter)s/%(ccd)s/diaSrc-%(visit)s.fits"
+        python:        "lsst.afw.table.SourceCatalog"
+        persistable:        "SourceCatalog"
+        storage:    "FitsCatalogStorage"
+        tables:        raw
+         }
+      calexpBackground: {
+         template:      "sci-results/%(dateObs)s/%(filter)s/%(ccd)s/calexp/bkgd-calexp-%(visit)s-%(ccd)s.fits"
+	 python:        "lsst.afw.math.BackgroundList"
+	 persistable:   "PurePythonClass"
+	 storage:       "FitsCatalogStorage"
+	 tables:        raw
+	 tables:        raw_skyTile
+	 }
+
+     srcMatch: {
+         template:      "sci-results/%(dateObs)s/%(filter)s/%(ccd)s/src/SRCMATCH-%(visit)s-%(ccd)s.fits"
+	 python:        "lsst.afw.table.BaseCatalog"
+         persistable:   "BaseCatalog"
+	 storage:       "FitsCatalogStorage"
+	 tables:        "raw"
+	 tables:        "raw_visit"
+	 }
+      deepCoadd_srcMatch: {
+        template:      "deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits"
+           }
+      
+      forced_src: {
+        template:      "%(filter)s/tract%(tract)d/FORCEDSRC-%(visit)s-%(ccd)s.fits"
+           }
+      forcedPhotCcd_metadata: {
+        template:      "%(filter)s/tract%(tract)d/forcedPhotCcd_metadata/%(visit)s-%(ccd)s.boost"
+            }
+	    deepCoadd_diffsrc: {
+        template:    "deepCoadd-diff/%(filter)s/%(tract)d/diffsrc-%(filter)s-%(tract)d-%(patch)s.fits"
+        python:      "lsst.afw.table.SourceCatalog"
+        persistable: "SourceCatalog"
+        storage:     "FitsCatalogStorage"
+	tables:      "raw_skytile"
+    }
+    deepCoadd_tempExp_diffsrc: {
+        template:    "deepCoadd-diff/%(filter)s/%(tract)d/%(patch)s/diffsrc-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits"
+        python:      "lsst.afw.table.SourceCatalog"
+        persistable: "SourceCatalog"
+        storage:     "FitsCatalogStorage"
+	tables:      "raw_skytile"
+       }
+       
+    deepDiff_metadata: {
+        template:      "deepCoadd-diff/%(filter)s/%(tract)d/%(patch)s/diff-%(filter)s-%(tract)d-%(patch)s-%(visit)s.boost"
+        python:        "lsst.daf.base.PropertySet"
+        persistable:        "PropertySet"
+        storage:    "BoostStorage"
+        tables:        raw
+          }
+     
+#This is needed for constructBias.py:
+     bias_config: {	
+	 template: "config/bias.py"
+	 python: "lsst.pipe.drivers.constructCalibs.BiasConfig"
+	 persistable: "Config"
+	 storage: "ConfigStorage"
+	 tables: raw
+	 tables: raw_visit
+	 }
+     dark_config: {	
+	 template: "config/dark.py"
+	 python: "lsst.pipe.drivers.constructCalibs.DarkConfig"
+	 persistable: "Config"
+	 storage: "ConfigStorage"
+	 tables: raw
+	 tables: raw_visit
+	 }
+     flat_config: {	
+	 template: "config/flat.py"
+	 python: "lsst.pipe.drivers.constructCalibs.FlatConfig"
+	 persistable: "Config"
+	 storage: "ConfigStorage"
+	 tables: raw
+	 tables: raw_visit	 
+	 }
+}	 
