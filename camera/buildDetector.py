@@ -2,7 +2,7 @@ import lsst.afw.table as afwTable
 import lsst.afw.geom as afwGeom
 import numpy as np
 
-#This is copying from afw/tests/testAmpInfoTable.py:
+# This is copying from afw/tests/testAmpInfoTable.py:
 schema = afwTable.AmpInfoTable.makeMinimalSchema()
 catalog = afwTable.AmpInfoCatalog(schema)
 record = catalog.addNew()
