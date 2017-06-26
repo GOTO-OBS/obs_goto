@@ -49,8 +49,7 @@ config.calibrate.detection.tempLocalBackground.binSize = 32
 #config.charImage.astrometry.forceKnownWcs = True
 #config.calibrate.astrometry.forceKnownWcs = True
 
-config.calibrate.astrometry.matcher.sourceFluxType='Psf'
-config.calibrate.photoCal.matcher.sourceFluxType='Psf'
+
 config.calibrate.doAstrometry = True
 
 config.calibrate.doPhotoCal = True
@@ -86,7 +85,7 @@ config.isr.doAssembleIsrExposures = True
 #This could be messing up the variance, but is
 #needed since we aren't calculating a variance
 #plane for the calibration files.
-config.isr.assembleCcd.setGain = False
+
 
 #Sets the maximum match radius for astrometry matching:
 config.calibrate.astrometry.matcher.maxMatchDistArcSec = 10.
