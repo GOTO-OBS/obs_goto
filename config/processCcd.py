@@ -81,7 +81,7 @@ config.calibrate.photoRefObjLoader.filterMap ={'Clear':'m'}
 #Need to do this to remove overscan from
 #calibration frame:
 config.isr.doAssembleIsrExposures = True
-
+config.isr.doDefect =False
 #This could be messing up the variance, but is
 #needed since we aren't calculating a variance
 #plane for the calibration files.
