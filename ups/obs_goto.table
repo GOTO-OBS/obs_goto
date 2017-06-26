@@ -1,5 +1,6 @@
 setupRequired(pipe_tasks)
 setupRequired(pipe_drivers)
+setupRequired(meas_extensions_photometryKron)
 setupRequired(astrometry_net_data UCAC)
 envPrepend(PYTHONPATH, ${PRODUCT_DIR}/python)
 envPrepend(PATH, ${PRODUCT_DIR}/bin)

@@ -23,7 +23,7 @@ class GotoMapper(CameraMapper):
         #Set the filters:
         self.filterIdMap = dict(v=0)
         afwImageUtils.defineFilter(name='v',  lambdaEff=450, alias=['v'])
-        afwImageUtils.defineFilter(name='m',  lambdaEff=450, alias=['m'])
+        afwImageUtils.defineFilter(name='m',  lambdaEff=610.5, alias=['m'])
         afwImageUtils.defineFilter(name='Clear',  lambdaEff=450, alias=['Clear'])
 
         self.filters = {}

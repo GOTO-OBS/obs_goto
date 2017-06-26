@@ -1,6 +1,8 @@
-#from lsst.obs.swasp.swaspNullIsr import SwaspNullIsrTask
+#from lsst.obs.goto.gotoNullIsr import GotoNullIsrTask
 from lsst.obs.goto.printDict  import printDict
-
+import os.path
+from lsst.utils import getPackageDir
+configDir = os.path.join(getPackageDir("obs_goto"), "config")
 #print('config/processCcd.py')
 
 #Read post-ISR data:
@@ -11,7 +13,12 @@ from lsst.obs.goto.printDict  import printDict
 #obj = printDict(config, path=['config'])
 #quit()
 
+#config.charImage.doWriteExposure=False
+#config.isr.doWrite=False
 #config.isr.retarget(SwaspNullIsrTask)
+
+
+
 
 config.isr.doBias=False
 config.isr.doDark=False
@@ -22,7 +29,15 @@ config.calibrate.detection.thresholdValue = 5.0
 #config.charImage.doDeblend = True
 config.calibrate.doDeblend = True
 
-#config.charImage.measurePsf.starSelector["objectSize"].sourceFluxField = 'base_PsfFlux_flux'
+#JRM uncommented this: 26/05/2017
+config.charImage.measurePsf.starSelector["objectSize"].sourceFluxField = 'base_PsfFlux_flux'
+
+
+config.charImage.measurement.load(os.path.join(configDir, "kron.py"))
+config.calibrate.measurement.load(os.path.join(configDir, "kron.py"))
+
+#config.charImage.load(os.path.join(configDir, "cmodel.py"))
+
 
 config.calibrate.deblend.maskLimits["SAT"] =0
 
@@ -46,7 +61,8 @@ config.charImage.detection.includeThresholdMultiplier = 3.0
 
 config.charImage.doMeasurePsf = True
 
-config.charImage.measurePsf.psfDeterminer["pca"].reducedChi2ForPsfCandidates=10
+#JRM commented this 26/05/2017
+#config.charImage.measurePsf.psfDeterminer["pca"].reducedChi2ForPsfCandidates=10
 
 config.charImage.doApCorr = True
 

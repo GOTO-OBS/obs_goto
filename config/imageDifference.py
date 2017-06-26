@@ -3,6 +3,11 @@ from lsst.obs.goto.printDict  import printDict
 
 #config.getTemplate.retarget(GetCalexpAsTemplateTask)
 
+#obj = printDict(config, path=['config'])
+#quit()
+config.doWriteMatchedExp=True
+
+
 config.refObjLoader.defaultFilter='m'
 config.refObjLoader.filterMap={'Clear':'m'}
 config.kernelSourcesFromRef=True
@@ -28,5 +33,4 @@ config.astrometer.matcher.numBrightStars = 300
 #                                                "filterMap.py")
 
 
-#obj = printDict(config, path=['config'])
-#quit()
+

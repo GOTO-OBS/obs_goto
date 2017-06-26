@@ -77,18 +77,9 @@ exposures: {
          persistable:        "ExposureF"
          storage:    "FitsStorage"
          tables: raw
-	 level: "Ccd"
            }
-  deepDiff_matchedExp: {
-         template:      "deepDiff/%(dateObs)s/%(filter)s/%(ccd)s/matchexp-%(visit)s.fits"
-         python:        "lsst.afw.image.ExposureF"
-         persistable:        "ExposureF"
-         storage:    "FitsStorage"
-         tables: raw
-	 level: "Ccd"
-           }
-    
-   deepCoadd_diff: {
+
+    deepCoadd_diff: {
         template:    "deepCoadd-diff/%(filter)s/%(tract)d/diff-%(filter)s-%(tract)d-%(patch)s.fits"
         python:      "lsst.afw.image.ExposureF"
         persistable: "ExposureF"
@@ -280,10 +271,12 @@ datasets:{
       forced_src: {
         template:      "%(filter)s/tract%(tract)d/FORCEDSRC-%(visit)s-%(ccd)s.fits"
            }
-      forcedPhotCcd_metadata: {
+
+    forcedPhotCcd_metadata: {
         template:      "%(filter)s/tract%(tract)d/forcedPhotCcd_metadata/%(visit)s-%(ccd)s.boost"
             }
-	    deepCoadd_diffsrc: {
+
+    deepCoadd_diffsrc: {
         template:    "deepCoadd-diff/%(filter)s/%(tract)d/diffsrc-%(filter)s-%(tract)d-%(patch)s.fits"
         python:      "lsst.afw.table.SourceCatalog"
         persistable: "SourceCatalog"
