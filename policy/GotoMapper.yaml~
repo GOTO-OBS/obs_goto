@@ -1,0 +1,31 @@
+#<?cfg paf policy ?>
+
+#This makes CameraMapper look for a calibration registry.
+needCalibRegistry: true
+
+camera:	   "../camera"
+
+#The following "levels", "defaultLevel", and "defaulSubLevels"
+#are not required for the Mapper to run.
+#levels: {  
+#	run: "camcol" "field" "filter" 
+#}
+defaultLevel: "Ccd" 
+#defaultSubLevels: {
+#	run: "filter"
+#}
+
+#exposures/sci; datasets/icSrc_scheme, src_schema, processCcd_config is the absolute minimum
+#needed for mapper to run.
+exposures: {
+    raw: {
+         template:    "raw/%(dateObs)s/%(filter)s/%(ccd)s_%(dataType)s_%(visit)s.fts"
+	 python:      "lsst.afw.image.DecoratedImageU"
+	 persistable:         "DecoratedImageU"
+	 storage:     "FitsStorage"
+	 level:       "Ccd"
+	 tables:      "raw"
+	 tables:      "raw_visit"
+}
+
+}

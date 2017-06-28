@@ -1,5 +1,6 @@
 import re
-import lsst.pex.policy as pexPolicy
+import os
+from lsst.daf.persistence import Policy
 from lsst.obs.base import CameraMapper, exposureFromImage
 import lsst.afw.image.utils as afwImageUtils
 import lsst.afw.image as afwImage
@@ -14,11 +15,12 @@ class GotoMapper(CameraMapper):
     def __init__(self, inputPolicy=None, **kwargs):
 
         #Define the policy file:
-        policyFile = pexPolicy.DefaultPolicyFile(self.packageName, "GotoMapper.paf", "policy")
-        policy = pexPolicy.Policy(policyFile)
-
+        policyFile = Policy.defaultPolicyFile(self.packageName, "GotoMapper.yaml", "policy")
+        policy =Policy(policyFile)
+        
         #This creates the camera class by calling CameraMapper (i.e., the parent class):
-        super(GotoMapper, self).__init__(policy, policyFile.getRepositoryPath(), **kwargs)
+        
+        super(GotoMapper, self).__init__(policy, os.path.dirname(policyFile), **kwargs)
         
         #Set the filters:
         self.filterIdMap = dict(v=0)
