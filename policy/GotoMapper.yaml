@@ -8,4 +8,25 @@ exposures:
        raw:
          python: lsst.afw.image.DecoratedImageF
          persistable: DecoratedImageF
-         template: 'raw/%(dateObs)s/%(filter)s/%(dataType)s_%(ccd)s_%(visit)s.fts'
+         template: 'raw/%(dateObs)s/%(filter)s/%(dataType)s-%(ccd)s-%(visit)s.fts'
+       postISRCCD:
+         template: postISRCCD/%(dataType)s/%(dateObs)s/%(filter)s/postISRCCD-%(ccd)s-%(visit)s.fits
+       icExp:
+         template: 'sci-results/%(dateObs)s/%(filter)s/icExp/icExp-%(ccd)s-%(visit)s.fits'
+       calexp:
+         template: 'sci-results/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(visit)s.fits'
+
+
+datasets:
+       icExpBackground:
+          template: 'sci-results/%(dateObs)s/%(filter)s/icExp/bkgd-icExp-%(ccd)s-%(visit)s.fits'
+       calexpBackground:
+          template: 'sci-results/%(dateObs)s/%(filter)s/calexp/bkgd-calexp-%(ccd)s-%(visit)s.fits'
+       src:
+          template: 'sci-results/%(dateObs)s/%(filter)s/src/src-%(ccd)s-%(visit)s.fits'
+       icSrc:
+          template: 'sci-results/%(dateObs)s/%(filter)s/icSrc/icSrc-%(ccd)s-%(visit)s.fits'
+       srcMatch: 
+          template: 'sci-results/%(dateObs)s/%(filter)s/src/SRCMATCH-%(ccd)s-%(visit)s.fits'
+       singleFrameDriver_metadata: 
+          template: 'singleFrameDriver_metadata/%(dateObs)s/%(filter)s/calexp-%(ccd)s-%(visit)s.boost'

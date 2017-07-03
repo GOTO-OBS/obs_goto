@@ -1,5 +1,6 @@
 import re
 import os
+
 from lsst.daf.persistence import Policy
 from lsst.obs.base import CameraMapper, exposureFromImage
 import lsst.afw.image.utils as afwImageUtils
@@ -35,11 +36,29 @@ class GotoMapper(CameraMapper):
         
         self.defaultFilterName = 'm'
         
+        
+    
     def _computeCcdExposureId(self, dataId):
         """Compute the 64-bit (long) identifier for a CCD exposure.
         @param dataId (dict) Data identifier with run, rerun, filter, camcol, field
         """
-        return long(1000)
+        pathId = self._transformId(dataId)
+        visit = pathId['visit']
+        ccd = pathId['ccd']
+        visit = int(visit)
+        ccd = int(ccd)
+        
+        return visit
+        
+    
+    def bypass_ccdExposureId(self, datasetType, pythonType, location, dataId):
+        
+        return self._computeCcdExposureId(dataId)
+
+    def bypass_ccdExposureId_bits(self, datasetType, pythonType, location, dataId):
+        
+        return 41
+       
 
 #    def _extractDetectorName(self, dataId):
 
@@ -79,6 +98,7 @@ class GotoMapper(CameraMapper):
 
     def std_raw(self, item, dataId):
         raw = super(GotoMapper, self).std_raw(item, dataId)
+        
         return raw 
                                         
     def bypass_Mask(self, datasetType, pythonType, location, dataID):
@@ -89,11 +109,7 @@ class GotoMapper(CameraMapper):
         print "bypass_WCS"
         return convertWCS(location.getLocations()[0])
 
-    def bypass_ccdExposureId(self, datasetType, pythonType, location, dataId):
-        return self._computeCcdExposureId(dataId)
 
-    def bypass_ccdExposureId_bits(self, datasetType, pythonType, location, dataId):
-        return 38
     def bypass_deepCoaddId_bits(self, *args, **kwargs):
         return 32
 
