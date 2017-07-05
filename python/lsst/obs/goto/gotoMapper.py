@@ -40,15 +40,16 @@ class GotoMapper(CameraMapper):
     
     def _computeCcdExposureId(self, dataId):
         """Compute the 64-bit (long) identifier for a CCD exposure.
-        @param dataId (dict) Data identifier with run, rerun, filter, camcol, field
+        @param dataId (dict) Data identifier with visit and CCD
         """
+        #This can change for the real GOTO data/header. What combination will make a CCD exposure unique?
         pathId = self._transformId(dataId)
         visit = pathId['visit']
         ccd = pathId['ccd']
         visit = int(visit)
         ccd = int(ccd)
         
-        return visit
+        return visit*10+ccd
         
     
     def bypass_ccdExposureId(self, datasetType, pythonType, location, dataId):
@@ -57,7 +58,7 @@ class GotoMapper(CameraMapper):
 
     def bypass_ccdExposureId_bits(self, datasetType, pythonType, location, dataId):
         
-        return 41
+        return 42
        
 
 #    def _extractDetectorName(self, dataId):
