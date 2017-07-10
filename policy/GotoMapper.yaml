@@ -28,5 +28,11 @@ datasets:
           template: 'sci-results/%(dateObs)s/%(filter)s/icSrc/icSrc-%(ccd)s-%(visit)s.fits'
        srcMatch: 
           template: 'sci-results/%(dateObs)s/%(filter)s/src/SRCMATCH-%(ccd)s-%(visit)s.fits'
-       singleFrameDriver_metadata: 
+       singleFrameDriver_metadata:
+          persistable: PropertySet
+          python: lsst.daf.base.PropertySet
+          storage: BoostStorage
+          tables:
+                 - raw
+                 - raw_visit
           template: 'singleFrameDriver_metadata/%(dateObs)s/%(filter)s/calexp-%(ccd)s-%(visit)s.boost'
