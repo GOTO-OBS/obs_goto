@@ -110,10 +110,10 @@ class GotoMapper(CameraMapper):
         print "bypass_WCS"
         return convertWCS(location.getLocations()[0])
 
-
+    
     def bypass_deepCoaddId_bits(self, *args, **kwargs):
         return 32
-
+   
     def bypass_deepCoaddId(self, datasetType, pythonType, location, dataId):
         return 32
 

@@ -12,11 +12,20 @@ exposures:
        postISRCCD:
          template: postISRCCD/%(dataType)s/%(dateObs)s/%(filter)s/postISRCCD-%(ccd)s-%(visit)s.fits
        icExp:
+         columns:
+               - visit
+               - ccd
          template: 'sci-results/%(dateObs)s/%(filter)s/icExp/icExp-%(ccd)s-%(visit)s.fits'
        calexp:
          template: 'sci-results/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(visit)s.fits'
-
-
+       deepCoadd_directWarp:
+         template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/warp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits
+       deepCoadd_psfMatchedWarp:
+         template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/psfMatchedWarp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits
+       deepDiff_differenceExp:
+         template: deepDiff/%(dateObs)s/%(filter)s/diffexp-%(ccd)s-%(visit)s.fits
+       deepDiff_matchedExp:
+         template: deepDiff/%(dateObs)s/%(filter)s/matchexp-%(ccd)s-%(visit)s.fits                                                         
 datasets:
        icExpBackground:
           template: 'sci-results/%(dateObs)s/%(filter)s/icExp/bkgd-icExp-%(ccd)s-%(visit)s.fits'
@@ -36,3 +45,7 @@ datasets:
                  - raw
                  - raw_visit
           template: 'singleFrameDriver_metadata/%(dateObs)s/%(filter)s/calexp-%(ccd)s-%(visit)s.boost'
+       deepCoadd_srcMatch:
+          template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits
+       deepDiff_diaSrc:
+          template: deepDiff/%(dateObs)s/%(filter)s/diaSrc-%(ccd)s-%(visit)s.fits
