@@ -36,7 +36,7 @@ config.charImage.measurePsf.starSelector["objectSize"].sourceFluxField = 'base_P
 config.charImage.measurement.load(os.path.join(configDir, "kron.py"))
 config.calibrate.measurement.load(os.path.join(configDir, "kron.py"))
 
-#config.charImage.load(os.path.join(configDir, "cmodel.py"))
+config.charImage.load(os.path.join(configDir, "cmodel.py"))
 
 
 config.calibrate.deblend.maskLimits["SAT"] =0
