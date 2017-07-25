@@ -11,3 +11,5 @@ try:
 
 except (KeyError, ImportError):
     print("Cannot import lsst.meas.modelfit: disabling CModel measurements")
+
+config.measurement.plugins["modelfit_DoubleShapeletPsfApprox"].minRadius = 0.01
