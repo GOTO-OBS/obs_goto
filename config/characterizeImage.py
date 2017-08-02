@@ -34,7 +34,7 @@ config.measurePsf.starSelector["objectSize"].sourceFluxField = 'base_PsfFlux_flu
 try:
     import lsst.meas.extensions.psfex.psfexPsfDeterminer
     config.measurePsf.psfDeterminer["psfex"].spatialOrder = 2
-    #config.measurePsf.psfDeterminer["psfex"].psfexBasis = 'PIXEL_AUTO'
+    config.measurePsf.psfDeterminer["psfex"].psfexBasis = 'PIXEL_AUTO'
     config.measurePsf.psfDeterminer["psfex"].samplingSize = 2.
     config.measurePsf.psfDeterminer["psfex"].kernelSize = 21
     config.measurePsf.psfDeterminer.name = "psfex"
@@ -57,6 +57,6 @@ config.measurement.undeblended['modelfit_CModel'].region.badMaskPlanes=['EDGE', 
 config.measurement.undeblended['modelfit_CModel'].region.maxBadPixelFraction=None
 config.measurement.plugins['modelfit_CModel'].region.maxBadPixelFraction=None
 
-config.measureApCorr.starSelector['psfex'].maxbadflag=False
-config.measureApCorr.starSelector['psfex'].badFlags=[]
-config.measurePsf.psfDeterminer['psfex'].badMaskBits=[]
+#config.measureApCorr.starSelector['psfex'].maxbadflag=False
+#config.measureApCorr.starSelector['psfex'].badFlags=[]
+#config.measurePsf.psfDeterminer['psfex'].badMaskBits=[]
