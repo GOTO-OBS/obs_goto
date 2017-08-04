@@ -10,6 +10,6 @@ print('***Lydia***: config/measureCoaddSources.py:' \
 config.doPropagateFlags=False
 config.match.refObjLoader.defaultFilter='m'
 config.match.refObjLoader.filterMap ={'Clear':'m'}
-#config.load(os.path.join(getPackageDir("obs_goto"), "config", "cmodel.py"))
+config.load(os.path.join(getPackageDir("obs_goto"), "config", "cmodel.py"))
 #quit()
 config.doMatchSources=False

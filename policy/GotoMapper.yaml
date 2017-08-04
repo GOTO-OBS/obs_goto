@@ -46,6 +46,10 @@ datasets:
                  - raw_visit
           template: 'singleFrameDriver_metadata/%(dateObs)s/%(filter)s/calexp-%(ccd)s-%(visit)s.boost'
        deepCoadd_srcMatch:
-          template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits
+          template: 'deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits'
        deepDiff_diaSrc:
-          template: deepDiff/%(dateObs)s/%(filter)s/diaSrc-%(ccd)s-%(visit)s.fits
+          template: 'deepDiff/%(dateObs)s/%(filter)s/diaSrc-%(ccd)s-%(visit)s.fits'
+       forced_src:
+          template: 'forcedPhotCcd/%(dateObs)s/%(filter)s/forcedSrc-%(ccd)s-%(visit)s.fits'
+       forcedPhotCcd_metadata:
+          template: 'forcedPhotCcd/%(dateObs)s/%(filter)s/forcedPhotCcd_metadata/%(ccd)s-%(visit)s.boost'
