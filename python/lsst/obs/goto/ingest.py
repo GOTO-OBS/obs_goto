@@ -24,20 +24,21 @@ class GotoParseTask(ParseTask):
 
     def translate_Date(self, md):
 
-        start = md.get("UTSTART")
+        #start = md.get("UTSTART")
         date = md.get("DATE-OBS")
-
+        start = date[11:]
+        date = date.strip()[:10]
         t = Time(date)
         
     #If after midnight, set date to date minus 1 day.
-    #    if int(start.split(":")[0]) < 12:
-     #       date = Time(t.jd-1, format='jd', out_subfmt='date').iso
-            
+        if int(start.split(":")[0]) < 12:
+            date = Time(t.jd-1, format='jd', out_subfmt='date').iso
+        
         return date
      
     def translate_visit(self, md):
 
-        frame = md.get("RUN")
+        frame = md.get("RUN-ID")
         date = md.get("DATE-OBS")
 
         visit = date + frame

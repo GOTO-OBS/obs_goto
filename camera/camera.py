@@ -5,7 +5,7 @@ import lsst.afw.cameraGeom.cameraConfig
 assert type(config)==lsst.afw.cameraGeom.cameraConfig.CameraConfig, 'config is of type %s.%s instead of lsst.afw.cameraGeom.cameraConfig.CameraConfig' % (type(config).__module__, type(config).__name__)
 
 #Sets the plate scale in arcsec/mm:
-print "CAMERA.PY WARNING: Platescale not set to correct value."
+print ("CAMERA.PY WARNING: Platescale not set to correct value.")
 config.plateScale=206.67
 
 #This defines the native coordinate system:
@@ -14,22 +14,23 @@ config.transformDict.nativeSys='FocalPlane'
 
 #For some reason, it must have "Pupil" defined:
 config.transformDict.transforms={}
-config.transformDict.transforms['Pupil']=lsst.afw.geom.transformConfig.TransformConfig()
+config.transformDict.transforms['FieldAngle']=lsst.afw.geom.transformConfig.TransformConfig()
 
 #I don't know what this does, but it's required to run so needs investigating.
-print "CAMERA.PY WARNING: Pupil transform currently set to 'inverted', but needs investigating." 
+print ("CAMERA.PY WARNING: Pupil transform currently set to 'inverted', but needs investigating.") 
 import lsst.afw.geom.xyTransformFactory
-config.transformDict.transforms['Pupil'].transform['inverted'].transform.retarget(target=lsst.afw.geom.xyTransformFactory.makeRadialXYTransform, ConfigClass=lsst.afw.geom.xyTransformFactory.RadialXYTransformConfig)
+#config.transformDict.transforms[''].transform['inverted'].transform.retarget(target=lsst.afw.geom.xyTransformFactory.makeRadialXYTransform, ConfigClass=lsst.afw.geom.xyTransformFactory.RadialXYTransformConfig)
+config.transformDict.transforms['FieldAngle'].transform['inverted'].transform.retarget(target=lsst.afw.geom.transformRegistry['radial'])
 # Coefficients for the radial polynomial; coeff[0] must be 0
-config.transformDict.transforms['Pupil'].transform['inverted'].transform.coeffs=[0.0, 12500.89734830887]
-config.transformDict.transforms['Pupil'].transform.name='inverted'
+config.transformDict.transforms['FieldAngle'].transform['inverted'].transform.coeffs=[0.0, 12500.89734830887]
+config.transformDict.transforms['FieldAngle'].transform.name='inverted'
 
 #Define a list of detectors:
 config.detectorList={}
 config.detectorList[0]=lsst.afw.cameraGeom.cameraConfig.DetectorConfig()
 
 #The following numbers are simply taken from SDSS:
-print "CAMERA.PY WARNING: Currently using SDSS detector values."
+print ("CAMERA.PY WARNING: Currently using SDSS detector values.")
 #All non-commented lines ARE REQUIRED for CameraMapper:
 # y0 of pixel bounding box
 config.detectorList[0].bbox_y0=0
@@ -40,7 +41,7 @@ config.detectorList[0].bbox_y1=6131
 #config.detectorList[0].bbox_y1=1790
 
 # x1 of pixel bounding box
-config.detectorList[0].bbox_x1=8176
+config.detectorList[0].bbox_x1=8175
 #config.detectorList[0].bbox_x1=1518
 
 # x0 of pixel bounding box
@@ -48,7 +49,7 @@ config.detectorList[0].bbox_x0=0
 #config.detectorList[0].bbox_x0=1056
 
 # Name of detector slot
-config.detectorList[0].name='g1_goto'
+config.detectorList[0].name='g2_goto'
 
 # Pixel size in the x dimension in mm
 config.detectorList[0].pixelSize_x=0.006
@@ -87,7 +88,7 @@ config.detectorList[0].yawDeg=0.0
 config.detectorList[0].rollDeg=0.0
 
 # Serial string associated with this specific detector
-config.detectorList[0].serial='g1_goto'
+config.detectorList[0].serial='g2_goto'
 
 # pitch (rotation about y) of the detector in degrees
 config.detectorList[0].pitchDeg=0.0

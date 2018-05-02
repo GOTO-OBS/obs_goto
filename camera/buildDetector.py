@@ -3,41 +3,63 @@ import lsst.afw.geom as afwGeom
 import numpy as np
 
 # This is copying from afw/tests/testAmpInfoTable.py:
-schema = afwTable.AmpInfoTable.makeMinimalSchema()
-catalog = afwTable.AmpInfoCatalog(schema)
-record = catalog.addNew()
+def addAmp(ampCatalog,i):
+    record = ampCatalog.addNew()
 
-name = 'Amp1'
-bbox = afwGeom.Box2I(afwGeom.Point2I(0, 0), afwGeom.Extent2I(8176, 6132))
-gain = 0.7
-saturation = 57571
-readNoise = 12.5
-readoutCorner = afwTable.LL #I think this means Lower Left.
-linearityCoeffs = (1.0, np.nan, np.nan, np.nan)
-linearityType = "None"
-rawBBox = afwGeom.Box2I(afwGeom.Point2I(0, 0), afwGeom.Extent2I(8176,6132))
-rawXYOffset = afwGeom.Extent2I(0, 0)
-rawDataBBox = afwGeom.Box2I(afwGeom.Point2I(0, 0), afwGeom.Extent2I(8176,6132))
-#rawHorizontalOverscanBBox = afwGeom.Box2I(afwGeom.Point2I(8176, 0), afwGeom.Extent2I(0, 8176))
-#rawVerticalOverscanBBox = afwGeom.Box2I(afwGeom.Point2I(6132, 0), afwGeom.Extent2I(0, 6132))
-rawPrescanBBox = afwGeom.Box2I(afwGeom.Point2I(0, 0), afwGeom.Extent2I(0, 0))
+    width = 4152
+    height = 6220
 
-record.setHasRawInfo(True) #Sets the first Flag=True
-record.setRawFlipX(False)  #Sets the second Flag=False
-record.setRawFlipY(False)  #Sets the third Flag=False
-record.setBBox(bbox)
-record.setName(name)
-record.setGain(gain)
-record.setSaturation(saturation)
-record.setReadNoise(readNoise)
-record.setReadoutCorner(readoutCorner)
-record.setLinearityCoeffs(linearityCoeffs)
-record.setLinearityType(linearityType)
-record.setRawBBox(rawBBox)
-record.setRawXYOffset(rawXYOffset)
-record.setRawDataBBox(rawDataBBox)
-#record.setRawHorizontalOverscanBBox(rawHorizontalOverscanBBox)
-#record.setRawVerticalOverscanBBox(rawVerticalOverscanBBox)
-record.setRawPrescanBBox(rawPrescanBBox)
+    os = 19 #pixels of overscan
+    
+    bbox = afwGeom.Box2I(afwGeom.Point2I(0, 0), afwGeom.Extent2I(4088, 6132))
+    bbox.shift(afwGeom.Extent2I(4088*i,0))
+    
+    gain = 0.7
+    saturation = 65535
+    readNoise = 12.5
+    readoutCorner = afwTable.LL if i == 0 else afwTable.LR
+    linearityCoeffs = (1.0, np.nan, np.nan, np.nan)
+    linearityType = "None"
+    rawBBox = afwGeom.Box2I(afwGeom.Point2I(0, 0), afwGeom.Extent2I(width,height))
+    rawXYOffset = afwGeom.Extent2I(0, 0)
+    rawDataBBox = afwGeom.Box2I(afwGeom.Point2I(64 if i==0 else 0, 44), afwGeom.Extent2I(4088,6132))
+    rawHorizontalOverscanBBox = afwGeom.Box2I(afwGeom.Point2I(0 if i==0 else width-os, 0), afwGeom.Extent2I(os, 6220))
+    #rawVerticalOverscanBBox = afwGeom.Box2I(afwGeom.Point2I(50, 6132), afwGeom.Extent2I(0, 0))
+    #rawPrescanBBox = afwGeom.Box2I(afwGeom.Point2I(0, 0), afwGeom.Extent2I(0, 0))
+    emptyBox = afwGeom.BoxI()
 
-catalog.writeFits('g1_goto.fits')
+    shiftp = afwGeom.Extent2I((width)*i,0)
+    rawBBox.shift(shiftp)
+    rawDataBBox.shift(shiftp)
+    rawHorizontalOverscanBBox.shift(shiftp)
+    
+    record.setHasRawInfo(True) #Sets the first Flag=True
+    record.setRawFlipX(False)  #Sets the second Flag=False
+    record.setRawFlipY(False)  #Sets the third Flag=False
+    record.setBBox(bbox)
+    record.setName('left' if i == 0 else 'right')
+    record.setGain(gain)
+    record.setSaturation(saturation)
+    record.setReadNoise(readNoise)
+    record.setReadoutCorner(readoutCorner)
+    record.setLinearityCoeffs(linearityCoeffs)
+    record.setLinearityType(linearityType)
+    record.setRawBBox(rawBBox)
+    record.setRawXYOffset(rawXYOffset)
+    record.setRawDataBBox(rawDataBBox)
+    record.setRawHorizontalOverscanBBox(rawHorizontalOverscanBBox)
+    record.setRawVerticalOverscanBBox(emptyBox)
+    record.setRawPrescanBBox(emptyBox)
+
+def makeCcd():
+    schema = afwTable.AmpInfoTable.makeMinimalSchema()
+    ampCatalog = afwTable.AmpInfoCatalog(schema)
+    for i in range(2):
+        addAmp(ampCatalog, i)
+    return ampCatalog.writeFits('g2_goto.fits')
+
+def main():
+    camera = makeCcd()
+
+if __name__ == "__main__":
+    main()

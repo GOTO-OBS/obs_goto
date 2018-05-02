@@ -1,2 +1,2 @@
-from gotoMapper import *
+from .gotoMapper import *
 #import makeCamera

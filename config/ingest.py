@@ -3,21 +3,26 @@ config.parse.retarget(GotoParseTask)
 
 from lsst.obs.goto.printDict  import printDict
 
+#obj = printDict(config, path=['config'])
+
+#print config.register.columns
+#quit()
+
 config.parse.translation = {'dataType':'IMGTYPE',
                             'expTime':'EXPTIME',
                             'ccd':'INSTRUME',
-                            'frameId':'RUN',
+                            'frameId':'RUN-ID',
+                            'visit':'RUN-ID',
                             'filter':'FILTER',
-                            'dateObs':'DATE-OBS',
-                            'taiObs':'DATE-OBS'
+                            'field':'OBJECT'
                            }
 
-#config.parse.translators = {'dateObs':'translate_Date',
-#                            'taiObs':'translate_Date'}
+config.parse.translators = {'dateObs':'translate_Date',
+                            'taiObs':'translate_Date'}
 
-config.parse.translators = {'visit':'translate_visit'}
+#config.parse.translators = {'visit':'translate_visit'}
                             
-config.register.visit = ['visit', 'frameId', 'ccd', 'filter']
+config.register.visit = ['visit', 'ccd', 'filter','dateObs','taiObs']
 
 config.register.unique = ['visit', 'ccd', 'filter']
 
@@ -28,7 +33,8 @@ config.register.columns = {'frameId':'text',
                            'dataType':'text',
                            'expTime':'double',
                            'dateObs':'text',
-                           'taiObs':'text'}
+                           'taiObs':'text',
+                           'field':'text' }
 
 #obj = printDict(config, path=['config'])
 

@@ -9,6 +9,6 @@ def printDict(a, path=['']):
             path.pop()
         else:
             string = '.'.join([str(i) for i in path])
-            print "{0}:{1}".format(string, v)
+            print ("{0}:{1}".format(string, v))
             path.pop()
 

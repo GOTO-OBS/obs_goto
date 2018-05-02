@@ -39,7 +39,7 @@ class MakeGotoRawVisitInfo(MakeRawVisitInfo):
     - INST-PT (but apparently only available for HSC, not suprimecam)
     - INR-TR, INR-END (but appears to not be SKY; so probably not interesting)
     """
-    observatory = Observatory(-155.476667*degrees, 19.825556*degrees, 4139)  # long, lat, elev
+    observatory = Observatory(-17.882*degrees, 28.761*degrees, 2332)  # long, lat, elev
 
     def setArgDict(self, md, argDict):
         """Set an argument dict for makeVisitInfo and pop associated metadata

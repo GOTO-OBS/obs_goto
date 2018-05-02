@@ -1,5 +1,8 @@
+from __future__ import absolute_import, division, print_function
+
 import re
 import os
+
 
 from lsst.daf.persistence import Policy
 from lsst.obs.base import CameraMapper, exposureFromImage
@@ -25,16 +28,17 @@ class GotoMapper(CameraMapper):
         
         #Set the filters:
         self.filterIdMap = dict(v=0)
-        afwImageUtils.defineFilter(name='v',  lambdaEff=450, alias=['v'])
-        afwImageUtils.defineFilter(name='m',  lambdaEff=610.5, alias=['m'])
-        afwImageUtils.defineFilter(name='Clear',  lambdaEff=450, alias=['Clear'])
-
-        self.filters = {}
-        self.filters['v'] = afwImage.Filter('v').getCanonicalName()
-        self.filters['m'] = afwImage.Filter('m').getCanonicalName()
-        self.filters['Clear'] = afwImage.Filter('Clear').getCanonicalName()
+        afwImageUtils.defineFilter(name='R',  lambdaEff=635.9, alias=['R'])
+        afwImageUtils.defineFilter(name='G',  lambdaEff=534.9, alias=['G'])
+        afwImageUtils.defineFilter(name='B',  lambdaEff=446.6, alias=['B'])
+        afwImageUtils.defineFilter(name='L',  lambdaEff=535.5, alias=['L'])
         
-        self.defaultFilterName = 'm'
+        self.filters = {}
+        self.filters['R'] = afwImage.Filter('R').getCanonicalName()
+        self.filters['G'] = afwImage.Filter('G').getCanonicalName()
+        self.filters['B'] = afwImage.Filter('B').getCanonicalName()
+        self.filters['L'] = afwImage.Filter('L').getCanonicalName()
+        self.defaultFilterName = 'L'
         
         
     
@@ -43,14 +47,14 @@ class GotoMapper(CameraMapper):
         @param dataId (dict) Data identifier with visit and CCD
         """
         #This can change for the real GOTO data/header. What combination will make a CCD exposure unique?
-        pathId = self._transformId(dataId)
-        visit = pathId['visit']
-        ccd = pathId['ccd']
-        visit = int(visit)
-        ccd = int(ccd)
+        #pathId = self._transformId(dataId)
+        #visit = pathId['visit']
+        #ccd = pathId['ccd']
+        #visit = int(visit)
+        #ccd = int(ccd)
         
-        return visit*10+ccd
-        
+        #return visit*10+ccd
+        return 1000
     
     def bypass_ccdExposureId(self, datasetType, pythonType, location, dataId):
         
@@ -99,15 +103,18 @@ class GotoMapper(CameraMapper):
 
     def std_raw(self, item, dataId):
         raw = super(GotoMapper, self).std_raw(item, dataId)
+        md = raw.getMetadata()        
+        wcs = raw.getWcs()
+        raw.setWcs(wcs)
         
         return raw 
                                         
     def bypass_Mask(self, datasetType, pythonType, location, dataID):
-        print "bypass_Mask"
+        print ("bypass_Mask")
         return convertmask(location.getLocations()[0])
     
     def bypass_WCS(self, datasetType, pythonType, location, dataId):
-        print "bypass_WCS"
+        print ("bypass_WCS")
         return convertWCS(location.getLocations()[0])
 
     
@@ -125,9 +132,9 @@ class GotoMapper(CameraMapper):
         return 32
   
     def bypass_tsField(self, datasetType, pythonType, location, dataId):
-        print 'tsField Location', location.getLocations()[0]
+        #print 'tsField Location', location.getLocations()[0]
         return 50, 50
 
     def _extractDetectorName(self, dataId):
-        return "g1_goto"
+        return "g2_goto"
     

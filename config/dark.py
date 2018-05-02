@@ -1,16 +1,13 @@
-from lsst.obs.swasp.printDict  import printDict
-#from lsst.obs.swasp.isr import SwaspIsrTask
+from lsst.obs.goto.printDict  import printDict
 
 #obj = printDict(config, path=['config'])
-
-#config.isr.retarget(SwaspIsrTask)
-
+#quit()
 print('JRM: config/dark.py: Not repairing cosmic rays') 
 config.repair.doCosmicRay=False
 
 #config.darkTime=None
 
-config.visitKeys=['frameId']
-
+config.visitKeys=['visit']
+config.isr.doDefect=False
 #print config.register.columns
 #quit()

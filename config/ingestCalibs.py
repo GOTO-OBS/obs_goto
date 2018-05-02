@@ -1,6 +1,6 @@
 #Import the library to parse the clibrations:
-from lsst.obs.swasp.ingest import SwaspCalibsParseTask
-config.parse.retarget(SwaspCalibsParseTask)
+from lsst.obs.goto.ingest import GotoCalibsParseTask
+config.parse.retarget(GotoCalibsParseTask)
 
 #This describes how the various columns are translated:
 #config.parse.translation = {'ccd':'INSTRUME',

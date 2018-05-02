@@ -25,7 +25,61 @@ exposures:
        deepDiff_differenceExp:
          template: deepDiff/%(dateObs)s/%(filter)s/diffexp-%(ccd)s-%(visit)s.fits
        deepDiff_matchedExp:
-         template: deepDiff/%(dateObs)s/%(filter)s/matchexp-%(ccd)s-%(visit)s.fits                                                         
+         template: deepDiff/%(dateObs)s/%(filter)s/matchexp-%(ccd)s-%(visit)s.fits
+
+calibrations:
+          bias:
+              python: lsst.afw.image.ImageF
+              persistable: ImageF
+              storage: FitsStorage
+              level: Ccd
+              tables: bias
+              columns: ccd
+              columns: taiObs
+              reference: raw_visit
+              refCols: ccd
+              refCols: filter
+              validRange: true
+              validStartName: validStart
+              validEndName: validEnd
+              template: BIAS/%(calibDate)s/NONE/%(ccd)s_BIAS_%(calibDate)s.fits
+
+          dark:
+              python: lsst.afw.image.ImageF
+              persistable: ImageF
+              storage: FitsStorage
+              level: Ccd
+              tables: dark
+              columns: ccd
+              columns: taiObs
+              reference: raw_visit
+              refCols: ccd
+              refCols: filter
+              validRange: true
+              validStartName: validStart
+              validEndName: validEnd
+              template: DARK/%(calibDate)s/NONE/%(ccd)s_DARK_%(calibDate)s.fits
+            
+          flat:
+              python: lsst.afw.image.ImageF
+              persistable: ImageF
+              filter: True
+              storage: FitsStorage
+              level: Ccd
+              tables: flat
+              columns: ccd
+              columns: taiObs
+              columns: filter
+              reference: raw_visit
+              refCols: ccd
+              refCols: filter
+              validRange: true
+              validStartName: validStart
+              validEndName: validEnd
+              template: FLAT/%(calibDate)s/%(filter)s/%(ccd)s_FLAT_%(calibDate)s.fits
+            
+
+
 datasets:
        icExpBackground:
           template: 'sci-results/%(dateObs)s/%(filter)s/icExp/bkgd-icExp-%(ccd)s-%(visit)s.fits'
@@ -46,10 +100,10 @@ datasets:
                  - raw_visit
           template: 'singleFrameDriver_metadata/%(dateObs)s/%(filter)s/calexp-%(ccd)s-%(visit)s.boost'
        deepCoadd_srcMatch:
-          template: 'deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits'
+          template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits
        deepDiff_diaSrc:
-          template: 'deepDiff/%(dateObs)s/%(filter)s/diaSrc-%(ccd)s-%(visit)s.fits'
-       forced_src:
-          template: 'forcedPhotCcd/%(dateObs)s/%(filter)s/forcedSrc-%(ccd)s-%(visit)s.fits'
-       forcedPhotCcd_metadata:
-          template: 'forcedPhotCcd/%(dateObs)s/%(filter)s/forcedPhotCcd_metadata/%(ccd)s-%(visit)s.boost'
+          template: deepDiff/%(dateObs)s/%(filter)s/diaSrc-%(ccd)s-%(visit)s.fits
+       wcs:
+           persistable: ExposureF
+           python: lsst.afw.image.ExposureF
+           template: '%(visit)s/calexp/wcs-%(visit)s_%(ccd)s.fits'
