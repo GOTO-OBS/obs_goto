@@ -25,8 +25,8 @@ from __future__ import print_function
 
 import astropy.units
 
-from lsst.afw.geom import degrees
-from lsst.afw.coord import Coord, IcrsCoord, Observatory, Weather
+from lsst.afw.geom import degrees, SpherePoint
+from lsst.afw.coord import Observatory, Weather
 from lsst.obs.base import MakeRawVisitInfo
 
 __all__ = ["MakeGotoRawVisitInfo"]
@@ -48,7 +48,7 @@ class MakeGotoRawVisitInfo(MakeRawVisitInfo):
         @param[in,out] argdict  a dict of arguments
         """
         MakeRawVisitInfo.setArgDict(self, md, argDict)
-        argDict["boresightRaDec"] = IcrsCoord(
+        argDict["boresightRaDec"] = SpherePoint(
             self.popAngle(md, "RA2000", units=astropy.units.h),
             self.popAngle(md, "DEC2000"),
         )

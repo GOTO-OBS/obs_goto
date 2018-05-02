@@ -18,7 +18,7 @@ config.transformDict.transforms['FieldAngle']=lsst.afw.geom.transformConfig.Tran
 
 #I don't know what this does, but it's required to run so needs investigating.
 print ("CAMERA.PY WARNING: Pupil transform currently set to 'inverted', but needs investigating.") 
-import lsst.afw.geom.xyTransformFactory
+#import lsst.afw.geom.xyTransformFactory
 #config.transformDict.transforms[''].transform['inverted'].transform.retarget(target=lsst.afw.geom.xyTransformFactory.makeRadialXYTransform, ConfigClass=lsst.afw.geom.xyTransformFactory.RadialXYTransformConfig)
 config.transformDict.transforms['FieldAngle'].transform['inverted'].transform.retarget(target=lsst.afw.geom.transformRegistry['radial'])
 # Coefficients for the radial polynomial; coeff[0] must be 0
