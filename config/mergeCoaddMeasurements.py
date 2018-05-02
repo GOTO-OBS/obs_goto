@@ -1,1 +1,0 @@
-config.priorityList = ["m","Clear"]
