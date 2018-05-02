@@ -37,8 +37,6 @@ config.calibrate.deblend.maxFootprintSize = 0
 config.calibrate.deblend.maxFootprintArea = 2000
 config.calibrate.detection.isotropicGrow = True
 
-
-
 try:
     import lsst.meas.extensions.psfex.psfexPsfDeterminer
     #import lsst.meas.extensions.psfex.psfexStarSelector
