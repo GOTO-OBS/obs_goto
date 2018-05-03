@@ -37,9 +37,12 @@ config.calibrate.deblend.maxFootprintSize = 0
 config.calibrate.deblend.maxFootprintArea = 2000
 config.calibrate.detection.isotropicGrow = True
 
+config.isr.doAddDistortionModel = False
+
+#If I use the default star selector, then I don't get any selected stars
 try:
     import lsst.meas.extensions.psfex.psfexPsfDeterminer
-    #import lsst.meas.extensions.psfex.psfexStarSelector
+    import lsst.meas.extensions.psfex.psfexStarSelector
     config.charImage.measurePsf.psfDeterminer["psfex"].spatialOrder = 3
     config.charImage.measurePsf.psfDeterminer["psfex"].psfexBasis = 'PIXEL_AUTO'
     config.charImage.measurePsf.psfDeterminer["psfex"].samplingSize = 0.0
@@ -53,14 +56,14 @@ except ImportError as e:
 
 
 
-#JRM uncommented this: 26/05/2017
-config.charImage.measurePsf.starSelector["objectSize"].sourceFluxField = 'base_PsfFlux_flux'
-
+#JRM commented this: 03/04/2017
+#config.charImage.measurePsf.starSelector["objectSize"].sourceFluxField = 'base_PsfFlux_flux'
+#config.charImage.doMeasurePsf = False
 
 config.charImage.measurement.load(os.path.join(configDir, "kron.py"))
 config.calibrate.measurement.load(os.path.join(configDir, "kron.py"))
 
-config.charImage.load(os.path.join(configDir, "cmodel.py"))
+#config.charImage.load(os.path.join(configDir, "cmodel.py"))
 config.calibrate.load(os.path.join(configDir, "cmodel.py"))
 
 #config.calibrate.deblend.maskLimits["SAT"] =0
@@ -81,8 +84,6 @@ config.calibrate.doPhotoCal = True
 
 config.calibrate.photoCal.applyColorTerms = None
 config.calibrate.photoCal.photoCatName = None
-
-
 config.charImage.doMeasurePsf = True
 
 #config.charImage.detection.background.binSize = 512
@@ -96,6 +97,7 @@ config.charImage.doApCorr = True
 config.calibrate.doApCorr = True
 
 config.charImage.measurePsf.starSelector["objectSize"].fluxMin = 10000.
+config.charImage.measurePsf.starSelector['objectSize'].widthStdAllowed=1.
 #config.charImage.measurePsf.starSelector["objectSize"].fluxMax = 10000
 
 #config.charImage.refObjLoader.defaultFilter ='m'
@@ -147,3 +149,4 @@ config.calibrate.astrometry.matcher.numBrightStars = 300
 
 #config.calibrate.photoCal.magLimit = 18
 #config.calibrate.photoCal.doSelectUnresolved = False
+
