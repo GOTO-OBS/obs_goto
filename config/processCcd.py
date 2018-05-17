@@ -20,12 +20,28 @@ configDir = os.path.join(getPackageDir("obs_goto"), "config")
 config.isr.doWrite=True
 #config.isr.retarget(SwaspNullIsrTask)
 
-
+#Retarget the characterize image task to my own in gotoCharTask.
+#Our own performs (almost) blind astrometry with aNet.
+from lsst.obs.goto.gotoCharTask import GotoCharacterizeImageTask
+config.charImage.retarget(GotoCharacterizeImageTask)
 
 #config.isr.expectWcs = False
 config.isr.doBias=True
 config.isr.doDark=False
 config.isr.doFlat=True
+config.doAstrometry=True
+config.astrometry.detection.includeThresholdMultiplier=30.0
+config.astrometry.astromRefObjLoader.filterMap ={'L':'v'}
+
+from lsst.meas.extensions.astrometryNet import ANetAstrometryTask
+config.astrometry.astrometry.retarget(ANetAstrometryTask)
+config.astrometry.astrometry.solver.useWcsRaDecCenter = False  # It's off for some reason dunno yet
+config.astrometry.astrometry.solver.useWcsParity = False  # I doubt I guess right
+config.astrometry.astrometry.solver.useWcsPixelScale = True  # DGM says it's 0.4, but....
+config.astrometry.astrometry.solver.maxStars = 300            
+config.astrometry.astrometry.solver.catalogMatchDist = 3.
+config.astrometry.astrometry.solver.filterMap ={'L':'v'}
+
 config.isr.doSaturationInterpolation = False
 config.charImage.repair.doCosmicRay = False
 config.charImage.detection.thresholdValue = 5.0
@@ -103,7 +119,6 @@ config.charImage.measurePsf.starSelector['objectSize'].widthStdAllowed=1.
 #config.charImage.refObjLoader.defaultFilter ='m'
 #config.calibrate.astromRefObjLoader.retarget(LoadIndexedReferenceObjectsTask)
 #config.calibrate.astromRefObjLoader.ref_dataset_name = "UCAC4"
-
 
 config.calibrate.astromRefObjLoader.defaultFilter ='m'
 config.calibrate.astromRefObjLoader.filterMap ={'L':'v'}

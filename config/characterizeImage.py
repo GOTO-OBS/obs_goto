@@ -16,11 +16,11 @@ configDir = os.path.join(getPackageDir("obs_goto"), "config")
 #obj = printDict(config, path=['config'])
 #quit()
 
-#config.charImage.doWriteExposure=False
-#config.isr.doWrite=False
-#config.isr.retarget(SwaspNullIsrTask)
+config.doWriteExposure=True
 
-config.detection.thresholdValue = 14.0
+config.detection.thresholdValue = 5.0
+config.detection.includeThresholdMultiplier = 10.0
+config.detection.minPixels = 20
 
 #Cosmic rays and background estimation:
 config.repair.doCosmicRay = False
@@ -29,15 +29,23 @@ config.detection.tempLocalBackground.binSize = 32
 
 #PSF determination:
 config.psfIterations=1
-config.measurePsf.reserveFraction = 0.2
-config.measurePsf.starSelector["objectSize"].sourceFluxField = 'base_PsfFlux_flux'
+#config.measurePsf.reserveFraction = 0.2
+#config.measurePsf.starSelector["objectSize"].sourceFluxField = 'base_PsfFlux_flux'
+
+config.measurePsf.starSelector['objectSize'].widthMin=1.0
+config.measurePsf.starSelector['objectSize'].widthMax=4.0
+config.measurePsf.starSelector['secondMoment'].clumpNSigma=3.0
+config.measurePsf.starSelector["objectSize"].fluxMin = 10000.
+config.measurePsf.starSelector['objectSize'].widthStdAllowed=3.0
 try:
     import lsst.meas.extensions.psfex.psfexPsfDeterminer
+    #import lsst.meas.extensions.psfex.psfexStarSelector
     config.measurePsf.psfDeterminer["psfex"].spatialOrder = 2
     config.measurePsf.psfDeterminer["psfex"].psfexBasis = 'PIXEL_AUTO'
-    config.measurePsf.psfDeterminer["psfex"].samplingSize = 2.
+    config.measurePsf.psfDeterminer["psfex"].samplingSize = 0.7
     config.measurePsf.psfDeterminer["psfex"].kernelSize = 21
     config.measurePsf.psfDeterminer.name = "psfex"
+    print("Using psfex")
 except ImportError as e:
     print("WARNING: Unable to use psfex: %s" % e)
     config.measurePsf.psfDeterminer.name = "pca"
@@ -45,17 +53,19 @@ except ImportError as e:
 config.refObjLoader.defaultFilter ='m'
 
 # Activate calibration of measurements: required for aperture corrections
-config.load(os.path.join(configDir, "cmodel.py"))
-config.measurement.load(os.path.join(configDir, "apertures.py"))
-config.measurement.load(os.path.join(configDir, "kron.py"))
-config.measurement.load(os.path.join(configDir, "convolvedFluxes.py"))
+#config.load(os.path.join(configDir, "cmodel.py"))
+#config.measurement.load(os.path.join(configDir, "apertures.py"))
+#config.measurement.load(os.path.join(configDir, "kron.py"))
+#config.measurement.load(os.path.join(configDir, "convolvedFluxes.py"))
 
-config.detection.includeThresholdMultiplier = 3.0
+#config.detection.includeThresholdMultiplier = 3.0
 
-config.measurement.plugins['modelfit_CModel'].region.badMaskPlanes=['EDGE', 'SAT', 'BAD', 'NO_DATA']
-config.measurement.undeblended['modelfit_CModel'].region.badMaskPlanes=['EDGE', 'SAT', 'BAD', 'NO_DATA']
-config.measurement.undeblended['modelfit_CModel'].region.maxBadPixelFraction=None
-config.measurement.plugins['modelfit_CModel'].region.maxBadPixelFraction=None
+#config.measurement.plugins['modelfit_CModel'].region.badMaskPlanes=['EDGE', 'SAT', 'BAD', 'NO_DATA']
+#config.measurement.undeblended['modelfit_CModel'].region.badMaskPlanes=['EDGE', 'SAT', 'BAD', 'NO_DATA']
+#config.measurement.undeblended['modelfit_CModel'].region.maxBadPixelFraction=None
+#config.measurement.plugins['modelfit_CModel'].region.maxBadPixelFraction=None
+
+
 
 #config.measureApCorr.starSelector['psfex'].maxbadflag=False
 #config.measureApCorr.starSelector['psfex'].badFlags=[]
