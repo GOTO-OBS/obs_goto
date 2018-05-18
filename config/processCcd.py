@@ -29,18 +29,18 @@ config.charImage.retarget(GotoCharacterizeImageTask)
 config.isr.doBias=True
 config.isr.doDark=False
 config.isr.doFlat=True
-config.doAstrometry=True
-config.astrometry.detection.includeThresholdMultiplier=30.0
-config.astrometry.astromRefObjLoader.filterMap ={'L':'v'}
+config.charImage.doEarlyAstrometry=True
+config.charImage.earlyAstrometry.detection.includeThresholdMultiplier=30.0
+config.charImage.earlyAstrometry.astromRefObjLoader.filterMap = {'L':'v'}
 
 from lsst.meas.extensions.astrometryNet import ANetAstrometryTask
-config.astrometry.astrometry.retarget(ANetAstrometryTask)
-config.astrometry.astrometry.solver.useWcsRaDecCenter = False  # It's off for some reason dunno yet
-config.astrometry.astrometry.solver.useWcsParity = False  # I doubt I guess right
-config.astrometry.astrometry.solver.useWcsPixelScale = True  # DGM says it's 0.4, but....
-config.astrometry.astrometry.solver.maxStars = 300            
-config.astrometry.astrometry.solver.catalogMatchDist = 3.
-config.astrometry.astrometry.solver.filterMap ={'L':'v'}
+config.charImage.earlyAstrometry.astrometry.retarget(ANetAstrometryTask)
+config.charImage.earlyAstrometry.astrometry.solver.useWcsRaDecCenter = False  # It's off for some reason dunno yet
+config.charImage.earlyAstrometry.astrometry.solver.useWcsParity = False  # I doubt I guess right
+config.charImage.earlyAstrometry.astrometry.solver.useWcsPixelScale = True  # DGM says it's 0.4, but....
+config.charImage.earlyAstrometry.astrometry.solver.maxStars = 300            
+config.charImage.earlyAstrometry.astrometry.solver.catalogMatchDist = 3.
+config.charImage.earlyAstrometry.astrometry.solver.filterMap ={'L':'v'}
 
 config.isr.doSaturationInterpolation = False
 config.charImage.repair.doCosmicRay = False

@@ -1,14 +1,27 @@
 from lsst.pipe.tasks.characterizeImage import CharacterizeImageTask, CharacterizeImageConfig
+import lsst.pex.config as pexConfig
+from .astrometry import AstrometryTask
+
 
 class GotoCharacterizeImageConfig(CharacterizeImageConfig):
-    print("GotoChar")
+    doEarlyAstrometry = pexConfig.Field(
+        dtype=bool,
+        default=False,
+        doc="Perform astrometry on raw frame (only needed if raw frame does not come with a WCS solution",
+    )
 
+    earlyAstrometry = pexConfig.ConfigurableField(
+        target = AstrometryTask,
+        doc="""Task to obtain an initial WCS should your raw data not come with a WCS solution.""",
+    )
+            
 class GotoCharacterizeImageTask(CharacterizeImageTask):
     ConfigClass = GotoCharacterizeImageConfig
 
-    def __init__(self, butler=None, refObjLoader=None, schema=None, **kwargs):
+    def __init__(self, butler=None, astromRefObjLoader=None, schema=None, **kwargs):
         super(GotoCharacterizeImageTask, self).__init__(**kwargs)
-
+        self.makeSubtask("earlyAstrometry", butler=butler, astromRefObjLoader=astromRefObjLoader)
+        
     def run(self, dataRef, exposure=None, background=None, doUnpersist=True):
 
         self.log.info("gotoCharTask Processing %s" % (dataRef.dataId))
@@ -22,6 +35,12 @@ class GotoCharacterizeImageTask(CharacterizeImageTask):
         
         exposure = dataRef.get("postISRCCD", immediate=True)
         exposureIdInfo = dataRef.get("expIdInfo")
+
+        if self.config.doEarlyAstrometry:
+            exposure = self.earlyAstrometry.run(
+                dataRef=dataRef,
+                exposure=exposure,
+            )
 
         charRes = self.characterize(
                         exposure=exposure,
