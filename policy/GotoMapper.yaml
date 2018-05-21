@@ -1,7 +1,8 @@
 needCalibRegistry: true
 
 camera : ../camera
- 
+defects : ../camera
+
 defaultLevel : Ccd 
        
 exposures: 

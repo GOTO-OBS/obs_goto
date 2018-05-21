@@ -26,21 +26,27 @@ from lsst.obs.goto.gotoCharTask import GotoCharacterizeImageTask
 config.charImage.retarget(GotoCharacterizeImageTask)
 
 #config.isr.expectWcs = False
+config.isr.doDefect = True
+config.isr.doAssembleIsrExposures = False
 config.isr.doBias=True
-config.isr.doDark=False
+config.isr.doDark=True
 config.isr.doFlat=True
 config.charImage.doEarlyAstrometry=True
-config.charImage.earlyAstrometry.detection.includeThresholdMultiplier=30.0
+config.charImage.earlyAstrometry.detection.includeThresholdMultiplier=10.0
 config.charImage.earlyAstrometry.astromRefObjLoader.filterMap = {'L':'v'}
+config.charImage.earlyAstrometry.detection.minPixels = 100
 
 from lsst.meas.extensions.astrometryNet import ANetAstrometryTask
 config.charImage.earlyAstrometry.astrometry.retarget(ANetAstrometryTask)
-config.charImage.earlyAstrometry.astrometry.solver.useWcsRaDecCenter = False  # It's off for some reason dunno yet
-config.charImage.earlyAstrometry.astrometry.solver.useWcsParity = False  # I doubt I guess right
-config.charImage.earlyAstrometry.astrometry.solver.useWcsPixelScale = True  # DGM says it's 0.4, but....
-config.charImage.earlyAstrometry.astrometry.solver.maxStars = 300            
+config.charImage.earlyAstrometry.astrometry.solver.useWcsRaDecCenter = True
+config.charImage.earlyAstrometry.astrometry.solver.useWcsParity = True
+config.charImage.earlyAstrometry.astrometry.solver.useWcsPixelScale = True
+config.charImage.earlyAstrometry.astrometry.solver.raDecSearchRadius = 3.
+config.charImage.earlyAstrometry.astrometry.solver.maxStars = 500            
 config.charImage.earlyAstrometry.astrometry.solver.catalogMatchDist = 3.
-config.charImage.earlyAstrometry.astrometry.solver.filterMap ={'L':'v'}
+config.charImage.earlyAstrometry.astrometry.solver.pixelScaleUncertainty= 1.02
+config.charImage.earlyAstrometry.astrometry.solver.filterMap = {'L':'v'}
+config.charImage.earlyAstrometry.astrometry.solver.pixelMargin = 200
 
 config.isr.doSaturationInterpolation = False
 config.charImage.repair.doCosmicRay = False
@@ -128,8 +134,7 @@ config.calibrate.photoRefObjLoader.filterMap ={'L':'v'}
 
 #Need to do this to remove overscan from
 #calibration frame:
-config.isr.doAssembleIsrExposures = False
-config.isr.doDefect =False
+
 #This could be messing up the variance, but is
 #needed since we aren't calculating a variance
 #plane for the calibration files.

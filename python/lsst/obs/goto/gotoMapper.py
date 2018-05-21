@@ -8,8 +8,11 @@ from lsst.daf.persistence import Policy
 from lsst.obs.base import CameraMapper, exposureFromImage
 import lsst.afw.image.utils as afwImageUtils
 import lsst.afw.image as afwImage
+import lsst.afw.geom as afwGeom
 from lsst.ip.isr import IsrTask
 from .makeGotoRawVisitInfo import MakeGotoRawVisitInfo
+from astropy import coordinates, units 
+
 
 class GotoMapper(CameraMapper):
     packageName = 'obs_goto'
@@ -102,9 +105,32 @@ class GotoMapper(CameraMapper):
         return self.standardizeCalib("flat", item, dataId)
 
     def std_raw(self, item, dataId):
+
+        #This creates an approximate wcs based on RA-TEL and DEC-TEL.
         raw = super(GotoMapper, self).std_raw(item, dataId)
         md = raw.getMetadata()        
-        wcs = raw.getWcs()
+
+        ra_deg = (coordinates.Angle(md.get('RA-TEL'), unit=units.hour).deg)
+        de_deg = (coordinates.Angle(md.get('DEC-TEL'), unit=units.deg).deg)
+
+        md.setDouble("CRVAL1", ra_deg)
+        md.setDouble("CRVAL2", de_deg)
+        md.setDouble("CRPIX1", 0.)
+        md.setDouble("CRPIX2", 0.)
+        md.setDouble('CDELT1',1.0)
+        md.setDouble('CDELT2',1.0)
+        md.set("CUNIT1",'deg')
+        md.set("CUNIT2",'deg')
+        
+        md.setDouble("CD1_1", 1.0E-6)
+        md.setDouble("CD1_2", -3.4E-04)
+        md.setDouble("CD2_1", 3.4E-04)
+        md.setDouble("CD2_2", 1.0E-6)
+
+        md.set("CTYPE1", 'RA---TAN-SIP')
+        md.set("CTYPE2", 'DEC--TAN-SIP')
+        
+        wcs = afwGeom.makeSkyWcs(md)
         raw.setWcs(wcs)
         
         return raw 
@@ -113,9 +139,10 @@ class GotoMapper(CameraMapper):
         print ("bypass_Mask")
         return convertmask(location.getLocations()[0])
     
-    def bypass_WCS(self, datasetType, pythonType, location, dataId):
-        print ("bypass_WCS")
-        return convertWCS(location.getLocations()[0])
+    def bypass_xxx(self, datasetType, pythonType, location, dataId):
+        import pdb
+        pdb.set_trace()
+        return
 
     
     def bypass_deepCoaddId_bits(self, *args, **kwargs):
