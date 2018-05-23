@@ -5,14 +5,8 @@ from lsst.utils import getPackageDir
 
 configDir = os.path.join(getPackageDir("obs_goto"), "config")
 
-#Read post-ISR data:
+#ISR:
 config.isr.doWrite=True
-
-#Retarget the characterize image task to my own in gotoCharTask.
-#Our own performs (almost) blind astrometry with aNet straight after ISR.
-from lsst.obs.goto.gotoCharTask import GotoCharacterizeImageTask
-config.charImage.retarget(GotoCharacterizeImageTask)
-
 config.isr.doAddDistortionModel = False
 config.isr.doDefect = False
 config.isr.doAssembleIsrExposures = False
@@ -22,81 +16,11 @@ config.isr.doFlat=True
 config.isr.doSaturationInterpolation = False
 
 #CharImage:
-config.charImage.doEarlyAstrometry=True
-config.charImage.earlyAstrometry.detection.includeThresholdMultiplier=10.0
-config.charImage.earlyAstrometry.astromRefObjLoader.filterMap = {'L':'v'}
-config.charImage.earlyAstrometry.detection.minPixels = 100
-
-#Don't make lots of measurements if we can avoid it:
-#Dew needed for earlyAstrometry:
-for i in [
-#        'base_GaussianFlux',
-#        'base_SdssShape', #base_SdssShape is needed for PSF determination.
-        'base_ScaledApertureFlux',
-        'base_CircularApertureFlux',
-        'base_Blendedness',
-        'base_LocalBackground',
-        'base_Jacobian',
-        'base_FPPosition',
-        'base_Variance',
-        'base_InputCount',
-        'base_SkyCoord'
-]:
-    config.charImage.earlyAstrometry.measurement.plugins[i].doMeasure=False
-
-#But a few more needed for measurePsf:
-#config.charImage.measurement.plugins[i].doMeasure=False
-
-#MatchOptimisticB (this does not work):
-#config.charImage.earlyAstrometry.astromRefObjLoader.pixelMargin = 5000
-#config.charImage.earlyAstrometry.astrometry.matcher.numBrightStars = 150
-#config.charImage.earlyAstrometry.astrometry.matcher.maxOffsetPix = 2000
-#config.charImage.earlyAstrometry.astrometry.matcher.maxMatchDistArcSec = 10.
-
-#Astrometry.net (this now works very well):
-from lsst.meas.extensions.astrometryNet import ANetAstrometryTask
-config.charImage.earlyAstrometry.astrometry.retarget(ANetAstrometryTask)
-config.charImage.earlyAstrometry.astrometry.solver.useWcsRaDecCenter = True
-config.charImage.earlyAstrometry.astrometry.solver.useWcsParity = True
-config.charImage.earlyAstrometry.astrometry.solver.useWcsPixelScale = True
-config.charImage.earlyAstrometry.astrometry.solver.raDecSearchRadius = 5.
-config.charImage.earlyAstrometry.astrometry.solver.maxStars = 500            
-config.charImage.earlyAstrometry.astrometry.solver.catalogMatchDist = 10.
-config.charImage.earlyAstrometry.astrometry.solver.pixelScaleUncertainty= 1.02
-config.charImage.earlyAstrometry.astrometry.solver.filterMap = {'L':'v'}
-config.charImage.earlyAstrometry.astrometry.solver.pixelMargin = 1000
-config.charImage.earlyAstrometry.astrometry.solver.sipOrder = 4
-config.charImage.earlyAstrometry.astrometry.solver.calculateSip = True
-
-config.charImage.repair.doCosmicRay = False
-config.charImage.detection.thresholdValue = 5.0
-config.charImage.detection.includeThresholdMultiplier = 10.0
-
-#If I use the default star selector, then I don't get any selected stars
-config.charImage.doMeasurePsf = True
-try:
-    import lsst.meas.extensions.psfex.psfexPsfDeterminer
-#    import lsst.meas.extensions.psfex.psfexStarSelector
-    config.charImage.measurePsf.psfDeterminer["psfex"].spatialOrder = 3
-    config.charImage.measurePsf.psfDeterminer["psfex"].psfexBasis = 'PIXEL_AUTO'
-    config.charImage.measurePsf.psfDeterminer["psfex"].samplingSize = 0.0
-    config.charImage.measurePsf.psfDeterminer["psfex"].kernelSize = 35
-    config.charImage.measurePsf.psfDeterminer["psfex"].recentroid=True
-    #config.charImage.measurePsf.psfDeterminer["psfex"].tolerance=1
-    config.charImage.measurePsf.psfDeterminer.name = "psfex"
-except ImportError as e:
-    print("WARNING: Unable to use psfex: %s" % e)
-    config.charImage.measurePsf.psfDeterminer.name = "pca"
-
-#JRM commented this: 03/04/2017
-#config.charImage.measurePsf.starSelector["objectSize"].sourceFluxField = 'base_PsfFlux_flux'
-#config.charImage.doMeasurePsf = False
-
-config.charImage.doApCorr = False
-
-config.charImage.measurePsf.starSelector["objectSize"].fluxMin = 10000.
-config.charImage.measurePsf.starSelector['objectSize'].widthStdAllowed=1.
-#config.charImage.measurePsf.starSelector["objectSize"].fluxMax = 10000
+#Retarget the characterize image task to my own in gotoCharTask.
+#Our own performs (almost) blind astrometry with aNet straight after ISR.
+from lsst.obs.goto.gotoCharTask import GotoCharacterizeImageTask
+config.charImage.retarget(GotoCharacterizeImageTask)
+config.charImage.load(os.path.join(getPackageDir("obs_goto"), "config", "characterizeImage.py"))
 
 #Calibrate configs:
 config.doCalibrate = False # Do we need to calibrate for difference imaging?

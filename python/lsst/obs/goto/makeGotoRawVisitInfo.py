@@ -48,23 +48,23 @@ class MakeGotoRawVisitInfo(MakeRawVisitInfo):
         @param[in,out] argdict  a dict of arguments
         """
         MakeRawVisitInfo.setArgDict(self, md, argDict)
-        argDict["boresightRaDec"] = SpherePoint(
-            self.popAngle(md, "RA2000", units=astropy.units.h),
-            self.popAngle(md, "DEC2000"),
-        )
+#        argDict["boresightRaDec"] = SpherePoint(
+#            self.popAngle(md, "RA2000", units=astropy.units.h),
+#            self.popAngle(md, "DEC2000"),
+#        )
 #        argDict["boresightAzAlt"] = Coord(
 #            self.popAngle(md, "AZIMUTH"),
 #            self.popAngle(md, "ALTITUDE"),
 #        )
-        argDict["boresightAirmass"] = self.popFloat(md, "AIRMASS")
+#        argDict["boresightAirmass"] = self.popFloat(md, "AIRMASS")
         argDict["observatory"] = self.observatory
-        argDict["weather"] = Weather(
-            self.centigradeFromKelvin(self.popFloat(md, "OUT-TMP")),
-            self.pascalFromMmHg(self.popFloat(md, "OUT-PRS")),
-            self.popFloat(md, "OUT-HUM"),
-        )
-        LST = self.popAngle(md, "LST-STR", units=astropy.units.h)
-        argDict['era'] = self.eraFromLstAndLongitude(LST, self.observatory.getLongitude())
+#        argDict["weather"] = Weather(
+#            self.centigradeFromKelvin(self.popFloat(md, "OUT-TMP")),
+#            self.pascalFromMmHg(self.popFloat(md, "OUT-PRS")),
+#            self.popFloat(md, "OUT-HUM"),
+#        )
+#        LST = self.popAngle(md, "LST-STR", units=astropy.units.h)
+#        argDict['era'] = self.eraFromLstAndLongitude(LST, self.observatory.getLongitude())
         argDict['darkTime'] = argDict['exposureTime']
 
     def getDateAvg(self, md, exposureTime):
