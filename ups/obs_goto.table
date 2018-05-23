@@ -1,8 +1,10 @@
 setupRequired(pipe_tasks)
 setupRequired(pipe_drivers)
+setupRequired(display_ds9)
 setupRequired(meas_extensions_photometryKron)
 setupRequired(meas_extensions_psfex)
 setupRequired(meas_modelfit)
 setupRequired(astrometry_net_data goto)
+
 envPrepend(PYTHONPATH, ${PRODUCT_DIR}/python)
 envPrepend(PATH, ${PRODUCT_DIR}/bin)

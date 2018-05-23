@@ -65,8 +65,8 @@ config.psfIterations=1
 config.measurePsf.starSelector['objectSize'].widthMin=1.0
 config.measurePsf.starSelector['objectSize'].widthMax=4.0
 config.measurePsf.starSelector['secondMoment'].clumpNSigma=3.0
-config.measurePsf.starSelector["objectSize"].fluxMin = 10000.
-config.measurePsf.starSelector['objectSize'].widthStdAllowed=3.0
+config.measurePsf.starSelector["objectSize"].fluxMin = 1000.
+config.measurePsf.starSelector['objectSize'].widthStdAllowed=4.0
 try:
     import lsst.meas.extensions.psfex.psfexPsfDeterminer
     #import lsst.meas.extensions.psfex.psfexStarSelector
