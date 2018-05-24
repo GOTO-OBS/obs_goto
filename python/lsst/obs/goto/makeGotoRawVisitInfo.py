@@ -31,7 +31,6 @@ from lsst.obs.base import MakeRawVisitInfo
 
 __all__ = ["MakeGotoRawVisitInfo"]
 
-
 class MakeGotoRawVisitInfo(MakeRawVisitInfo):
     """Make a VisitInfo from the FITS header of a Subaru HSC image
 
@@ -47,31 +46,28 @@ class MakeGotoRawVisitInfo(MakeRawVisitInfo):
         @param[in,out] md  metadata, as an lsst.daf.base.PropertyList or PropertySet
         @param[in,out] argdict  a dict of arguments
         """
-        MakeRawVisitInfo.setArgDict(self, md, argDict)
+        argDict["exposureTime"] = self.popFloat(md, 'EXPTIME')
+
+        startDate = self.popIsoDate(md, "DATE-OBS")
+        argDict["date"] = self.offsetDate(startDate, 0.5*argDict["exposureTime"])
+
 #        argDict["boresightRaDec"] = SpherePoint(
-#            self.popAngle(md, "RA2000", units=astropy.units.h),
-#            self.popAngle(md, "DEC2000"),
+#            self.popAngle(md, "RA-TEL", units=astropy.units.h),
+#            self.popAngle(md, "DEC-TEL"),
 #        )
-#        argDict["boresightAzAlt"] = Coord(
-#            self.popAngle(md, "AZIMUTH"),
-#            self.popAngle(md, "ALTITUDE"),
-#        )
-#        argDict["boresightAirmass"] = self.popFloat(md, "AIRMASS")
+        argDict["boresightAzAlt"] = SpherePoint(
+            self.popAngle(md, "AZ"),
+            self.popAngle(md, "ALT"),
+        )
+        argDict["boresightAirmass"] = self.popFloat(md, "AIRMASS")
+
         argDict["observatory"] = self.observatory
+
 #        argDict["weather"] = Weather(
-#            self.centigradeFromKelvin(self.popFloat(md, "OUT-TMP")),
-#            self.pascalFromMmHg(self.popFloat(md, "OUT-PRS")),
-#            self.popFloat(md, "OUT-HUM"),
+#            self.centigradeFromKelvin(self.popFloat(md, "EXT-TEMP")),
+#            1.0,
+#            self.popFloat(md, "EXT-HUM"),
 #        )
-#        LST = self.popAngle(md, "LST-STR", units=astropy.units.h)
-#        argDict['era'] = self.eraFromLstAndLongitude(LST, self.observatory.getLongitude())
+
         argDict['darkTime'] = argDict['exposureTime']
 
-    def getDateAvg(self, md, exposureTime):
-        """Return date at the middle of the exposure
-
-        @param[in,out] md  FITS metadata; changed in place
-        @param[in] exposureTime  exposure time in sec
-        """
-        startDate = self.popMjdDate(md, "MJD-STR")
-        return self.offsetDate(startDate, 0.5*exposureTime)
