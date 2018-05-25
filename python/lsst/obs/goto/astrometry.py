@@ -65,10 +65,6 @@ class AstrometryTask(pipeBase.CmdLineTask):
         self.makeSubtask("installSimplePsf")
         self.makeSubtask("background")
         
-        icSourceSchema = butler.get("icSrc_schema", immediate=True).schema
-        self.schemaMapper = afwTable.SchemaMapper(icSourceSchema)
-        self.schema = self.schemaMapper.getInputSchema()
-
         self.schema = afwTable.SourceTable.makeMinimalSchema()
         self.makeSubtask('detection', schema=self.schema)
         
