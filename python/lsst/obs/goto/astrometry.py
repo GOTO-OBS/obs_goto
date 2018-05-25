@@ -87,13 +87,12 @@ class AstrometryTask(pipeBase.CmdLineTask):
     @pipeBase.timeMethod
     def run(self, dataRef=None, exposure=None):
 
-        print("Running astrometry")
         if not exposure.hasPsf():
             self.log.warn("Using SimplePsf for astrometry source detection")
             self.installSimplePsf.run(exposure=exposure)
 
-        import pdb
-        pdb.set_trace()
+        #Ensure a unique source identifier is allocated:
+        #(This isn't actually necessary for this stage)
         butler = dataRef.getButler()
         exposureIdInfo = butler.get('expIdInfo',dataRef.dataId)
         
