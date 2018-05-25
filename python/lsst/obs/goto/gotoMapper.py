@@ -46,27 +46,37 @@ class GotoMapper(CameraMapper):
         
     
     def _computeCcdExposureId(self, dataId):
-        """Compute the 64-bit (long) identifier for a CCD exposure.
+        """Compute the 64-bit identifier for a CCD exposure.
         @param dataId (dict) Data identifier with visit and CCD
-        """
-        #This can change for the real GOTO data/header. What combination will make a CCD exposure unique?
-        #pathId = self._transformId(dataId)
-        #visit = pathId['visit']
-        #ccd = pathId['ccd']
-        #visit = int(visit)
-        #ccd = int(ccd)
         
-        #return visit*10+ccd
-        return 1000
-    
+        We uniquely identify an exposure via its visit ID (i.e., r******) and its ccd (UT number).
+
+        We allow for up to 2**24 = 16,777,216 visits, and up to 2**6 = 64 UTs
+        The first 34 (right to left) bits give the object ID (overkill).
+        The next 6 give the UT.
+        The next 24 give the visit number.
+
+        If you want to add a filter code (up to 2**3 = 8 filters, say):
+        return visit*64*8 + filt*64 + ccd
+        Then add 3 to the 30 in bypass_ccdExposureId_bits
+
+        """
+        
+        pathId = self._transformId(dataId)
+        visit = (pathId['visit']).strip('r')
+        ccd = (pathId['ccd']).strip('UT')
+        visit = int(visit)
+        ccd = int(ccd)
+
+        return visit*64 + ccd
+
     def bypass_ccdExposureId(self, datasetType, pythonType, location, dataId):
         
         return self._computeCcdExposureId(dataId)
 
     def bypass_ccdExposureId_bits(self, datasetType, pythonType, location, dataId):
-        
-        return 42
-       
+
+        return 30
 
 #    def _extractDetectorName(self, dataId):
 

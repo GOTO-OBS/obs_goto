@@ -92,8 +92,11 @@ class AstrometryTask(pipeBase.CmdLineTask):
             self.log.warn("Using SimplePsf for astrometry source detection")
             self.installSimplePsf.run(exposure=exposure)
 
-        exposureIdInfo = ExposureIdInfo()
-
+        import pdb
+        pdb.set_trace()
+        butler = dataRef.getButler()
+        exposureIdInfo = butler.get('expIdInfo',dataRef.dataId)
+        
         #Subtract an initial estimate of the background:
         background = self.background.run(exposure).background
 
