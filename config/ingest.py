@@ -10,9 +10,7 @@ from lsst.obs.goto.printDict  import printDict
 
 config.parse.translation = {'dataType':'IMGTYPE',
                             'expTime':'EXPTIME',
-                            'ccd':'INSTRUME',
                             'frameId':'RUN-ID',
-                            'visit':'RUN-ID',
                             'filter':'FILTER',
                             'field':'OBJECT'
                            }
