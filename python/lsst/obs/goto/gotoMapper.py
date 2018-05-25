@@ -63,8 +63,8 @@ class GotoMapper(CameraMapper):
         """
         
         pathId = self._transformId(dataId)
-        visit = (pathId['visit']).strip('r')
-        ccd = (pathId['ccd']).strip('UT')
+        visit = pathId['visit']
+        ccd = pathId['ccd']
         visit = int(visit)
         ccd = int(ccd)
 

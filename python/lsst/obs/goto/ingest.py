@@ -22,7 +22,7 @@ class GotoCalibsParseTask(CalibsParseTask):
     
 class GotoParseTask(ParseTask):
 
-    def translate_Date(self, md):
+    def translateDate(self, md):
 
         #start = md.get("UTSTART")
         date = md.get("DATE-OBS")
@@ -36,11 +36,15 @@ class GotoParseTask(ParseTask):
         
         return date
      
-    def translate_visit(self, md):
+    def translateVisit(self, md):
 
-        frame = md.get("RUN-ID")
-        date = md.get("DATE-OBS")
+        visit = md.get("RUN-ID")
 
-        visit = date + frame
+        return int(visit.strip('r'))
 
-        return visit
+    def translateCcd(self, md):
+
+        ccd = md.get("INSTRUME")
+
+        return int(ccd.strip('UT'))
+        

@@ -17,18 +17,18 @@ config.parse.translation = {'dataType':'IMGTYPE',
                             'field':'OBJECT'
                            }
 
-config.parse.translators = {'dateObs':'translate_Date',
-                            'taiObs':'translate_Date'}
+config.parse.translators = {'dateObs':'translateDate',
+                            'taiObs':'translateDate',
+                            'visit':'translateVisit',
+                            'ccd':'translateCcd'}
 
-#config.parse.translators = {'visit':'translate_visit'}
-                            
 config.register.visit = ['visit', 'ccd', 'filter','dateObs','taiObs']
 
 config.register.unique = ['visit', 'ccd', 'filter']
 
 config.register.columns = {'frameId':'text',
-                           'visit':'text',
-                           'ccd':'text',
+                           'visit':'int',
+                           'ccd':'int',
                            'filter':'text',
                            'dataType':'text',
                            'expTime':'double',
@@ -36,7 +36,3 @@ config.register.columns = {'frameId':'text',
                            'taiObs':'text',
                            'field':'text' }
 
-#obj = printDict(config, path=['config'])
-
-#print config.register.columns
-#quit()
