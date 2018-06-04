@@ -20,9 +20,9 @@ config.parse.translators = {'dateObs':'translateDate',
                             'visit':'translateVisit',
                             'ccd':'translateCcd'}
 
-config.register.visit = ['visit', 'ccd', 'filter','dateObs','taiObs']
+config.register.visit = ['visit', 'ccd', 'filter', 'dateObs']
 
-config.register.unique = ['visit', 'ccd', 'filter']
+config.register.unique = ['visit', 'ccd']
 
 config.register.columns = {'frameId':'text',
                            'visit':'int',
