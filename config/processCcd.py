@@ -23,15 +23,31 @@ config.charImage.retarget(GotoCharacterizeImageTask)
 config.charImage.load(os.path.join(getPackageDir("obs_goto"), "config", "characterizeImage.py"))
 
 #Calibrate configs:
-config.doCalibrate = False # Do we need to calibrate for difference imaging?
-config.calibrate.detection.thresholdValue = 5.0
+config.doCalibrate = True # Do we need to calibrate for difference imaging?
+
+for i in [
+        #'base_GaussianFlux', Needed for PSF in imageDifference.py
+        #'base_SdssShape',
+        'base_ScaledApertureFlux',
+        #'base_CircularApertureFlux', Needed for zeropoint
+        'base_Blendedness',
+        'base_LocalBackground',
+        'base_Jacobian',
+        'base_FPPosition',
+        'base_Variance',
+        'base_InputCount',
+        #'base_SkyCoord', Needed for zeropoint
+        ]:
+    config.calibrate.measurement.plugins[i].doMeasure=False
+        
+config.calibrate.detection.thresholdValue = 20.0
 config.calibrate.doDeblend = True
 config.calibrate.deblend.maxFootprintSize = 0
 config.calibrate.deblend.maxFootprintArea = 2000
 config.calibrate.detection.isotropicGrow = True
 
-config.calibrate.measurement.load(os.path.join(configDir, "kron.py"))
-config.calibrate.load(os.path.join(configDir, "cmodel.py"))
+#config.calibrate.measurement.load(os.path.join(configDir, "kron.py"))
+#config.calibrate.load(os.path.join(configDir, "cmodel.py"))
 
 #config.calibrate.deblend.maskLimits["SAT"] =0
 #config.calibrate.detection.doTempLocalBackground=True
@@ -44,7 +60,7 @@ config.calibrate.doPhotoCal = True
 config.calibrate.photoCal.applyColorTerms = None
 config.calibrate.photoCal.photoCatName = None
 
-config.calibrate.doApCorr = True
+config.calibrate.doApCorr = False
 
 #config.calibrate.astromRefObjLoader.retarget(LoadIndexedReferenceObjectsTask)
 #config.calibrate.astromRefObjLoader.ref_dataset_name = "UCAC4"

@@ -9,26 +9,29 @@ config.getTemplate.retarget(GetCalexpAsTemplateTask)
 
 config.doWriteMatchedExp=True
 
+#config.doUseRegister=True
+#config.doDebugRegister=True
+#config.register.matchRadius=1.
+
 
 config.refObjLoader.defaultFilter='m'
-config.refObjLoader.filterMap={'L':'m'}
-config.kernelSourcesFromRef= True
-
+config.refObjLoader.filterMap={'L':'v'}
 
 config.doSelectSources= True
-#config.subtract['zogy'].kernel.name = "AL"
-#config.subtract="zogy"
-
-
+config.kernelSourcesFromRef=True
 
 #config.subtract["al"].selectDetection.reEstimateBackground = True
 #config.getTemplate.warpType = "psfMatched"
+
 config.astrometer.matcher.maxMatchDistArcSec = 2.
-config.astrometer.matcher.maxOffsetPix = 3
-config.astrometer.matcher.maxRotationDeg = 1.
 config.astrometer.wcsFitter.maxScatterArcsec = 10.0
 
+config.detection.minPixels = 5
 
-config.astrometer.matcher.numBrightStars = 300
+#config.doPreConvolve=True
+
+#config.subtract['zogy'].kernel.name = "AL"
+#config.subtract="zogy"
+#config.subtract['zogy'].zogyConfig.inImageSpace=True
 
 
