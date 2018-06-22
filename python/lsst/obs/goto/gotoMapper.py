@@ -183,7 +183,8 @@ class GotoSimMapper(GotoMapper):
         policyFile = Policy.defaultPolicyFile(self.packageName, "GotoMapper.yaml", "policy")
         policy =Policy(policyFile)
 
-        policy.set("camera", "../camera/sim")
+        #Change the policy to point to the sim camera description:
+        policy["camera"] = "../sim/camera"
         
         #This creates the camera class by calling CameraMapper (i.e., the parent class):
         super(GotoMapper, self).__init__(policy, os.path.dirname(policyFile), **kwargs)

@@ -1,6 +1,6 @@
 needCalibRegistry: true
 
-camera : ../a/b
+camera : ../real/camera
 defects : ../real/camera
 
 defaultLevel : Ccd 
