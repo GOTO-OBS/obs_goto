@@ -11,9 +11,9 @@ configDir = os.path.join(getPackageDir("obs_goto"), "config")
 
 config.doWriteExposure=True
 config.doEarlyAstrometry=True
-config.earlyAstrometry.detection.includeThresholdMultiplier=10.0
+config.earlyAstrometry.detection.includeThresholdMultiplier = 5.0
 config.earlyAstrometry.astromRefObjLoader.filterMap = {'L':'v'}
-config.earlyAstrometry.detection.minPixels = 100
+config.earlyAstrometry.detection.minPixels = 5
 
 #Don't make lots of measurements if we can avoid it:
 #Dew needed for earlyAstrometry:
@@ -45,8 +45,13 @@ config.earlyAstrometry.astrometry.solver.catalogMatchDist = 10.
 config.earlyAstrometry.astrometry.solver.pixelScaleUncertainty= 1.02
 config.earlyAstrometry.astrometry.solver.filterMap = {'L':'v'}
 config.earlyAstrometry.astrometry.solver.pixelMargin = 1000
-config.earlyAstrometry.astrometry.solver.sipOrder = 4
+config.earlyAstrometry.astrometry.solver.sipOrder = 3
 config.earlyAstrometry.astrometry.solver.calculateSip = True
+config.earlyAstrometry.astrometry.solver.maxIter = 20
+config.earlyAstrometry.astrometry.solver.matchDistanceSigma = 10.0
+config.earlyAstrometry.astrometry.solver.cleaningParameter = 5.0
+
+#config.earlyAstrometry.astrometry.rejectThresh = 2.0
 
 config.detection.thresholdValue = 5.0
 config.detection.includeThresholdMultiplier = 10.0
