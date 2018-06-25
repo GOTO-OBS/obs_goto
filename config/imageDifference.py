@@ -19,7 +19,7 @@ config.refObjLoader.filterMap={'L':'v'}
 
 config.doSelectSources= True
 config.doDetection = True
-config.doMeasurement = False
+config.doMeasurement = True
 config.doDipoleFitting = False
 config.doWriteSources = False
 config.doMerge = True
@@ -45,18 +45,19 @@ config.sourceSelector.widthMax = 4.0
 config.sourceSelector.widthStdAllowed = 4.0
 config.sourceSelector.nSigmaClip = 3.0
 
-config.subtract['al'].kernel['AL'].spatialKernelOrder = 2
+config.subtract['al'].kernel['AL'].spatialKernelOrder = 3
 
 # Number of Gaussians in alard-lupton basis
 config.subtract['al'].kernel['AL'].alardNGauss = 2
 
 # Polynomial order of spatial modification of Gaussians.  Must in number equal alardNGauss
-config.subtract['al'].kernel['AL'].alardDegGauss = [4,4]
+config.subtract['al'].kernel['AL'].alardDegGauss = [4,2]
 
 # Sigma in pixels of Gaussians (FWHM = 2.35 sigma).  Must in number equal alardNGauss
-config.subtract['al'].kernel['AL'].alardSigGauss = [1.0, 1.0]
+config.subtract['al'].kernel['AL'].alardSigGauss = [1.0,2.0]
 
-config.detection.minPixels = 10
+config.detection.minPixels = 5
+config.detection.thresholdValue=5.5
 
 #config.subtract['zogy'].kernel.name = "AL"
 #config.subtract="zogy"

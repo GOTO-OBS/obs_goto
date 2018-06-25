@@ -175,3 +175,34 @@ class GotoMapper(CameraMapper):
     def _extractDetectorName(self, dataId):
         return "g2_goto"
     
+class GotoSimMapper(GotoMapper):
+
+    def __init__(self, **kwargs):
+
+        #Define the policy file:
+        policyFile = Policy.defaultPolicyFile(self.packageName, "GotoMapper.yaml", "policy")
+        policy =Policy(policyFile)
+
+        #Change the policy to point to the sim camera description:
+        policy["camera"] = "../sim/camera"
+        
+        #This creates the camera class by calling CameraMapper (i.e., the parent class):
+        super(GotoMapper, self).__init__(policy, os.path.dirname(policyFile), **kwargs)
+
+        #Set the filters:
+        self.filterIdMap = dict(v=0)
+        afwImageUtils.defineFilter(name='R',  lambdaEff=635.9, alias=['R'])
+        afwImageUtils.defineFilter(name='G',  lambdaEff=534.9, alias=['G'])
+        afwImageUtils.defineFilter(name='B',  lambdaEff=446.6, alias=['B'])
+        afwImageUtils.defineFilter(name='L',  lambdaEff=535.5, alias=['L'])
+        
+        self.filters = {}
+        self.filters['R'] = afwImage.Filter('R').getCanonicalName()
+        self.filters['G'] = afwImage.Filter('G').getCanonicalName()
+        self.filters['B'] = afwImage.Filter('B').getCanonicalName()
+        self.filters['L'] = afwImage.Filter('L').getCanonicalName()
+        self.defaultFilterName = 'L'
+        
+    @classmethod
+    def getCameraName(cls):
+        return "sim"
