@@ -13,7 +13,6 @@ config.doWriteMatchedExp=True
 #config.doDebugRegister=True
 #config.register.matchRadius=1.
 
-
 config.refObjLoader.defaultFilter='m'
 config.refObjLoader.filterMap={'L':'v'}
 
@@ -21,7 +20,7 @@ config.doSelectSources= True
 config.doDetection = True
 config.doMeasurement = True
 config.doDipoleFitting = False
-config.doWriteSources = False
+config.doWriteSources = True
 config.doMerge = True
 config.doPreConvolve = True
 config.doDecorrelation = True
@@ -33,7 +32,7 @@ config.kernelSourcesFromRef=True
 
 config.astrometer.matcher.maxMatchDistArcSec = 2.
 config.astrometer.wcsFitter.maxScatterArcsec = 10.0
-
+config.astrometer.matcher.numBrightStars=500
 
 config.detection.minPixels = 5
 
