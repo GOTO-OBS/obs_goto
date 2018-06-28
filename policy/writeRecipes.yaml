@@ -1,0 +1,9 @@
+FitsStorage:
+  default:
+    image:
+      compression:
+        quantizeLevel: 16
+    variance:
+      compression:
+        quantizeLevel: 16
+      
