@@ -41,7 +41,7 @@ config.earlyAstrometry.astrometry.solver.useWcsParity = True
 config.earlyAstrometry.astrometry.solver.useWcsPixelScale = True
 config.earlyAstrometry.astrometry.solver.raDecSearchRadius = 5.
 config.earlyAstrometry.astrometry.solver.maxStars = 500
-config.earlyAstrometry.astrometry.solver.catalogMatchDist = 10.
+config.earlyAstrometry.astrometry.solver.catalogMatchDist = 30.
 config.earlyAstrometry.astrometry.solver.pixelScaleUncertainty= 1.02
 config.earlyAstrometry.astrometry.solver.filterMap = {'L':'v'}
 config.earlyAstrometry.astrometry.solver.pixelMargin = 1000
@@ -69,7 +69,7 @@ config.psfIterations=1
 
 config.measurePsf.starSelector['objectSize'].widthMin=1.0
 config.measurePsf.starSelector['objectSize'].widthMax=4.0
-config.measurePsf.starSelector['secondMoment'].clumpNSigma=3.0
+#config.measurePsf.starSelector['secondMoment'].clumpNSigma=3.0
 config.measurePsf.starSelector["objectSize"].fluxMin = 1000.
 config.measurePsf.starSelector['objectSize'].widthStdAllowed=4.0
 try:

@@ -114,5 +114,5 @@ class AstrometryTask(pipeBase.CmdLineTask):
         
         astromRes = self.astrometry.run(exposure=exposure,
                                         sourceCat=sourceCat)
-        
+
         return exposure
