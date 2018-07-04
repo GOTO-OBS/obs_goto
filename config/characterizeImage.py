@@ -40,7 +40,7 @@ config.earlyAstrometry.astrometry.solver.useWcsRaDecCenter = True
 config.earlyAstrometry.astrometry.solver.useWcsParity = True
 config.earlyAstrometry.astrometry.solver.useWcsPixelScale = True
 config.earlyAstrometry.astrometry.solver.raDecSearchRadius = 5.
-config.earlyAstrometry.astrometry.solver.maxStars = 300
+config.earlyAstrometry.astrometry.solver.maxStars = 500
 config.earlyAstrometry.astrometry.solver.catalogMatchDist = 30.
 config.earlyAstrometry.astrometry.solver.pixelScaleUncertainty= 1.02
 config.earlyAstrometry.astrometry.solver.filterMap = {'L':'v'}
@@ -48,10 +48,10 @@ config.earlyAstrometry.astrometry.solver.pixelMargin = 1000
 config.earlyAstrometry.astrometry.solver.sipOrder = 3
 config.earlyAstrometry.astrometry.solver.calculateSip = True
 config.earlyAstrometry.astrometry.solver.maxIter = 20
-config.earlyAstrometry.astrometry.solver.matchDistanceSigma = 10.0
+config.earlyAstrometry.astrometry.solver.matchDistanceSigma = 2.0
 config.earlyAstrometry.astrometry.solver.cleaningParameter = 5.0
 
-#config.earlyAstrometry.astrometry.rejectThresh = 2.0
+config.earlyAstrometry.astrometry.rejectThresh = 3.0
 
 config.detection.thresholdValue = 5.0
 config.detection.includeThresholdMultiplier = 10.0
