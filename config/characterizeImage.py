@@ -11,7 +11,7 @@ configDir = os.path.join(getPackageDir("obs_goto"), "config")
 
 config.doWriteExposure=True
 config.doEarlyAstrometry=True
-config.earlyAstrometry.detection.includeThresholdMultiplier = 5.0
+config.earlyAstrometry.detection.includeThresholdMultiplier = 10.0
 config.earlyAstrometry.astromRefObjLoader.filterMap = {'L':'v'}
 config.earlyAstrometry.detection.minPixels = 5
 
@@ -40,7 +40,7 @@ config.earlyAstrometry.astrometry.solver.useWcsRaDecCenter = True
 config.earlyAstrometry.astrometry.solver.useWcsParity = True
 config.earlyAstrometry.astrometry.solver.useWcsPixelScale = True
 config.earlyAstrometry.astrometry.solver.raDecSearchRadius = 5.
-config.earlyAstrometry.astrometry.solver.maxStars = 500
+config.earlyAstrometry.astrometry.solver.maxStars = 300
 config.earlyAstrometry.astrometry.solver.catalogMatchDist = 30.
 config.earlyAstrometry.astrometry.solver.pixelScaleUncertainty= 1.02
 config.earlyAstrometry.astrometry.solver.filterMap = {'L':'v'}
