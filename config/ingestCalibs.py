@@ -2,13 +2,8 @@
 from lsst.obs.goto.ingest import GotoCalibsParseTask
 config.parse.retarget(GotoCalibsParseTask)
 
-#This describes how the various columns are translated:
-#config.parse.translation = {'ccd':'INSTRUME',
-#                            'filter':'FILTER',
-#                            'calibDate':'DATE-OBS'}
-
 #These are the columns that appear in calibregistry.sqlite3:
-config.register.columns = {'ccd': 'text',
+config.register.columns = {'ccd': 'int',
                            'filter': 'text',
                            'calibDate': 'text',
                            'validStart': 'text',

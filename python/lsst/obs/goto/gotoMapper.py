@@ -28,6 +28,20 @@ class GotoMapper(CameraMapper):
         #This creates the camera class by calling CameraMapper (i.e., the parent class):
         
         super(GotoMapper, self).__init__(policy, os.path.dirname(policyFile), **kwargs)
+
+        # Ensure each dataset type of interest knows about the full range of keys available from the registry
+        keys = {'field': str,
+                'visit': int,
+                'filter': str,
+                'ccd': int,
+                'dateObs': str,
+                'taiObs': str,
+                'expTime': float,
+                'dataType': str}
+        for name in ("raw",
+                     "postISRCCD", "calexp", "src", "icSrc", "srcMatch",
+                    ):
+            self.mappings[name].keyDict.update(keys)
         
         #Set the filters:
         self.filterIdMap = dict(v=0)
@@ -42,8 +56,6 @@ class GotoMapper(CameraMapper):
         self.filters['B'] = afwImage.Filter('B').getCanonicalName()
         self.filters['L'] = afwImage.Filter('L').getCanonicalName()
         self.defaultFilterName = 'L'
-        
-        
     
     def _computeCcdExposureId(self, dataId):
         """Compute the 64-bit identifier for a CCD exposure.

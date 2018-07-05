@@ -20,7 +20,7 @@ config.parse.translators = {'dateObs':'translateDate',
                             'visit':'translateVisit',
                             'ccd':'translateCcd'}
 
-config.register.visit = ['visit', 'ccd', 'filter', 'dateObs']
+config.register.visit = ['visit', 'ccd', 'filter', 'dateObs', 'taiObs']
 
 config.register.unique = ['visit', 'ccd']
 

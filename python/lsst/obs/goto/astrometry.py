@@ -106,12 +106,14 @@ class AstrometryTask(pipeBase.CmdLineTask):
                                     doSmooth=True)
 
         sourceCat = detRes.sources
-
+        
         self.measurement.run(
             measCat=sourceCat,
             exposure=exposure,
             exposureId=exposureIdInfo.expId)
-        
+
+        import pdb
+        pdb.set_trace()
         astromRes = self.astrometry.run(exposure=exposure,
                                         sourceCat=sourceCat)
 
