@@ -112,8 +112,6 @@ class AstrometryTask(pipeBase.CmdLineTask):
             exposure=exposure,
             exposureId=exposureIdInfo.expId)
 
-        import pdb
-        pdb.set_trace()
         astromRes = self.astrometry.run(exposure=exposure,
                                         sourceCat=sourceCat)
 

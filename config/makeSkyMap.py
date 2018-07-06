@@ -6,8 +6,9 @@ config.skyMap = "healpix"
 
 # Configuration for HealpixSkyMap
 config.skyMap["healpix"].log2NSide = 3
-config.skyMap["healpix"].pixelScale = 1.4
-config.skyMap["healpix"].patchBorder = 30 # Pixels
-config.skyMap["healpix"].tractOverlap = 30./60. # Degrees
+config.skyMap["healpix"].pixelScale = 1.2
+config.skyMap["healpix"].patchInnerDimensions = (6000, 8000)
+config.skyMap["healpix"].patchBorder = 100 # Pixels
+config.skyMap["healpix"].tractOverlap = 1. # Degrees
 config.skyMap["healpix"].projection = "TAN"
 
