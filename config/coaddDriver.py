@@ -3,11 +3,12 @@ from lsst.pipe.tasks.selectImages import PsfWcsSelectImagesTask
 
 #config.assembleCoadd.select.retarget(PsfWcsSelectImagesTask)
 #config.select.retarget(PsfWcsSelectImagesTask)
-#obj = printDict(config, path=['config'])
-
-#quit()
 
 #config.detectCoaddSources.detection.background.binSize=4000
 
 #config.makeCoaddTempExp.makePsfMatched = True
 #config.makeCoaddTempExp.doPsfMatch = True
+
+#Detection can be slow, especially if measuring a lot of parameters.
+#Can turn on when creating deep catalogues.
+config.doDetection = False
