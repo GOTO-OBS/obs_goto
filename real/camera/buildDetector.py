@@ -9,21 +9,21 @@ def addAmp(ampCatalog,i):
     width = 4152
     height = 6220
 
-    os = 19 #pixels of overscan
+    os = 10 #pixels of overscan
     
     bbox = afwGeom.Box2I(afwGeom.Point2I(0, 0), afwGeom.Extent2I(4088, 6132))
     bbox.shift(afwGeom.Extent2I(4088*i,0))
     
-    gain = 0.7
+    gain = 0.5
     saturation = 65535
-    readNoise = 12.5
+    readNoise = (23.0 if i==0 else 22.1)
     readoutCorner = afwTable.LL if i == 0 else afwTable.LR
     linearityCoeffs = (1.0, np.nan, np.nan, np.nan)
     linearityType = "None"
     rawBBox = afwGeom.Box2I(afwGeom.Point2I(0, 0), afwGeom.Extent2I(width,height))
     rawXYOffset = afwGeom.Extent2I(0, 0)
     rawDataBBox = afwGeom.Box2I(afwGeom.Point2I(64 if i==0 else 0, 44), afwGeom.Extent2I(4088,6132))
-    rawHorizontalOverscanBBox = afwGeom.Box2I(afwGeom.Point2I(0 if i==0 else width-os, 0), afwGeom.Extent2I(os, 6220))
+    rawHorizontalOverscanBBox = afwGeom.Box2I(afwGeom.Point2I(1 if i==0 else width-os-1, 0), afwGeom.Extent2I(os, 6220))
     #rawVerticalOverscanBBox = afwGeom.Box2I(afwGeom.Point2I(50, 6132), afwGeom.Extent2I(0, 0))
     #rawPrescanBBox = afwGeom.Box2I(afwGeom.Point2I(0, 0), afwGeom.Extent2I(0, 0))
     emptyBox = afwGeom.BoxI()
