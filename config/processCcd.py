@@ -57,18 +57,31 @@ config.calibrate.astrometry.forceKnownWcs = True
 config.calibrate.doAstrometry = False
 config.calibrate.doPhotoCal = True
 
-config.calibrate.photoCal.applyColorTerms = None
-config.calibrate.photoCal.photoCatName = None
 
+colors = config.calibrate.photoCal.match.referenceSelection.colorLimits
+config.calibrate.photoCal.colorterms.load(os.path.join(configDir, 'colorterms.py'))
+config.calibrate.photoCal.applyColorTerms = True
+
+config.calibrate.photoCal.match.referenceSelection.doMagLimit = True
+config.calibrate.photoCal.match.referenceSelection.magLimit.fluxField = "i_flux"
+colors["r-i"] = ColorLimit(primary="r_flux", secondary="i_flux", maximum=0.5)
+colors["g-r"] = ColorLimit(primary="g_flux", secondary="r_flux", minimum=0.0)
+config.calibrate.photoCal.match.referenceSelection.magLimit.maximum = 19.0
+config.calibrate.photoCal.match.referenceSelection.magLimit.minimum = 13.0
+
+
+
+config.calibrate.photoRefObjLoader.retarget(LoadIndexedReferenceObjectsTask)
+config.calibrate.photoRefObjLoader.ref_dataset_name = "ps1_pv3_3pi_20170110"
+
+for source, target in [('B', 'g'), ('G', 'g'), ('R', 'r'), ('L', 'g')]:
+    config.calibrate.photoRefObjLoader.filterMap[source]=target
+
+config.calibrate.photoCal.photoCatName = "ps1_pv3_3pi_20170110"
 config.calibrate.doApCorr = False
 
-#config.calibrate.astromRefObjLoader.retarget(LoadIndexedReferenceObjectsTask)
-#config.calibrate.astromRefObjLoader.ref_dataset_name = "UCAC4"
 
-#config.calibrate.astromRefObjLoader.defaultFilter ='m'
-#config.calibrate.astromRefObjLoader.filterMap ={'L':'v'}
-#config.calibrate.photoRefObjLoader.defaultFilter ='m'
-config.calibrate.photoRefObjLoader.filterMap ={'L':'v'}
+
 #config.calibrate.astrometry.matcher.minSnr = 3.
 
 #Need to do this to remove overscan from
