@@ -1,1 +1,1 @@
-config.priorityList = ["m","Clear"]
+config.priorityList = ["L","R","G","B"]
