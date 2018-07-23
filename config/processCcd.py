@@ -1,7 +1,8 @@
 #from lsst.obs.goto.gotoNullIsr import GotoNullIsrTask
 import os.path
 from lsst.utils import getPackageDir
-#from lsst.meas.algorithms import LoadIndexedReferenceObjectsTask
+from lsst.meas.algorithms import ColorLimit
+from lsst.meas.algorithms import LoadIndexedReferenceObjectsTask
 
 configDir = os.path.join(getPackageDir("obs_goto"), "config")
 
@@ -31,10 +32,10 @@ for i in [
         'base_ScaledApertureFlux',
         #'base_CircularApertureFlux', Needed for zeropoint
         'base_Blendedness',
-        'base_LocalBackground',
+        #'base_LocalBackground',
         'base_Jacobian',
         'base_FPPosition',
-        'base_Variance',
+        #'base_Variance',
         'base_InputCount',
         #'base_SkyCoord', Needed for zeropoint
         ]:
