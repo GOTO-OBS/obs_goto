@@ -104,7 +104,13 @@ datasets:
           template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits
        deepDiff_diaSrc:
           template: deepDiff/%(dateObs)s/%(filter)s/diaSrc-%(ccd)s-%(visit)s.fits
+       deepDiff_metadata:
+           template: 'deepDiff_metadata/%(dateObs)s/%(filter)s/diaSrc-%(ccd)s-%(visit)s.fits'
        wcs:
            persistable: ExposureF
            python: lsst.afw.image.ExposureF
            template: '%(visit)s/calexp/wcs-%(visit)s_%(ccd)s.fits'
+       forced_src:
+          template: '%(filter)s/tract%(tract)d/FORCEDSRC-%(visit)s-%(ccd)s.fits'
+       forcedPhotCcd_metadata:
+           template: '%(filter)s/tract%(tract)d/forcedPhotCcd_metadata/%(visit)s-%(ccd)s.boost'

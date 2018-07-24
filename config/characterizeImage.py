@@ -58,7 +58,9 @@ config.detection.includeThresholdMultiplier = 10.0
 config.detection.minPixels = 20
 
 #Cosmic rays and background estimation:
-config.repair.doCosmicRay = False
+config.repair.doCosmicRay = True
+config.repair.cosmicray.nCrPixelMax=100000
+config.repair.cosmicray.cond3_fac2 = 0.4
 config.detection.doTempLocalBackground=True
 config.detection.tempLocalBackground.binSize = 32
 
