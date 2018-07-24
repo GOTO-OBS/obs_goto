@@ -3,7 +3,7 @@ import lsst.afw.geom as afwGeom
 import numpy as np
 
 # This is copying from afw/tests/testAmpInfoTable.py:
-readout = [[23.0,22.1],[22.3,23.1],[23.0,24.4]]
+readout = [[22.3,23.1],[23.0,22.1],[23.0,24.4]]
 gain_all = [[0.53,0.54],[0.52,0.52],[0.59,0.59]]
 
 def addAmp(ampCatalog,i,rN,gain_s):
