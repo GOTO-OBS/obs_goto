@@ -41,7 +41,8 @@ for i in [
         ]:
     config.calibrate.measurement.plugins[i].doMeasure=False
         
-config.calibrate.detection.thresholdValue = 20.0
+config.calibrate.detection.thresholdValue = 5.0
+config.calibrate.detection.minPixels = 10
 config.calibrate.doDeblend = True
 config.calibrate.deblend.maxFootprintSize = 0
 config.calibrate.deblend.maxFootprintArea = 2000
@@ -61,7 +62,7 @@ config.calibrate.doPhotoCal = True
 
 colors = config.calibrate.photoCal.match.referenceSelection.colorLimits
 config.calibrate.photoCal.colorterms.load(os.path.join(configDir, 'colorterms.py'))
-config.calibrate.photoCal.applyColorTerms = True
+config.calibrate.photoCal.applyColorTerms = False
 
 config.calibrate.photoCal.match.referenceSelection.doMagLimit = True
 config.calibrate.photoCal.match.referenceSelection.magLimit.fluxField = "i_flux"
