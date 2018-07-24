@@ -47,8 +47,8 @@ config.calibrate.deblend.maxFootprintSize = 0
 config.calibrate.deblend.maxFootprintArea = 2000
 config.calibrate.detection.isotropicGrow = True
 
-#config.calibrate.measurement.load(os.path.join(configDir, "kron.py"))
-#config.calibrate.load(os.path.join(configDir, "cmodel.py"))
+config.calibrate.measurement.load(os.path.join(configDir, "kron.py"))
+config.calibrate.load(os.path.join(configDir, "cmodel.py"))
 
 #config.calibrate.deblend.maskLimits["SAT"] =0
 #config.calibrate.detection.doTempLocalBackground=True
@@ -61,7 +61,7 @@ config.calibrate.doPhotoCal = True
 
 colors = config.calibrate.photoCal.match.referenceSelection.colorLimits
 config.calibrate.photoCal.colorterms.load(os.path.join(configDir, 'colorterms.py'))
-config.calibrate.photoCal.applyColorTerms = False
+config.calibrate.photoCal.applyColorTerms = True
 
 config.calibrate.photoCal.match.referenceSelection.doMagLimit = True
 config.calibrate.photoCal.match.referenceSelection.magLimit.fluxField = "i_flux"
