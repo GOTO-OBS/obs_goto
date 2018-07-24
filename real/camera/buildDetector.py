@@ -4,7 +4,7 @@ import numpy as np
 
 # This is copying from afw/tests/testAmpInfoTable.py:
 readout = [[23.0,22.1],[22.3,23.1],[23.0,24.4]]
-gain_all = [[0.52,0.52],[0.53,0.54],[0.59,0.59]]
+gain_all = [[0.53,0.54],[0.52,0.52],[0.59,0.59]]
 
 def addAmp(ampCatalog,i,rN,gain_s):
     record = ampCatalog.addNew()
@@ -59,7 +59,7 @@ def makeCcd(ccdId):
     ampCatalog = afwTable.AmpInfoCatalog(schema)
     for i in range(2):
         addAmp(ampCatalog, i,readout[ccdId][i],gain_all[ccdId][i])
-    return ampCatalog.writeFits('g2_%s_goto.fits' %ccdId)
+    return ampCatalog.writeFits('g%s_goto.fits' %ccdId)
 
 def main():
     for i in range(3):

@@ -185,7 +185,7 @@ class GotoMapper(CameraMapper):
         return 50, 50
 
     def _extractDetectorName(self, dataId):
-        return "g2_goto"
+        return int("%(ccd)d" % dataId)
     
 class GotoSimMapper(GotoMapper):
 
