@@ -12,7 +12,9 @@ configDir = os.path.join(getPackageDir("obs_goto"), "config")
 config.doWriteExposure=True
 config.doEarlyAstrometry=True
 config.earlyAstrometry.detection.includeThresholdMultiplier = 10.0
-config.earlyAstrometry.astromRefObjLoader.filterMap = {'L':'v'}
+#config.earlyAstrometry.astromRefObjLoader.filterMap = {'L':'v'}
+for source, target in [('B', 'b'), ('G', 'v'), ('R', 'm'), ('L', 'v')]:
+    config.earlyAstrometry.astromRefObjLoader.filterMap[source]=target
 config.earlyAstrometry.detection.minPixels = 5
 
 #Don't make lots of measurements if we can avoid it:
@@ -43,7 +45,9 @@ config.earlyAstrometry.astrometry.solver.raDecSearchRadius = 5.
 config.earlyAstrometry.astrometry.solver.maxStars = 1000
 config.earlyAstrometry.astrometry.solver.catalogMatchDist = 30.
 config.earlyAstrometry.astrometry.solver.pixelScaleUncertainty= 1.2
-config.earlyAstrometry.astrometry.solver.filterMap = {'L':'v'}
+#config.earlyAstrometry.astrometry.solver.filterMap = {'L':'v'}
+for source, target in [('B', 'b'), ('G', 'v'), ('R', 'm'), ('L', 'v')]:
+    config.earlyAstrometry.astrometry.solver.filterMap[source]=target
 config.earlyAstrometry.astrometry.solver.pixelMargin = 1000
 config.earlyAstrometry.astrometry.solver.sipOrder = 3
 config.earlyAstrometry.astrometry.solver.calculateSip = True
@@ -58,7 +62,9 @@ config.detection.includeThresholdMultiplier = 10.0
 config.detection.minPixels = 20
 
 #Cosmic rays and background estimation:
-config.repair.doCosmicRay = False
+config.repair.doCosmicRay = True
+config.repair.cosmicray.nCrPixelMax=100000
+config.repair.cosmicray.cond3_fac2 = 0.4
 config.detection.doTempLocalBackground=True
 config.detection.tempLocalBackground.binSize = 32
 
