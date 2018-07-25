@@ -48,6 +48,12 @@ config.calibrate.deblend.maxFootprintSize = 0
 config.calibrate.deblend.maxFootprintArea = 2000
 config.calibrate.detection.isotropicGrow = True
 
+#from lsst.synpipe.randomStarFakes import RandomStarFakeSourcesTask
+#config.calibrate.doInsertFakes = True
+#config.calibrate.insertFakes.retarget(RandomStarFakeSourcesTask)
+#config.calibrate.insertFakes.nStars = 100
+#config.calibrate.insertFakes.magnitude = 15.
+
 config.calibrate.measurement.load(os.path.join(configDir, "kron.py"))
 config.calibrate.load(os.path.join(configDir, "cmodel.py"))
 

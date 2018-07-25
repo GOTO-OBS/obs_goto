@@ -12,6 +12,7 @@ exposures:
          template: 'raw/%(dateObs)s/%(filter)s/%(dataType)s-%(ccd)s-%(visit)s.fts'
        postISRCCD:
          template: postISRCCD/%(dataType)s/%(dateObs)s/%(filter)s/postISRCCD-%(ccd)s-%(visit)s.fits
+         recipe: lossyBasic
        icExp:
          columns:
                - visit
@@ -19,8 +20,10 @@ exposures:
          template: 'sci-results/%(dateObs)s/%(filter)s/icExp/icExp-%(ccd)s-%(visit)s.fits'
        calexp:
          template: 'sci-results/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(visit)s.fits'
+         recipe: lossyBasic
        deepCoadd_directWarp:
          template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/warp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits
+         recipe: lossyBasic
        deepCoadd_psfMatchedWarp:
          template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/psfMatchedWarp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits
        deepDiff_differenceExp:

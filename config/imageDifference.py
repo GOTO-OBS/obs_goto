@@ -1,7 +1,7 @@
 from lsst.obs.goto.printDict  import printDict
 from lsst.ip.diffim.getTemplate import GetCalexpAsTemplateTask
 
-config.getTemplate.retarget(GetCalexpAsTemplateTask)
+#config.getTemplate.retarget(GetCalexpAsTemplateTask)
 
 #obj = printDict(config, path=['config'])
 #quit()

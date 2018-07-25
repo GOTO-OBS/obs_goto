@@ -2,8 +2,9 @@ FitsStorage:
   default:
     image:
       compression:
+        algorithm: GZIP_SHUFFLE
         quantizeLevel: 16
     variance:
       compression:
+        algorithm: GZIP_SHUFFLE
         quantizeLevel: 16
-      
