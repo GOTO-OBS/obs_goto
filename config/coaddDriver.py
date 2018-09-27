@@ -12,3 +12,4 @@ from lsst.pipe.tasks.selectImages import PsfWcsSelectImagesTask
 #Detection can be slow, especially if measuring a lot of parameters.
 #Can turn on when creating deep catalogues.
 config.doDetection = True
+config.detectCoaddSources.detection.minPixels = 10
