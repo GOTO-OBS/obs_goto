@@ -26,7 +26,6 @@ class GotoMapper(CameraMapper):
         policy =Policy(policyFile)
         
         #This creates the camera class by calling CameraMapper (i.e., the parent class):
-        
         super(GotoMapper, self).__init__(policy, os.path.dirname(policyFile), **kwargs)
 
         # Ensure each dataset type of interest knows about the full range of keys available from the registry
@@ -87,8 +86,35 @@ class GotoMapper(CameraMapper):
         return self._computeCcdExposureId(dataId)
 
     def bypass_ccdExposureId_bits(self, datasetType, pythonType, location, dataId):
-
         return 30
+
+    def _computeCoaddExposureId(self, dataId):
+        '''
+        Here I'm saying: 
+           - we've got up to (2**2) tracts;
+           - we've got up to 256 (2**8) patches in each dimension
+        Currently, I'm not incorporating filter information. 
+        '''
+        nbit_tract = 2
+        nbit_patch = 8
+        tract = int(dataId['tract'])
+
+        patchX, patchY = [int(patch) for patch in dataId['patch'].split(',')]
+        oid = (((tract << nbit_patch) + patchX) << nbit_patch) + patchY
+        
+        return oid
+
+    def bypass_deepCoaddId_bits(self, *args, **kwargs):
+        return 15
+
+    def bypass_deepCoaddId(self, datasetType, pythonType, location, dataId):
+        return self._computeCoaddExposureId(dataId)
+
+    def bypass_deepMergedCoaddId_bits(self, *args, **kwargs):
+         return 15
+
+    def bypass_deepMergedCoaddId(self, datasetType, pythonType, location, dataId):
+        return self._computeCoaddExposureId(dataId)
 
 #    def _extractDetectorName(self, dataId):
 
@@ -161,25 +187,6 @@ class GotoMapper(CameraMapper):
         print ("bypass_Mask")
         return convertmask(location.getLocations()[0])
     
-    def bypass_xxx(self, datasetType, pythonType, location, dataId):
-        import pdb
-        pdb.set_trace()
-        return
-
-    
-    def bypass_deepCoaddId_bits(self, *args, **kwargs):
-        return 32
-   
-    def bypass_deepCoaddId(self, datasetType, pythonType, location, dataId):
-        return 32
-
-    def bypass_deepMergedCoaddId_bits(self, *args, **kwargs):
-        """The number of bits used up for patch ID bits"""
-        return 32
-
-    def bypass_deepMergedCoaddId(self, datasetType, pythonType, location, dataId):
-        return 32
-  
     def bypass_tsField(self, datasetType, pythonType, location, dataId):
         #print 'tsField Location', location.getLocations()[0]
         return 50, 50

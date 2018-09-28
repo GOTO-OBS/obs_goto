@@ -2,12 +2,12 @@ import lsst.daf.persistence as dafPersistence
 from astropy.io import fits
 import numpy as np
 
-DATA_DIR = "/local/ph1jxm/GOTO/real/DATA/rerun/outID"
+DATA_DIR = "/local2/ph1jxm/GOTO/processedDataV16/DATA/rerun/outID"
 butler = dafPersistence.Butler(DATA_DIR)
 
-diffexp = butler.get("deepDiff_differenceExp", visit=1018021, ccd=2, immediate=True)
-diasrc = butler.get("deepDiff_diaSrc", visit=1018021, ccd=2, immediate=True)
-calexp = butler.get("calexp", visit=18021, ccd=2, immediate=True)
+diffexp = butler.get("deepDiff_differenceExp", visit=54480, ccd=4, immediate=True)
+diasrc = butler.get("deepDiff_diaSrc", visit=54480, ccd=4, immediate=True)
+calexp = butler.get("calexp", visit=54480, ccd=4, immediate=True)
 
 diffexpArray = diffexp.getImage().getArray()
 xs,ys = diasrc.getX(), diasrc.getY()
@@ -31,7 +31,7 @@ for x, y in zip(xs,ys):
     else:
         hdu.header['REAL'] = False
 
-    filename = 'Thumbs/r1018021_%04d.fits' % i
+    filename = 'Thumbs/r1054479_%04d.fits' % i
     hdu.writeto(filename, overwrite=True)
     i+=1
     
