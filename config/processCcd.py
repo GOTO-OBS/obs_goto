@@ -28,14 +28,14 @@ config.doCalibrate = True # Do we need to calibrate for difference imaging?
 
 for i in [
         #'base_GaussianFlux', Needed for PSF in imageDifference.py
-        #'base_SdssShape',
+        'base_SdssShape',
         'base_ScaledApertureFlux',
         #'base_CircularApertureFlux', Needed for zeropoint
         'base_Blendedness',
-        #'base_LocalBackground',
+        'base_LocalBackground',
         'base_Jacobian',
         'base_FPPosition',
-        #'base_Variance',
+        'base_Variance',
         'base_InputCount',
         #'base_SkyCoord', Needed for zeropoint
         ]:
@@ -54,8 +54,8 @@ config.calibrate.detection.isotropicGrow = True
 #config.calibrate.insertFakes.nStars = 100
 #config.calibrate.insertFakes.magnitude = 15.
 
-config.calibrate.measurement.load(os.path.join(configDir, "kron.py"))
-config.calibrate.load(os.path.join(configDir, "cmodel.py"))
+#config.calibrate.measurement.load(os.path.join(configDir, "kron.py"))
+#config.calibrate.load(os.path.join(configDir, "cmodel.py"))
 
 #config.calibrate.deblend.maskLimits["SAT"] =0
 #config.calibrate.detection.doTempLocalBackground=True
