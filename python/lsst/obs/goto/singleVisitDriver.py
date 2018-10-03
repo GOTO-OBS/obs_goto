@@ -7,21 +7,23 @@ from lsst.pipe.tasks.processCcd import ProcessCcdTask
 
 class SingleVisitDriverConfig(Config):
     pass
-    #processCcd = ConfigurableField(
-    #            target=ProcessCcdTask, doc="CCD processing task")
+
 
 class SingleVisitDriverTaskRunner(TaskRunner):
-    pass
 #    def __init__(self, TaskClass, parsedCmd, doReturnResults=False):
 #        TaskRunner.__init__(self, TaskClass, parsedCmd, doReturnResults)
         
 #    def makeTask(self, parsedCmd=None, args=None):
 #        return self.TaskClass(config=self.config, log=self.log)
 
-#    @staticmethod
-#    def getTargetList(parsedCmd, **kwargs):
-#        targetList = pipeBase.TaskRunner.getTargetList(parsedCmd,selectDataList=parsedCmd.id.refList,**kwargs)
-#        return targetList
+     @staticmethod
+     def getTargetList(parsedCmd, **kwargs):
+         """Task.run should receive a butler in the kwargs"""
+         #kwargs["butler"] = parsedCmd.butler
+         #for ref in parsedCmd.id.refList:
+         #    print(ref.dataId)
+         #return [(parsedCmd.id.refList, kwargs), ]
+         return TaskRunner.getTargetList(parsedCmd, butler=parsedCmd.butler, selectDataList=parsedCmd.id.refList, **kwargs)
 
 class SingleVisitDriverTask(BatchPoolTask):
 
@@ -30,41 +32,18 @@ class SingleVisitDriverTask(BatchPoolTask):
     RunnerClass = SingleVisitDriverTaskRunner    
 
     def __init__(self, butler=None, *args, **kwargs):
-        BatchParallelTask.__init__(self, *args, **kwargs)
-        #self.makeSubtask('processCcd', butler=butler)
-        
+        BatchPoolTask.__init__(self, *args, **kwargs)
+
     @classmethod
     def _makeArgumentParser(cls, **kwargs):
-        #kwargs.pop("doBatch", False)
         parser = ArgumentParser(name=cls._DefaultName)
         parser.add_id_argument("--id", "raw",
-                               #ConfigDatasetType(
-                               #    name="processCcd.isr.datasetType"),
                                level="sensor",
                                help="data ID, e.g. --id visit=12345 ccd=2")
-
+        #I think I have to make my own dataIdContainer to create a dataList
         return parser
 
-#    @classmethod
-#    def batchWallTime(cls, time, parsedCmd, numCores):
-#        numTargets = len(parsedCmd.id.refList)
-#        return time*numTargets/float(numCores)
-    
-#    @abortOnError
-#    def runDataRef(self, sensorRef):
-#        print('BLAH')
-#        import pdb
-#        pdb.set_trace()
-#        print(sensorRef)
-
-    def run(self, sensorRef):
-        import time
-        time.sleep(5)
-        print(sensorRef.dataId['visit'])
-
-#Call this script with python3 -m singleVisitDriver.py"
-#The -m is important!
-#SingleVisitDriverTask.parseAndSubmit(['/local2/ph1jxm/GOTO/demoForcedPhot/DATA',
-#                                      "--rerun", "outSVD",
-#                                      "--id", "visit=54492..54494","ccd=4","filter=L",
-#                                      "--cores", "1", "--clobber-config"])
+    def run(self, sensorRef, butler, selectDataList=[]):
+        #sensorRef and butler are passed from pipeBase.TaskRunner.getTargetList
+        print(selectDataList)
+        print('run')

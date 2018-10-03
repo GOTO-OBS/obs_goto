@@ -37,14 +37,13 @@ class GotoParseTask(ParseTask):
         return date
      
     def translateVisit(self, md):
-
-        visit = md.get("RUN-ID")
-
-        return int(visit.strip('r'))
+        visit = md.get("DB-EXPS")
+        if visit == 'NA':
+            return -1
+        else:
+            return int(visit)
 
     def translateCcd(self, md):
-
         ccd = md.get("INSTRUME")
-
         return int(ccd.strip('UT'))
-        
+
