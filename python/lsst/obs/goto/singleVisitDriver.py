@@ -5,9 +5,15 @@ import lsst.pipe.base as pipeBase
 from lsst.pipe.base import ArgumentParser, ConfigDatasetType, TaskRunner
 from lsst.pipe.tasks.processCcd import ProcessCcdTask
 
+class RawDataIdContainer(pipeBase.DataIdContainer):
+    def makeDataRefList(self, namespace):
+        super(RawDataIdContainer, self).makeDataRefList(namespace)
+        self.dataList = []
+        for ref in self.refList:
+            self.dataList.append(pipeBase.Struct(dataRef=ref))
+
 class SingleVisitDriverConfig(Config):
     pass
-
 
 class SingleVisitDriverTaskRunner(TaskRunner):
 #    def __init__(self, TaskClass, parsedCmd, doReturnResults=False):
@@ -19,11 +25,8 @@ class SingleVisitDriverTaskRunner(TaskRunner):
      @staticmethod
      def getTargetList(parsedCmd, **kwargs):
          """Task.run should receive a butler in the kwargs"""
-         #kwargs["butler"] = parsedCmd.butler
-         #for ref in parsedCmd.id.refList:
-         #    print(ref.dataId)
-         #return [(parsedCmd.id.refList, kwargs), ]
-         return TaskRunner.getTargetList(parsedCmd, butler=parsedCmd.butler, selectDataList=parsedCmd.id.refList, **kwargs)
+         kwargs["butler"] = parsedCmd.butler
+         return [(parsedCmd.id.refList, kwargs), ]
 
 class SingleVisitDriverTask(BatchPoolTask):
 
@@ -39,11 +42,14 @@ class SingleVisitDriverTask(BatchPoolTask):
         parser = ArgumentParser(name=cls._DefaultName)
         parser.add_id_argument("--id", "raw",
                                level="sensor",
-                               help="data ID, e.g. --id visit=12345 ccd=2")
-        #I think I have to make my own dataIdContainer to create a dataList
+                               help="data ID, e.g. --id visit=12345 ccd=2",
+                               ContainerClass=RawDataIdContainer)
         return parser
 
-    def run(self, sensorRef, butler, selectDataList=[]):
-        #sensorRef and butler are passed from pipeBase.TaskRunner.getTargetList
-        print(selectDataList)
-        print('run')
+    def run(self, rawRefList, butler):
+        #sensorRef and butler are passed from getTargetList
+        uniqueVisits = set()
+        for rawRef in rawRefList:
+            uniqueVisits.add(rawRef.dataId['visit'])
+        uniqueVisits = list(uniqueVisits)
+        
