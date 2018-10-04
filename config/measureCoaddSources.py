@@ -8,6 +8,8 @@ from lsst.meas.algorithms import LoadIndexedReferenceObjectsTask
 print('***Lydia***: config/measureCoaddSources.py:' \
       'Setting doPropagateFlags to False. This could cause problems')
 config.doPropagateFlags=False
+
+#I think that this only matches the sources to references and outputs srcMatch. My deepCoadd_meas catalogue seems to be exactly the same.
 config.match.refObjLoader.retarget(LoadIndexedReferenceObjectsTask)
 config.match.refObjLoader.ref_dataset_name = "ps1_pv3_3pi_20170110"
 for source, target in [('B', 'g'), ('G', 'g'), ('R', 'r'), ('L', 'g')]:
