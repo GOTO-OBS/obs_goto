@@ -8,6 +8,8 @@ configDir = os.path.join(getPackageDir("obs_goto"), "config")
 #Our own performs (almost) blind astrometry with aNet straight after ISR.
 #from lsst.obs.goto.gotoCharTask import GotoCharacterizeImageTask
 #config.retarget(GotoCharacterizeImageTask)
+config.measurement.slots.calibFlux='base_CircularApertureFlux_9_0'
+config.measureApCorr.refFluxName='base_CircularApertureFlux_6_0'
 
 config.doWriteExposure=True
 config.doEarlyAstrometry=True
@@ -62,8 +64,8 @@ config.detection.includeThresholdMultiplier = 10.0
 config.detection.minPixels = 20
 
 #Cosmic rays and background estimation:
-config.repair.doCosmicRay = True
-config.repair.cosmicray.nCrPixelMax=100000
+config.repair.doCosmicRay = False
+config.repair.cosmicray.nCrPixelMax=1000000
 config.repair.cosmicray.cond3_fac2 = 0.4
 config.detection.doTempLocalBackground=True
 config.detection.tempLocalBackground.binSize = 32
@@ -90,7 +92,7 @@ except ImportError as e:
     print("WARNING: Unable to use psfex: %s" % e)
     config.measurePsf.psfDeterminer.name = "pca"
 
-config.doApCorr = False
+config.doApCorr = True
 
 #config.refObjLoader.defaultFilter ='m'
 
