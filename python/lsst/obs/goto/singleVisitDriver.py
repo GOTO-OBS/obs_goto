@@ -1,12 +1,13 @@
 from lsst.ctrl.pool.parallel import BatchPoolTask, BatchParallelTask
 from lsst.ctrl.pool.pool import Pool, abortOnError, NODE
 from lsst.pex.config import Config, ConfigurableField
-import lsst.pipe.base as pipeBase
-from lsst.pipe.base import ArgumentParser, ConfigDatasetType, TaskRunner
-from lsst.pipe.tasks.processCcd import ProcessCcdTask
+from lsst.pipe.base import ArgumentParser, ConfigDatasetType, TaskRunner, DataIdContainer
 from lsst.ip.isr import IsrTask
+from .astrometry import AstrometryTask
+from lsst.pipe.tasks.warpAndPsfMatch import WarpAndPsfMatchTask
+from lsst.pipe.tasks.snapCombine import SnapCombineTask
 
-class RawDataIdContainer(pipeBase.DataIdContainer):
+class RawDataIdContainer(DataIdContainer):
     '''Container Class for raw data; groups all data into a list,
     rather than separate files. The whole list is passed to run()
     in one go, rather than individually, by getTargetList().'''
@@ -32,9 +33,18 @@ class SingleVisitDriverConfig(Config):
         - provide a preliminary WCS
         """)
 
-    astrometry = pexConfig.ConfigurableField(
+    astrometry = ConfigurableField(
         target = AstrometryTask,
         doc="""Task to obtain an initial WCS should your raw data not come with a WCS solution.""")
+    
+    warp = ConfigurableField(
+        target = WarpAndPsfMatchTask,
+        doc = """Warps and optionally PSF matches (the latter set to False by default)""")
+
+    snapCombine = ConfigurableField(
+        target=SnapCombineTask,
+        doc="""Sums two exposures"""
+    )
     
 class SingleVisitDriverTaskRunner(TaskRunner):
 
@@ -60,6 +70,8 @@ class SingleVisitDriverTask(BatchPoolTask):
         BatchPoolTask.__init__(self, *args, **kwargs)
         self.makeSubtask("isr")
         self.makeSubtask("astrometry")
+        self.makeSubtask("warp")
+        self.makeSubtask("snapCombine")
         
     @classmethod
     def _makeArgumentParser(cls, **kwargs):
@@ -73,21 +85,26 @@ class SingleVisitDriverTask(BatchPoolTask):
     def run(self, rawRefList, butler):
         pool = Pool("visits")
         pool.storeSet(butler=butler)
-        visitIdList = list(set([rawRef.dataId['visit']
-                                for rawRef in rawRefList]))
-
+        #Make unique combinations of visit and CCD number:
+        #This 4 needs to be replaced by a config parameter.
+        visitCcdIdList = set()
+        for rawRef in rawRefList:
+            visitCcdIdList.add((rawRef.dataId['visit']<<4)+rawRef.dataId['ccd'])
+        visitCcdIdList = list(visitCcdIdList)
+        
         #Map visits out to separate (sets of) nodes:
-        pool.map(self.runVisit, visitIdList, rawRefList)
+        pool.map(self.runVisit, visitCcdIdList, rawRefList)
         
 #        return None
 
-    def runVisit(self, cache, visitId, rawRefList):
+    def runVisit(self, cache, visitCcdId, rawRefList):
         '''Performs ISR, astrometry and, when needed, warp on all the exposures associated
         with a visit before combining them using snapCombine.'''
         
-        selectList = self.selectExposures(visitId, rawRefList)
+        selectList = self.selectExposures(visitCcdId, rawRefList)
         refWcs = None
-        refExposure = None
+        coaddExposure = None
+
         for selectRef in selectList:
             try:
                 exposure = self.isr.runDataRef(selectRef).exposure
@@ -99,36 +116,38 @@ class SingleVisitDriverTask(BatchPoolTask):
                 exposure = self.astrometry.run(
                     dataRef=selectRef,
                     exposure=exposure)
-                if exposure.hasWcs:
+                if exposure.hasWcs():
                     if refWcs == None:
-                        refWcs=exposure.wcs
+                        refWcs=exposure.getWcs()
                 else:
                     self.log.warn("No astrometry information for %s" % (selectRef.dataId,))
                     continue
             except:
                 self.log.warn("Unable to perform astrometry on %s" % (selectRef.dataId,))
                 continue
-            
+
             warped = False
-            if exposure.hasWcs:
-                if refWcs != None and exposure.wcs != refWcs:
+            if exposure.hasWcs():
+                if refWcs != None and exposure.getWcs() != refWcs:
                     try:
                         exposure = self.warp.run(exposure, refWcs)
                         warped = True
                     except:
                         self.log.warn("Unable to warp %s" % (selectRef.dataId,))
                         continue
-
-            if refExposure == None:
-                refExposure = exposure
+                    
+            if coaddExposure == None:
+                coaddExposure = exposure
             else:
                 if warped:
-                    refExposure = self.snapCombine(refExposure, exposure)
+                    coaddExposure = self.snapCombine.run(coaddExposure, exposure)
                 
                     
-    def selectExposures(self, visitId, rawRefList):
-        return [rawRef for rawRef in rawRefList if rawRef.dataId['visit'] == visitId]
-
+    def selectExposures(self, visitCcdId, rawRefList):
+        return [rawRef
+                for rawRef in rawRefList if
+                ((rawRef.dataId['visit']<<4)+rawRef.dataId['ccd']) == visitCcdId]
+    
         
     def writeMetadata(self, dataRef):
         '''
