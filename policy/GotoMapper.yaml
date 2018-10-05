@@ -17,10 +17,16 @@ exposures:
          columns:
                - visit
                - ccd
-         template: 'sci-results/%(dateObs)s/%(filter)s/icExp/icExp-%(ccd)s-%(visit)s.fits'
+         template: sci-results/%(dateObs)s/%(filter)s/icExp/icExp-%(ccd)s-%(visit)s.fits
        calexp:
-         template: 'sci-results/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(visit)s.fits'
+         template: sci-results/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(visit)s.fits
          recipe: lossyBasic
+       visitCoadd_calexp:
+         persistable: ExposureF
+         storage: FitsStorage
+         python: lsst.afw.image.ExposureF
+         template: visitCoadd/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(visit)s.fits
+         level: None
        deepCoadd_directWarp:
          template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/warp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits
          recipe: lossyBasic
