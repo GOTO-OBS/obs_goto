@@ -45,6 +45,10 @@ class SingleVisitDriverConfig(Config):
         target=SnapCombineTask,
         doc="""Sums two exposures"""
     )
+
+    def setDefaults(self):
+        print('Defaults')
+        self.snapCombine.doRepair = False
     
 class SingleVisitDriverTaskRunner(TaskRunner):
 
@@ -140,6 +144,8 @@ class SingleVisitDriverTask(BatchPoolTask):
                 coaddExposure = exposure
             else:
                 if warped:
+                    import pdb
+                    pdb.set_trace()
                     coaddExposure = self.snapCombine.run(coaddExposure, exposure)
                 
                     
