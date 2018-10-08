@@ -47,9 +47,9 @@ class SingleVisitDriverConfig(Config):
     )
 
     def setDefaults(self):
-        print('Defaults')
         self.snapCombine.doRepair = False
-    
+        self.snapCombine.badMaskPlanes = ()
+        
 class SingleVisitDriverTaskRunner(TaskRunner):
 
     def __init__(self, TaskClass, parsedCmd, doReturnResults=True):
@@ -89,6 +89,7 @@ class SingleVisitDriverTask(BatchPoolTask):
     def run(self, rawRefList, butler):
         pool = Pool("visits")
         pool.storeSet(butler=butler)
+
         #Make unique combinations of visit and CCD number:
         #This 4 needs to be replaced by a config parameter.
         visitCcdIdList = set()
@@ -96,11 +97,9 @@ class SingleVisitDriverTask(BatchPoolTask):
             visitCcdIdList.add((rawRef.dataId['visit']<<4)+rawRef.dataId['ccd'])
         visitCcdIdList = list(visitCcdIdList)
         
-        #Map visits out to separate (sets of) nodes:
+        #Map visits/ccds out to separate nodes:
         pool.map(self.runVisit, visitCcdIdList, rawRefList)
         
-#        return None
-
     def runVisit(self, cache, visitCcdId, rawRefList):
         '''Performs ISR, astrometry and, when needed, warp on all the exposures associated
         with a visit before combining them using snapCombine.'''
@@ -115,7 +114,6 @@ class SingleVisitDriverTask(BatchPoolTask):
             except:
                 self.log.warn("Unable to perform ISR for %s" % (selectRef.dataId,))
                 continue
-
             try:
                 exposure = self.astrometry.run(
                     dataRef=selectRef,
@@ -134,26 +132,27 @@ class SingleVisitDriverTask(BatchPoolTask):
             if exposure.hasWcs():
                 if refWcs != None and exposure.getWcs() != refWcs:
                     try:
-                        exposure = self.warp.run(exposure, refWcs)
+                        exposure = self.warp.run(exposure, refWcs).direct
                         warped = True
                     except:
                         self.log.warn("Unable to warp %s" % (selectRef.dataId,))
                         continue
-                    
+            
             if coaddExposure == None:
                 coaddExposure = exposure
             else:
                 if warped:
-                    import pdb
-                    pdb.set_trace()
-                    coaddExposure = self.snapCombine.run(coaddExposure, exposure)
-                
-                    
+                    coaddExposure = self.snapCombine.run(coaddExposure, exposure).exposure
+
+        #Write to disk:
+        #Just take the last SelectRef for write disk info; only uses visit and CCD number
+        #which are the same for all processed selectRefs.
+        selectRef.put(coaddExposure, 'visitCoadd_calexp')
+        
     def selectExposures(self, visitCcdId, rawRefList):
         return [rawRef
                 for rawRef in rawRefList if
-                ((rawRef.dataId['visit']<<4)+rawRef.dataId['ccd']) == visitCcdId]
-    
+                ((rawRef.dataId['visit']<<4)+rawRef.dataId['ccd']) == visitCcdId]    
         
     def writeMetadata(self, dataRef):
         '''

@@ -11,22 +11,19 @@ exposures:
          persistable: DecoratedImageF
          template: 'raw/%(dateObs)s/%(filter)s/%(dataType)s-%(ccd)s-%(run)s.fts'
        postISRCCD:
-         template: postISRCCD/%(dataType)s/%(dateObs)s/%(filter)s/postISRCCD-%(ccd)s-%(visit)s.fits
+         template: postISRCCD/%(dataType)s/%(dateObs)s/%(filter)s/postISRCCD-%(ccd)s-%(run)s.fits
          recipe: lossyBasic
        icExp:
          columns:
                - visit
                - ccd
-         template: sci-results/%(dateObs)s/%(filter)s/icExp/icExp-%(ccd)s-%(visit)s.fits
+         template: sci-results/%(dateObs)s/%(filter)s/icExp/icExp-%(ccd)s-%(run)s.fits
        calexp:
-         template: sci-results/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(visit)s.fits
+         template: sci-results/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(run)s.fits
          recipe: lossyBasic
        visitCoadd_calexp:
-         persistable: ExposureF
-         storage: FitsStorage
-         python: lsst.afw.image.ExposureF
          template: visitCoadd/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(visit)s.fits
-         level: None
+         recipe: lossyBasic
        deepCoadd_directWarp:
          template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/warp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits
          recipe: lossyBasic
@@ -92,9 +89,9 @@ calibrations:
 
 datasets:
        icExpBackground:
-          template: 'sci-results/%(dateObs)s/%(filter)s/icExp/bkgd-icExp-%(ccd)s-%(visit)s.fits'
+          template: 'sci-results/%(dateObs)s/%(filter)s/icExp/bkgd-icExp-%(ccd)s-%(run)s.fits'
        calexpBackground:
-          template: 'sci-results/%(dateObs)s/%(filter)s/calexp/bkgd-calexp-%(ccd)s-%(visit)s.fits'
+          template: 'sci-results/%(dateObs)s/%(filter)s/calexp/bkgd-calexp-%(ccd)s-%(run)s.fits'
        src:
           template: 'sci-results/%(dateObs)s/%(filter)s/src/src-%(ccd)s-%(visit)s.fits'
        icSrc:
