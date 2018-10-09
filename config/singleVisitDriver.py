@@ -3,3 +3,4 @@ from lsst.utils import getPackageDir
 
 config.isr.load(os.path.join(getPackageDir("obs_goto"), "config", "isr.py"))
 config.astrometry.load(os.path.join(getPackageDir("obs_goto"), "config", "astrometry.py"))
+config.astrometry.astrometry.solver.calculateSip=False
