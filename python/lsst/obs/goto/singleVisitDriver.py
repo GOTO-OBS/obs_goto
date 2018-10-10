@@ -1,11 +1,13 @@
 from lsst.ctrl.pool.parallel import BatchPoolTask, BatchParallelTask
-from lsst.ctrl.pool.pool import Pool, abortOnError, NODE
+from lsst.ctrl.pool.pool import Pool, NODE
 from lsst.pex.config import Config, ConfigurableField
-from lsst.pipe.base import ArgumentParser, ConfigDatasetType, TaskRunner, DataIdContainer
+from lsst.pipe.base import ArgumentParser, ConfigDatasetType, TaskRunner, DataIdContainer, ButlerInitializedTaskRunner
 from lsst.ip.isr import IsrTask
 from .astrometry import AstrometryTask
 from lsst.pipe.tasks.warpAndPsfMatch import WarpAndPsfMatchTask
 from lsst.pipe.tasks.snapCombine import SnapCombineTask
+from lsst.pipe.tasks.characterizeImage import CharacterizeImageTask
+from lsst.pipe.tasks.calibrate import CalibrateTask
 
 class RawDataIdContainer(DataIdContainer):
     '''Container Class for raw data; groups all data into a list,
@@ -43,20 +45,42 @@ class SingleVisitDriverConfig(Config):
 
     snapCombine = ConfigurableField(
         target=SnapCombineTask,
-        doc="""Sums two exposures"""
-    )
+        doc="""Sums two exposures""")
+
+    charImage = ConfigurableField(
+        target=CharacterizeImageTask,
+        doc="""Task to characterize a coadded visit frame:
+            - detect sources, usually at high S/N
+            - estimate the background, which is subtracted from the image and returned as field "background"
+            - estimate a PSF model, which is added to the exposure
+            - interpolate over defects and cosmic rays, updating the image, variance and mask planes
+            """)
+
+    calibrate = ConfigurableField(
+        target=CalibrateTask,
+        doc="""Task to perform astrometric and photometric calibration:
+        - refine the WCS in the exposure
+        - refine the Calib photometric calibration object in the exposure
+        - detect sources, usually at low S/N
+        """)
 
     def setDefaults(self):
         self.snapCombine.doRepair = False
         self.snapCombine.badMaskPlanes = ()
         
 class SingleVisitDriverTaskRunner(TaskRunner):
-
+    
     def __init__(self, TaskClass, parsedCmd, doReturnResults=True):
         TaskRunner.__init__(self, TaskClass, parsedCmd, doReturnResults)
+        self.butler = parsedCmd.butler
         
     def makeTask(self, parsedCmd=None, args=None):
-        return self.TaskClass(config=self.config, log=self.log)
+        if parsedCmd is not None:
+            butler = parsedCmd.butler
+        elif args is not None:
+            dataRef, kwargs = args
+            butler = dataRef[0].butlerSubset.butler
+        return self.TaskClass(config=self.config, log=self.log, butler=self.butler)
     
     @staticmethod
     def getTargetList(parsedCmd, **kwargs):
@@ -64,18 +88,31 @@ class SingleVisitDriverTaskRunner(TaskRunner):
         kwargs["butler"] = parsedCmd.butler
         return [(parsedCmd.id.refList, kwargs), ]
 
+def unpickle(factory, args, kwargs):
+    """Unpickle something by calling a factory"""
+    return factory(*args, **kwargs)
+    
 class SingleVisitDriverTask(BatchPoolTask):
 
     ConfigClass = SingleVisitDriverConfig
     _DefaultName = "singleVisitDriver"
     RunnerClass = SingleVisitDriverTaskRunner    
 
-    def __init__(self, *args, **kwargs):
-        BatchPoolTask.__init__(self, *args, **kwargs)
+    def __init__(self, butler=None, *args, **kwargs):
+        BatchPoolTask.__init__(self, **kwargs)
+        self.butler = butler
         self.makeSubtask("isr")
         self.makeSubtask("astrometry")
         self.makeSubtask("warp")
         self.makeSubtask("snapCombine")
+        self.makeSubtask("charImage")
+        self.makeSubtask("calibrate", butler=butler)
+        
+    def __reduce__(self):
+        """Pickler"""
+        return unpickle, (self.__class__, [], dict(config=self.config, name=self._name,
+                                                   parentTask=self._parentTask, log=self.log,
+                                                   butler=self.butler))
         
     @classmethod
     def _makeArgumentParser(cls, **kwargs):
@@ -103,7 +140,6 @@ class SingleVisitDriverTask(BatchPoolTask):
     def runVisit(self, cache, visitCcdId, rawRefList):
         '''Performs ISR, astrometry and, when needed, warp on all the exposures associated
         with a visit before combining them using snapCombine.'''
-        
         selectList = self.selectExposures(visitCcdId, rawRefList)
         refWcs = None
         coaddExposure = None
@@ -144,10 +180,25 @@ class SingleVisitDriverTask(BatchPoolTask):
                 if warped:
                     coaddExposure = self.snapCombine.run(coaddExposure, exposure).exposure
 
+        #SelectRef is needed to generate a unique ID for detected sources;
+        #Ensure that ID factory does not use run number, as that's different for each exposure
+        #and we're using the last exposure to represent all exposures for that visit.
+        
+        charRes = self.charImage.run(
+            dataRef=selectRef,
+            exposure=coaddExposure,
+            doUnpersist=False)
+
+        calibRes = self.calibrate.run(
+            dataRef=selectRef,
+            exposure=charRes.exposure,
+            background=charRes.background,
+            doUnpersist=False,
+            icSourceCat=charRes.sourceCat)
+        
+            
         #Write to disk:
-        #Just take the last SelectRef for write disk info; only uses visit and CCD number
-        #which are the same for all processed selectRefs.
-        selectRef.put(coaddExposure, 'visitCoadd_calexp')
+        selectRef.put(calibRes.exposure, 'visitCoadd_calexp')
         
     def selectExposures(self, visitCcdId, rawRefList):
         return [rawRef
