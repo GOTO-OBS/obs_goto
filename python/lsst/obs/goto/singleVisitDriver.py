@@ -199,6 +199,9 @@ class SingleVisitDriverTask(BatchPoolTask):
             
         #Write to disk:
         selectRef.put(calibRes.exposure, 'visitCoadd_calexp')
+
+        import pdb
+        pdb.set_trace()
         
     def selectExposures(self, visitCcdId, rawRefList):
         return [rawRef
