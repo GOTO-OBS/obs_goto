@@ -24,6 +24,10 @@ exposures:
        visitCoadd_calexp:
          template: visitCoadd/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(visit)s.fits
          recipe: lossyBasic
+         persistable: ExposureF
+         storage: FitsStorage
+         python: lsst.afw.image.ExposureF
+         level: None
        deepCoadd_directWarp:
          template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/warp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits
          recipe: lossyBasic
@@ -146,6 +150,11 @@ datasets:
            storage: ConfigStorage
            python: lsst.pipe.drivers.singleFrameDriver.SingleVisitDriverConfig
            template: config/coaddVisitForcedPhot.py
+       visitCoadd_forced_src:
+           persistable: ignored
+           storage: FitsCatalogStorage
+           python: lsst.afw.table.SourceCatalog
+           template: visitCoadd/%(dateObs)s/%(filter)s/src/src-%(ccd)s-%(visit)s.fits
        visitCoadd_forced_src_schema:
            persistable: ignored
            storage: FitsCatalogStorage
