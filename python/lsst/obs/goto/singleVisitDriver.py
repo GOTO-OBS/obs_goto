@@ -8,6 +8,8 @@ from lsst.pipe.tasks.warpAndPsfMatch import WarpAndPsfMatchTask
 from lsst.pipe.tasks.snapCombine import SnapCombineTask
 from lsst.pipe.tasks.characterizeImage import CharacterizeImageTask
 from lsst.pipe.tasks.calibrate import CalibrateTask
+from .forcedPhotVisit import ForcedPhotVisitTask 
+from lsst.meas.base.forcedPhotCcd import PerTractCcdDataIdContainer  
 
 class RawDataIdContainer(DataIdContainer):
     '''Container Class for raw data; groups all data into a list,
@@ -18,12 +20,16 @@ class RawDataIdContainer(DataIdContainer):
         super(RawDataIdContainer, self).makeDataRefList(namespace)
         visitRefs = []
         for ref in self.refList:
-            visitRefs.append(namespace.butler.dataRef(datasetType='visitCoadd_calexp',
-                                                      dateObs=ref.dataId['dateObs'],
-                                                      filter=ref.dataId['filter'],
-                                                      ccd=ref.dataId['ccd'],
-                                                      visit=ref.dataId['visit']))
-                
+            visitRefs.append(
+                namespace.butler.dataRef(
+                    datasetType='visitCoadd_calexp',
+                    dateObs=ref.dataId['dateObs'],
+                    filter=ref.dataId['filter'],
+                    ccd=ref.dataId['ccd'],
+                    visit=ref.dataId['visit'],
+                )
+            )
+            
 class SingleVisitDriverConfig(Config):
     
     isr = ConfigurableField(
@@ -64,6 +70,10 @@ class SingleVisitDriverConfig(Config):
         - detect sources, usually at low S/N
         """)
 
+    forcedPhot = ConfigurableField(
+        target=ForcedPhotVisitTask,
+        doc="""Task to peform forced photometry""")
+    
     def setDefaults(self):
         self.snapCombine.doRepair = False
         self.snapCombine.badMaskPlanes = ()
@@ -107,6 +117,7 @@ class SingleVisitDriverTask(BatchPoolTask):
         self.makeSubtask("snapCombine")
         self.makeSubtask("charImage")
         self.makeSubtask("calibrate", butler=butler)
+        self.makeSubtask("forcedPhot", butler=butler)
         
     def __reduce__(self):
         """Pickler"""
@@ -145,6 +156,7 @@ class SingleVisitDriverTask(BatchPoolTask):
         coaddExposure = None
 
         for selectRef in selectList:
+            """
             try:
                 exposure = self.isr.runDataRef(selectRef).exposure
             except:
@@ -195,14 +207,15 @@ class SingleVisitDriverTask(BatchPoolTask):
             background=charRes.background,
             doUnpersist=False,
             icSourceCat=charRes.sourceCat)
+        """
+        exposure = selectRef.get('visitCoadd_calexp')
+        forced = self.forcedPhot.run(
+            selectRef,
+            exposure=exposure)
         
-            
         #Write to disk:
         selectRef.put(calibRes.exposure, 'visitCoadd_calexp')
 
-        import pdb
-        pdb.set_trace()
-        
     def selectExposures(self, visitCcdId, rawRefList):
         return [rawRef
                 for rawRef in rawRefList if
