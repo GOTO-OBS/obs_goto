@@ -10,7 +10,10 @@ from lsst.pipe.tasks.characterizeImage import CharacterizeImageTask
 from lsst.pipe.tasks.calibrate import CalibrateTask
 from .forcedPhotVisit import ForcedPhotVisitTask 
 from lsst.meas.base.forcedPhotCcd import PerTractCcdDataIdContainer  
-
+import lsst.afw.geom
+import lsst.afw.image
+from lsst.meas.base.forcedPhotCcd import imageOverlapsTract
+        
 class RawDataIdContainer(DataIdContainer):
     '''Container Class for raw data; groups all data into a list,
     rather than separate files. The whole list is passed to run()
@@ -156,7 +159,7 @@ class SingleVisitDriverTask(BatchPoolTask):
         coaddExposure = None
 
         for selectRef in selectList:
-            """
+
             try:
                 exposure = self.isr.runDataRef(selectRef).exposure
             except:
@@ -207,19 +210,39 @@ class SingleVisitDriverTask(BatchPoolTask):
             background=charRes.background,
             doUnpersist=False,
             icSourceCat=charRes.sourceCat)
-        """
-        exposure = selectRef.get('visitCoadd_calexp')
+            
+        selectRef.put(calibRes.exposure, 'visitCoadd_calexp')
+
+        self.getTract(selectRef)        
         forced = self.forcedPhot.run(
             selectRef,
             exposure=exposure)
-        
-        #Write to disk:
-        selectRef.put(calibRes.exposure, 'visitCoadd_calexp')
 
     def selectExposures(self, visitCcdId, rawRefList):
         return [rawRef
                 for rawRef in rawRefList if
                 ((rawRef.dataId['visit']<<4)+rawRef.dataId['ccd']) == visitCcdId]    
+
+    def getTract(self, selectRef):
+        """
+        Forced photometry needs the tract id for the exposure.
+        This delivers the tract that covers the centre of the exposure;
+        presently, if the exposure covers multiple tracts, then those 
+        references outside the central tract will not be included. This
+        needs to be rectified (perhaps return tracts covering the 
+        corners?).
+        """
+
+        #The skymap will be the same for all exposures, so could move this out:
+        skymap = selectRef.get("deepCoadd_skyMap")
+
+        md = selectRef.get("calexp_md", immediate=True)
+        wcs = lsst.afw.geom.makeSkyWcs(md)
+        box = lsst.geom.Box2D(lsst.afw.image.bboxFromMetadata(md))
+        tract = skymap.findTract(wcs.pixelToSky(box.getCenter()))
+
+        if imageOverlapsTract(tract, wcs, box):
+            selectRef.dataId['tract'] = tract.getId()
         
     def writeMetadata(self, dataRef):
         '''
@@ -227,3 +250,5 @@ class SingleVisitDriverTask(BatchPoolTask):
         list doesn't have a dataId. See lsst/pipe/base/cmdLineTask.py.
         '''
         pass
+
+    
