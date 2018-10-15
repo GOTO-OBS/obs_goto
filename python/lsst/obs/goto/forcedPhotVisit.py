@@ -49,8 +49,8 @@ class ForcedPhotVisitTask(ForcedPhotCcdTask):
         self.writeOutput(dataRef, measCat)
 
     def _getConfigName(self):
-        return self.dataPrefix + "forcedPhot_config"
+        return "forcedPhotVisit_config"
 
     def _getMetadataName(self):
-        return self.dataPrefix + "forcedPhot_metadata"
+        return "visitCoadd_forced_metadata"
 

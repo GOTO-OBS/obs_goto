@@ -159,7 +159,7 @@ class SingleVisitDriverTask(BatchPoolTask):
         coaddExposure = None
 
         for selectRef in selectList:
-
+            
             try:
                 exposure = self.isr.runDataRef(selectRef).exposure
             except:

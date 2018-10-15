@@ -21,13 +21,6 @@ exposures:
        calexp:
          template: sci-results/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(run)s.fits
          recipe: lossyBasic
-       visitCoadd_calexp:
-         template: visitCoadd/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(visit)s.fits
-         recipe: lossyBasic
-         persistable: ExposureF
-         storage: FitsStorage
-         python: lsst.afw.image.ExposureF
-         level: None
        deepCoadd_directWarp:
          template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/warp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits
          recipe: lossyBasic
@@ -37,7 +30,28 @@ exposures:
          template: deepDiff/%(dateObs)s/%(filter)s/diffexp-%(ccd)s-%(visit)s.fits
        deepDiff_matchedExp:
          template: deepDiff/%(dateObs)s/%(filter)s/matchexp-%(ccd)s-%(visit)s.fits
-
+################################SingleVisitDriver########################################
+       visitCoadd_calexp:
+         template: visitCoadd/$(dateObs)s/%(filter)s/sci/calexp/calexp-%(ccd)s-%(visit)s.fits
+         recipe: lossyBasic
+         persistable: ExposureF
+         storage: FitsStorage
+         python: lsst.afw.image.ExposureF
+         level: None
+       visitCoadd_icExp:
+         persistable: ExposureF
+         storage: FitsStorage
+         python: lsst.afw.image.ExposureF
+         level: Ccd
+         tables: raw
+         template: 'visitCoadd/$(dateObs)/%(filter)s/charIm/icExp-%(ccd)s-%(visit)s.fits'
+       warpCCD:
+         persistable: ExposureF
+         storage: FitsStorage
+         python: lsst.afw.image.ExposureF
+         level: Ccd
+         tables: raw
+         template: 'postISRCCD/$(dateObs)s/%(filter)s/warp-%(ccd)s-%(visit)-%(run)s.fits'
 calibrations:
           bias:
               python: lsst.afw.image.ImageF
@@ -89,8 +103,6 @@ calibrations:
               validEndName: validEnd
               template: FLAT/%(calibDate)s/%(filter)s/%(ccd)s_FLAT_%(calibDate)s.fits
             
-
-
 datasets:
        icExpBackground:
           template: 'sci-results/%(dateObs)s/%(filter)s/icExp/bkgd-icExp-%(ccd)s-%(run)s.fits'
@@ -110,22 +122,6 @@ datasets:
                  - raw
                  - raw_visit
           template: 'singleFrameDriver_metadata/%(dateObs)s/%(filter)s/calexp-%(ccd)s-%(visit)s.boost'
-       singleVisitDriver_metadata:
-          persistable: PropertySet
-          python: lsst.daf.base.PropertySet
-          storage: BoostStorage
-          tables:
-                 - raw
-                 - raw_visit
-          template: 'singleVisitDriver_metadata/%(dateObs)s/%(filter)s/calexp-%(ccd)s-%(visit)s.boost'
-       visitCoadd_forcedPhot_metadata:
-          persistable: PropertySet
-          python: lsst.daf.base.PropertySet
-          storage: BoostStorage
-          tables:
-                 - raw
-                 - raw_visit
-          template: 'coaddVisitForcedPhot_metadata/%(dateObs)s/%(filter)s/calexp-%(ccd)s-%(visit)s.boost'
        deepCoadd_srcMatch:
           template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits
        deepDiff_diaSrc:
@@ -140,23 +136,65 @@ datasets:
           template: '%(filter)s/tract%(tract)d/FORCEDSRC-%(visit)s-%(ccd)s.fits'
        forcedPhotCcd_metadata:
            template: '%(filter)s/tract%(tract)d/forcedPhotCcd_metadata/%(visit)s-%(ccd)s.boost'
+#####################SingleVisitDriver#################################
+       singleVisitDriver_metadata:
+          persistable: PropertySet
+          python: lsst.daf.base.PropertySet
+          storage: YamlStorage
+          tables:
+                 - raw
+                 - raw_visit
+          template: 'visitCoadd/%(dateObs)s/%(filter)s/sci/metadata/svd-%(ccd)s-%(visit)s.yaml'
        singleVisitDriver_config:
            persistable: Config
            storage: ConfigStorage
            python: lsst.pipe.drivers.singleFrameDriver.SingleVisitDriverConfig
-           template: config/singleVisitDriver.py
-       visitCoadd_forcedPhot_config:
-           persistable: Config
-           storage: ConfigStorage
-           python: lsst.pipe.drivers.singleFrameDriver.SingleVisitDriverConfig
-           template: config/coaddVisitForcedPhot.py
+           template: 'config/singleVisitDriver.py'
+       visitCoadd_src:
+           persistable: SourceCatalog
+           storage: FitsCatalogStorage
+           python: lsst.afw.table.SourceCatalog
+           tables: raw
+           template: 'visitCoadd/$(dateObs)s/%(filter)s/sci/src/src-%(ccd)s-%(visit)s.fits'
+       visitCoadd_calexpBackground:
+           persistable: PurePythonClass
+           storage: FitsCatalogStorage
+           python: lsst.afw.math.BackgroundList
+           tables: raw
+           template: 'visitCoadd/$(dateObs)s/%(filter)s/sci/calexp/bkgd-calexp-%(ccd)s-%(visit)s.fits'
+       visitCoadd_icSrc:
+           persistable: SourceCatalog
+           storage: FitsCatalogStorage
+           python: lsst.afw.table.SourceCatalog
+           tables: raw
+           template: 'visitCoadd/%(dateObs)s/%(filter)s/charIm/src/icSrc-%(ccd)s-%(visit)s.fits'
+       visitCoadd_icExpBackground:
+           persistable: PurePythonClass
+           storage: FitsCatalogStorage
+           python: lsst.afw.math.BackgroundList
+           tables: raw
+           template: 'visitCoadd/%(dateObs)/%(filter)s/charIm/calexp/bkgd-icExp-%(ccd)s-%(visit)s.fits'
+#####################VisitCoaddForcedPhot##############################
+       visitCoadd_forced_metadata:
+          persistable: PropertySet
+          python: lsst.daf.base.PropertySet
+          storage: YamlStorage
+          tables:
+                 - raw
+                 - raw_visit
+          template: 'visitCoadd/$(dateObs)s/%(filter)s/forced/metadata/%(ccd)s-%(visit)s.yaml'
        visitCoadd_forced_src:
            persistable: ignored
            storage: FitsCatalogStorage
            python: lsst.afw.table.SourceCatalog
-           template: visitCoadd/%(dateObs)s/%(filter)s/src/src-%(ccd)s-%(visit)s.fits
+           template: 'visitCoadd/%(dateObs)s/%(filter)s/forced/src/src-%(ccd)s-%(visit)s.fits'
        visitCoadd_forced_src_schema:
            persistable: ignored
            storage: FitsCatalogStorage
            python: lsst.afw.table.SourceCatalog
-           template: schema/visitCoadd_forced_src.fits
+           template: 'schema/visitCoadd_forced_src.fits'
+       forcedPhotVisit_config:
+           persistable: Config
+           storage: ConfigStorage
+           python: lsst.pipe.drivers.singleFrameDriver.SingleVisitDriverConfig
+           template: 'config/ForcedVisit.py'
