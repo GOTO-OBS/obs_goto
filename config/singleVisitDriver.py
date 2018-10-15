@@ -37,3 +37,5 @@ config.charImage.doApCorr = False
 
 config.calibrate.load(os.path.join(getPackageDir("obs_goto"), "config", "calibrate.py"))
 
+#Don't write to calexp, instead write to visitCalexp, visitSrc etc...
+config.calibrate.doWrite = False
