@@ -1,7 +1,7 @@
 from lsst.ctrl.pool.parallel import BatchPoolTask, BatchParallelTask
-from lsst.ctrl.pool.pool import Pool, NODE
-from lsst.pex.config import Config, ConfigurableField
-from lsst.pipe.base import ArgumentParser, ConfigDatasetType, TaskRunner, DataIdContainer, ButlerInitializedTaskRunner
+from lsst.ctrl.pool.pool import Pool
+from lsst.pex.config import Config, ConfigurableField, Field
+from lsst.pipe.base import ArgumentParser, ConfigDatasetType, TaskRunner, DataIdContainer
 from lsst.ip.isr import IsrTask
 from .astrometry import AstrometryTask
 from lsst.pipe.tasks.warpAndPsfMatch import WarpAndPsfMatchTask
@@ -9,10 +9,9 @@ from lsst.pipe.tasks.snapCombine import SnapCombineTask
 from lsst.pipe.tasks.characterizeImage import CharacterizeImageTask
 from lsst.pipe.tasks.calibrate import CalibrateTask
 from .forcedPhotVisit import ForcedPhotVisitTask 
-from lsst.meas.base.forcedPhotCcd import PerTractCcdDataIdContainer  
+from lsst.meas.base.forcedPhotCcd import imageOverlapsTract
 import lsst.afw.geom
 import lsst.afw.image
-from lsst.meas.base.forcedPhotCcd import imageOverlapsTract
         
 class RawDataIdContainer(DataIdContainer):
     '''Container Class for raw data; groups all data into a list,
@@ -34,6 +33,17 @@ class RawDataIdContainer(DataIdContainer):
             )
             
 class SingleVisitDriverConfig(Config):
+
+    doWrite = Field(
+        dtype=bool,
+        default=True,
+        doc="Save calibration results?")
+
+    doWriteWarps = Field(
+        dtype=bool,
+        default=True,
+        doc="""Save the individual warps?
+        Ignored if doWrite false.""")
     
     isr = ConfigurableField(
         target=IsrTask,
@@ -188,6 +198,9 @@ class SingleVisitDriverTask(BatchPoolTask):
                     except:
                         self.log.warn("Unable to warp %s" % (selectRef.dataId,))
                         continue
+                #Write the warps (including the first, unwarped, exposure)
+                if self.config.doWrite and self.config.doWriteWarps:
+                    selectRef.put(exposure, 'warpCCD')
             
             if coaddExposure == None:
                 coaddExposure = exposure
@@ -210,9 +223,11 @@ class SingleVisitDriverTask(BatchPoolTask):
             background=charRes.background,
             doUnpersist=False,
             icSourceCat=charRes.sourceCat)
-            
-        selectRef.put(calibRes.exposure, 'visitCoadd_calexp')
-
+        if self.config.doWrite:
+            selectRef.put(calibRes.exposure, 'visitCoadd_calexp')
+            selectRef.put(calibRes.sourceCat, 'visitCoadd_src')
+            selectRef.put(calibRes.background, 'visitCoadd_calexpBackground')
+        
         self.getTract(selectRef)        
         forced = self.forcedPhot.run(
             selectRef,

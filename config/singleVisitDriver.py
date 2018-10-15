@@ -4,6 +4,9 @@ from lsst.utils import getPackageDir
 config.isr.load(os.path.join(getPackageDir("obs_goto"), "config", "isr.py"))
 config.astrometry.load(os.path.join(getPackageDir("obs_goto"), "config", "astrometry.py"))
 
+#Don't write charImage results:
+config.charImage.doWrite = False
+
 config.charImage.detection.thresholdValue = 5.0
 config.charImage.detection.includeThresholdMultiplier = 10.0
 config.charImage.detection.minPixels = 20
@@ -37,5 +40,8 @@ config.charImage.doApCorr = False
 
 config.calibrate.load(os.path.join(getPackageDir("obs_goto"), "config", "calibrate.py"))
 
-#Don't write to calexp, instead write to visitCalexp, visitSrc etc...
+#Don't write to calexp, 
 config.calibrate.doWrite = False
+
+#Instead write to visitCalexp, visitSrc etc...
+config.doWrite = True

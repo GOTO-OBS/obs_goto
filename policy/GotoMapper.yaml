@@ -11,7 +11,7 @@ exposures:
          persistable: DecoratedImageF
          template: 'raw/%(dateObs)s/%(filter)s/%(dataType)s-%(ccd)s-%(run)s.fts'
        postISRCCD:
-         template: postISRCCD/%(dataType)s/%(dateObs)s/%(filter)s/postISRCCD-%(ccd)s-%(run)s.fits
+         template: postISRCCD/%(dateObs)s/%(filter)s/postISRCCD-%(ccd)s-%(visit)s-%(run)s.fits
          recipe: lossyBasic
        icExp:
          columns:
@@ -51,7 +51,7 @@ exposures:
          python: lsst.afw.image.ExposureF
          level: Ccd
          tables: raw
-         template: 'postISRCCD/%(dateObs)s/%(filter)s/warp-%(ccd)s-%(visit)-%(run)s.fits'
+         template: 'postISRCCD/%(dateObs)s/%(filter)s/warp-%(ccd)s-%(visit)s-%(run)s.fits'
 calibrations:
           bias:
               python: lsst.afw.image.ImageF
