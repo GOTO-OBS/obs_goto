@@ -32,7 +32,7 @@ exposures:
          template: deepDiff/%(dateObs)s/%(filter)s/matchexp-%(ccd)s-%(visit)s.fits
 ################################SingleVisitDriver########################################
        visitCoadd_calexp:
-         template: visitCoadd/$(dateObs)s/%(filter)s/sci/calexp/calexp-%(ccd)s-%(visit)s.fits
+         template: visitCoadd/%(dateObs)s/%(filter)s/sci/calexp/calexp-%(ccd)s-%(visit)s.fits
          recipe: lossyBasic
          persistable: ExposureF
          storage: FitsStorage
@@ -44,14 +44,14 @@ exposures:
          python: lsst.afw.image.ExposureF
          level: Ccd
          tables: raw
-         template: 'visitCoadd/$(dateObs)/%(filter)s/charIm/icExp-%(ccd)s-%(visit)s.fits'
+         template: 'visitCoadd/%(dateObs)/%(filter)s/charIm/icExp-%(ccd)s-%(visit)s.fits'
        warpCCD:
          persistable: ExposureF
          storage: FitsStorage
          python: lsst.afw.image.ExposureF
          level: Ccd
          tables: raw
-         template: 'postISRCCD/$(dateObs)s/%(filter)s/warp-%(ccd)s-%(visit)-%(run)s.fits'
+         template: 'postISRCCD/%(dateObs)s/%(filter)s/warp-%(ccd)s-%(visit)-%(run)s.fits'
 calibrations:
           bias:
               python: lsst.afw.image.ImageF
@@ -155,13 +155,13 @@ datasets:
            storage: FitsCatalogStorage
            python: lsst.afw.table.SourceCatalog
            tables: raw
-           template: 'visitCoadd/$(dateObs)s/%(filter)s/sci/src/src-%(ccd)s-%(visit)s.fits'
+           template: 'visitCoadd/%(dateObs)s/%(filter)s/sci/src/src-%(ccd)s-%(visit)s.fits'
        visitCoadd_calexpBackground:
            persistable: PurePythonClass
            storage: FitsCatalogStorage
            python: lsst.afw.math.BackgroundList
            tables: raw
-           template: 'visitCoadd/$(dateObs)s/%(filter)s/sci/calexp/bkgd-calexp-%(ccd)s-%(visit)s.fits'
+           template: 'visitCoadd/%(dateObs)s/%(filter)s/sci/calexp/bkgd-calexp-%(ccd)s-%(visit)s.fits'
        visitCoadd_icSrc:
            persistable: SourceCatalog
            storage: FitsCatalogStorage
@@ -182,7 +182,7 @@ datasets:
           tables:
                  - raw
                  - raw_visit
-          template: 'visitCoadd/$(dateObs)s/%(filter)s/forced/metadata/%(ccd)s-%(visit)s.yaml'
+          template: 'visitCoadd/%(dateObs)s/%(filter)s/forced/metadata/%(ccd)s-%(visit)s.yaml'
        visitCoadd_forced_src:
            persistable: ignored
            storage: FitsCatalogStorage
