@@ -37,7 +37,7 @@ class GotoParseTask(ParseTask):
         return date
      
     def translateVisit(self, md):
-        visit = md.get("DB-EXPS")
+        visit = md.get("DB-PNT")
         if visit == 'NA':
             return -1
         else:

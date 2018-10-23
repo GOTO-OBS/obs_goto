@@ -167,7 +167,7 @@ class SingleVisitDriverTask(BatchPoolTask):
         selectList = self.selectExposures(visitCcdId, rawRefList)
         refWcs = None
         coaddExposure = None
-
+        
         for selectRef in selectList:
             
             try:
@@ -212,27 +212,41 @@ class SingleVisitDriverTask(BatchPoolTask):
         #Ensure that ID factory does not use run number, as that's different for each exposure
         #and we're using the last exposure to represent all exposures for that visit.
         
-        charRes = self.charImage.run(
-            dataRef=selectRef,
-            exposure=coaddExposure,
-            doUnpersist=False)
-
-        calibRes = self.calibrate.run(
-            dataRef=selectRef,
-            exposure=charRes.exposure,
-            background=charRes.background,
-            doUnpersist=False,
-            icSourceCat=charRes.sourceCat)
+        try:
+            charRes = self.charImage.run(
+                dataRef=selectRef,
+                exposure=coaddExposure,
+                doUnpersist=False)
+        except:
+            self.log.warn("Unable to characterize %s" % (selectRef.dataId,))
+            return
+        
+        try:
+            calibRes = self.calibrate.run(
+                dataRef=selectRef,
+                exposure=charRes.exposure,
+                background=charRes.background,
+                doUnpersist=False,
+                icSourceCat=charRes.sourceCat)
+        except:
+            self.log.warn("Unable to calibrate %s" % (selectRef.dataId,))
+            return
+        
         if self.config.doWrite:
             selectRef.put(calibRes.exposure, 'visitCoadd_calexp')
             selectRef.put(calibRes.sourceCat, 'visitCoadd_src')
             selectRef.put(calibRes.background, 'visitCoadd_calexpBackground')
         
         self.getTract(selectRef)        
-        forced = self.forcedPhot.run(
-            selectRef,
-            exposure=exposure)
+        try:
+            forced = self.forcedPhot.run(
+                selectRef,
+                exposure=exposure)
+        except:
+            self.log.warn("Unable to perform forced photometry on %s" % (selectRef.dataId,))
 
+        return
+            
     def selectExposures(self, visitCcdId, rawRefList):
         return [rawRef
                 for rawRef in rawRefList if
@@ -251,7 +265,7 @@ class SingleVisitDriverTask(BatchPoolTask):
         #The skymap will be the same for all exposures, so could move this out:
         skymap = selectRef.get("deepCoadd_skyMap")
 
-        md = selectRef.get("calexp_md", immediate=True)
+        md = selectRef.get("visitCoadd_calexp_md", immediate=True)
         wcs = lsst.afw.geom.makeSkyWcs(md)
         box = lsst.geom.Box2D(lsst.afw.image.bboxFromMetadata(md))
         tract = skymap.findTract(wcs.pixelToSky(box.getCenter()))

@@ -45,3 +45,5 @@ config.calibrate.doWrite = False
 
 #Instead write to visitCalexp, visitSrc etc...
 config.doWrite = True
+
+config.forcedPhot.load(os.path.join(getPackageDir("obs_goto"), "config", "forcedPhotVisit.py"))

@@ -22,7 +22,7 @@ class ForcedPhotVisitTask(ForcedPhotCcdTask):
     RunnerClass = lsst.pipe.base.ButlerInitializedTaskRunner
     _DefaultName = "forcedVisitCcd"
     dataPrefix = "visitCoadd_"
-
+    
     def run(self, dataRef, exposure=None, psfCache=None):
         
         refWcs = self.references.getWcs(dataRef)
@@ -50,7 +50,8 @@ class ForcedPhotVisitTask(ForcedPhotCcdTask):
 
     def _getConfigName(self):
         return "forcedPhotVisit_config"
-
+        #return self.dataPrefix + "forcedPhotCcd_config"
     def _getMetadataName(self):
-        return "visitCoadd_forced_metadata"
+        return "forcedPhotVisit_metadata"
+        #return self.dataPrefix + "forcedPhotCcd_metadata"
 

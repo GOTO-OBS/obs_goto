@@ -8,8 +8,7 @@ config.parse.translation = {'dataType':'IMGTYPE',
                             'filter':'FILTER',
                             'field':'OBJECT',
                             'ccd':'UT',
-                            'run':'RUN',
-                            'visit':'DB-EXPS'}
+                            'run':'RUN'}
 
 config.parse.translators = {'dateObs':'translateDate',
                             'taiObs':'translateDate',
@@ -17,7 +16,7 @@ config.parse.translators = {'dateObs':'translateDate',
 
 config.register.visit = ['visit', 'run', 'ccd', 'filter', 'dateObs','taiObs']
 
-config.register.unique = ['run', 'ccd']
+config.register.unique = ['run', 'ccd', 'filter']
 
 config.register.columns = {'run':'int',
                            'visit':'int',

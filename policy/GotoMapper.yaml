@@ -32,12 +32,13 @@ exposures:
          template: deepDiff/%(dateObs)s/%(filter)s/matchexp-%(ccd)s-%(visit)s.fits
 ################################SingleVisitDriver########################################
        visitCoadd_calexp:
-         template: visitCoadd/%(dateObs)s/%(filter)s/sci/calexp/calexp-%(ccd)s-%(visit)s.fits
          recipe: lossyBasic
          persistable: ExposureF
          storage: FitsStorage
          python: lsst.afw.image.ExposureF
-         level: None
+         level: Ccd
+         tables: raw
+         template: visitCoadd/%(dateObs)s/%(filter)s/sci/calexp/calexp-%(ccd)s-%(visit)s.fits
        visitCoadd_icExp:
          persistable: ExposureF
          storage: FitsStorage
@@ -46,6 +47,7 @@ exposures:
          tables: raw
          template: 'visitCoadd/%(dateObs)/%(filter)s/charIm/icExp-%(ccd)s-%(visit)s.fits'
        warpCCD:
+         recipe: lossyBasic
          persistable: ExposureF
          storage: FitsStorage
          python: lsst.afw.image.ExposureF
@@ -175,26 +177,33 @@ datasets:
            tables: raw
            template: 'visitCoadd/%(dateObs)/%(filter)s/charIm/calexp/bkgd-icExp-%(ccd)s-%(visit)s.fits'
 #####################VisitCoaddForcedPhot##############################
-       visitCoadd_forced_metadata:
-          persistable: PropertySet
-          python: lsst.daf.base.PropertySet
-          storage: YamlStorage
-          tables:
-                 - raw
-                 - raw_visit
-          template: 'visitCoadd/%(dateObs)s/%(filter)s/forced/metadata/%(ccd)s-%(visit)s.yaml'
+#       visitCoadd_forced_metadata:
+#          persistable: PropertySet
+#          python: lsst.daf.base.PropertySet
+#          storage: YamlStorage
+#          tables:
+#                 - raw
+#                 - raw_visit
+#          template: 'visitCoadd/%(dateObs)s/%(filter)s/forced/metadata/%(ccd)s-%(visit)s.yaml'
        visitCoadd_forced_src:
            persistable: ignored
            storage: FitsCatalogStorage
            python: lsst.afw.table.SourceCatalog
            template: 'visitCoadd/%(dateObs)s/%(filter)s/forced/src/src-%(ccd)s-%(visit)s.fits'
+           tables: raw
        visitCoadd_forced_src_schema:
            persistable: ignored
            storage: FitsCatalogStorage
            python: lsst.afw.table.SourceCatalog
-           template: 'schema/visitCoadd_forced_src.fits'
+           template: 'schema/visitCoadd_forced_src_schema.fits'
        forcedPhotVisit_config:
            persistable: Config
            storage: ConfigStorage
            python: lsst.pipe.drivers.singleFrameDriver.SingleVisitDriverConfig
            template: 'config/ForcedVisit.py'
+       forcedPhotVisit_metadata:
+           persistable: PropertySet
+           storage: YamlStorage
+           python: lsst.daf.base.PropertySet
+           tables: raw
+           template: ''
