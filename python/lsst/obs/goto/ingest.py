@@ -38,8 +38,11 @@ class GotoParseTask(ParseTask):
      
     def translateVisit(self, md):
         visit = md.get("DB-PNT")
+
+        #If no visit number (e.g., flat), revert to the run number.
         if visit == 'NA':
-            return -1
+            run = md.get("RUN-ID")
+            return int(run.strip('r'))
         else:
             return int(visit)
 
