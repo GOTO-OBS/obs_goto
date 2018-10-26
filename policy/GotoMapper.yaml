@@ -124,7 +124,7 @@ datasets:
                  - raw
                  - raw_visit
           template: 'singleFrameDriver_metadata/%(dateObs)s/%(filter)s/calexp-%(ccd)s-%(visit)s.boost'
-       deepCoadd_srcMatch:
+       deepCoadd_measMatch:
           template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits
        deepDiff_diaSrc:
           template: deepDiff/%(dateObs)s/%(filter)s/diaSrc-%(ccd)s-%(visit)s.fits
