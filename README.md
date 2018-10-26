@@ -23,7 +23,14 @@ Next, you must tell the stack how to find `obs_goto`. This is done using the eup
 eups declare obs_goto v1 -r /full/path/to/lsstsw/stack/Linux64/obs_goto
 ```
 
-Once `obs_goto` has been declared, you can start to process data. In summary, the following block of bash commands will:
+Once `obs_goto` has been declared, it can be setup, which must be done in order to use it to process your data. Setting up is done using:
+```
+setup obs_goto
+```
+
+Once setup, you can use `obs_goto` to process your GOTO data with the LSST stack.
+
+In summary, the following block of bash commands will:
 - ingest raw data;
 - create and ingest calibration frames;
 - process the exposures, including source detection;
