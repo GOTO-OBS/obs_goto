@@ -10,7 +10,7 @@ and includes various python scripts in `python/lsst/obs_goto/` which the stack u
 To use this obs package, you first need to install the LSST stack on your system. Installation instructions are provided at:
 https://pipelines.lsst.io/install/lsstsw.html
 
-(Edit: Recently, the lsst-build installation that the above link points to has been failing on our systems, despite us following the same procedures with previous versions of the stack. We've instead moved over to the `newinstall.sh` installation system described at https://pipelines.lsst.io/install/newinstall.html , which seems to work fine).
+(Edit: Recently, the lsst-build installation that the above link points to has been failing on our systems, despite us following the same procedures as we did when installing previous versions of the stack. We've instead moved over to the `newinstall.sh` installation system described at https://pipelines.lsst.io/install/newinstall.html , which seems to work fine).
 
 I prefer to install and run the stack within the Bourne-again shell (bash); when I first started using the LSST stack, I tried to run it under C-shell, but it failed. I could only get it to work using bash, and I've stuck with that ever since. I also recommend that you run the `lsstsw/bin/setup.sh` script each time you open a new shell by adding the command to your `.bashrc` file (the following instructions assume that you have done so, and that you're also using bash).
 
