@@ -9,9 +9,8 @@ and includes various python scripts in `python/lsst/obs_goto/` which the stack u
 
 To use this obs package, you first need to install the LSST stack on your system. Installation instructions are provided at:
 https://pipelines.lsst.io/install/lsstsw.html
-I prefer to use `bash`; when I first started using the LSST stack, I tried to run it under C-shell, but it failed. I could only get it to work using bash, and I"ve stuck with that ever since.
 
-I also recommend that you run the `lsstsw/bin/setup.sh` script each time you open a new shell by adding the command to you `.bashrc` file (the following instructions assume that you have done so).
+I prefer to use `bash`; when I first started using the LSST stack, I tried to run it under C-shell, but it failed. I could only get it to work using bash, and I've stuck with that ever since. I also recommend that you run the `lsstsw/bin/setup.sh` script each time you open a new shell by adding the command to you `.bashrc` file (the following instructions assume that you have done so).
 
 After the install script has finished running, you must clone this repository into the stack. From within the directory you called the install script from, execute the following:
 ```
