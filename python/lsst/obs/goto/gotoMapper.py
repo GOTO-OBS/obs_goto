@@ -95,7 +95,7 @@ class GotoMapper(CameraMapper):
            - we've got up to 256 (2**8) patches in each dimension
         Currently, I'm not incorporating filter information. 
         '''
-        nbit_tract = 2
+        nbit_tract = 8
         nbit_patch = 8
         tract = int(dataId['tract'])
 
@@ -105,13 +105,13 @@ class GotoMapper(CameraMapper):
         return oid
 
     def bypass_deepCoaddId_bits(self, *args, **kwargs):
-        return 15
+        return 32
 
     def bypass_deepCoaddId(self, datasetType, pythonType, location, dataId):
         return self._computeCoaddExposureId(dataId)
 
     def bypass_deepMergedCoaddId_bits(self, *args, **kwargs):
-         return 15
+         return 32
 
     def bypass_deepMergedCoaddId(self, datasetType, pythonType, location, dataId):
         return self._computeCoaddExposureId(dataId)
