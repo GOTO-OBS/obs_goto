@@ -21,7 +21,9 @@ git clone git@github.com:GOTO-OBS/obs_goto.git
 Next, you must tell the stack how to find `obs_goto`. This is done using the eups versioning system (which is installed as part of the stack). At the (bash) command line execute:
 ```
 eups declare obs_goto v1 -r /full/path/to/lsstsw/stack/Linux64/obs_goto
+eups declare -t current obs_goto v1
 ```
+With the second command telling the stack to use version `v1` by default.
 
 Once `obs_goto` has been declared, it can be setup, which must be done in order to use it to process your data. Setting up is done using:
 ```
