@@ -30,7 +30,7 @@ Once `obs_goto` has been declared, you can start to process data. In summary, th
 - process the exposures, including source detection;
 - coadd the exposures to create a deep coadd, and perform source detection on coadd.
 
-Assuming all your raw data is contained within `./raw_data`:
+Assuming all your raw data is contained within `./rawData`:
 ```
 #!/bin/bash
 mkdir -p DATA/CALIB
