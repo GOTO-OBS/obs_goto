@@ -5,7 +5,7 @@ This obs package tells the LSST stack how to process data taken with the GOTO te
 - the filesystem of the input and output data in `policy`;
 - the configuration parameters that tell the stack's processing modules what to do in `config`;
 
-and includes various python scripts in `python/lsst/obs_goto/` which the stack uses to interact with the data.
+and includes various python scripts in `python/lsst/obs/goto/` which the stack uses to interact with the data.
 
 To use this obs package, you first need to install the LSST stack on your system. Installation instructions are provided at:
 https://pipelines.lsst.io/install/lsstsw.html
