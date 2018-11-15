@@ -69,7 +69,7 @@ calibrations:
               validRange: true
               validStartName: validStart
               validEndName: validEnd
-              template: BIAS/%(calibDate)s/NONE/%(ccd)s_BIAS_%(calibDate)s.fits
+              template: BIAS/NONE/BIAS_%(ccd)s_%(calibDate)s.fits
 
           dark:
               python: lsst.afw.image.ImageF
@@ -85,7 +85,7 @@ calibrations:
               validRange: true
               validStartName: validStart
               validEndName: validEnd
-              template: DARK/%(calibDate)s/NONE/%(ccd)s_DARK_%(calibDate)s.fits
+              template: DARK/NONE/DARK_%(ccd)s_%(calibDate)s.fits
             
           flat:
               python: lsst.afw.image.ImageF
@@ -103,7 +103,7 @@ calibrations:
               validRange: true
               validStartName: validStart
               validEndName: validEnd
-              template: FLAT/%(calibDate)s/%(filter)s/%(ccd)s_FLAT_%(calibDate)s.fits
+              template: FLAT/%(filter)s/FLAT_%(ccd)s_%(calibDate)s.fits
             
 datasets:
        icExpBackground:
