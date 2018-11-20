@@ -14,5 +14,6 @@ for source, target in [('B', 'g'), ('G', 'g'), ('R', 'r'), ('L', 'g')]:
 #config.load(os.path.join(getPackageDir("obs_goto"), "config", "cmodel.py"))
 #quit()
 config.doMatchSources=False
-config.doWriteMatchesDenormalized = True
+#config.doWriteMatchesDenormalized = True
 config.match.matchRadius=1.0
+config.deblend.maxFootprintArea=1000000
