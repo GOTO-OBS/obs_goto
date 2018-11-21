@@ -11,7 +11,7 @@ config.doDetection=True
 
 for i in [
         #'base_GaussianFlux', Needed for PSF in imageDifference.py
-        'base_SdssShape',
+        #'base_SdssShape',
         'base_ScaledApertureFlux',
         #'base_CircularApertureFlux', Needed for zeropoint
         'base_Blendedness',
