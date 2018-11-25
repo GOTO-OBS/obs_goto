@@ -111,7 +111,7 @@ datasets:
        calexpBackground:
           template: 'sci-results/%(dateObs)s/%(filter)s/calexp/bkgd-calexp-%(ccd)s-%(run)s.fits'
        src:
-          template: 'sci-results/%(dateObs)s/%(filter)s/src/src-%(ccd)s-%(visit)s.fits'
+          template: 'sci-results/%(dateObs)s/%(filter)s/src/src-%(ccd)s-%(run)s.fits'
        icSrc:
           template: 'sci-results/%(dateObs)s/%(filter)s/icSrc/icSrc-%(ccd)s-%(visit)s.fits'
        srcMatch: 
@@ -207,3 +207,7 @@ datasets:
            python: lsst.daf.base.PropertySet
            tables: raw
            template: ''
+       deepCoadd_measMatch:
+            template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits
+       deepCoadd_measMatchFull:
+            template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatchFull-%(filter)s-%(tract)d-%(patch)s.fits
