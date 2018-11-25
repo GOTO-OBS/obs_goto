@@ -79,8 +79,9 @@ config.psfIterations=1
 #config.measurePsf.starSelector['objectSize'].widthMax=4.0
 #config.measurePsf.starSelector['secondMoment'].clumpNSigma=3.0
 config.measurePsf.starSelector["objectSize"].fluxMin = 1000.
-config.measurePsf.starSelector['objectSize'].widthStdAllowed=10.0
+config.measurePsf.starSelector['objectSize'].widthStdAllowed = 10.0
 config.measurePsf.starSelector['objectSize'].nSigmaClip = 10.0
+
 #try:
 #    import lsst.meas.extensions.psfex.psfexPsfDeterminer
     #import lsst.meas.extensions.psfex.psfexStarSelector
@@ -91,8 +92,6 @@ config.measurePsf.starSelector['objectSize'].nSigmaClip = 10.0
 #    config.measurePsf.psfDeterminer.name = "psfex"
 #except ImportError as e:
 #    print("WARNING: Unable to use psfex: %s" % e)
-#    config.measurePsf.psfDeterminer.name = "pca"
-
 
 config.measurePsf.psfDeterminer.name = "pca"
 config.measurePsf.psfDeterminer['pca'].nEigenComponents = 6
@@ -100,8 +99,6 @@ config.measurePsf.psfDeterminer['pca'].spatialOrder = 6
 config.measurePsf.psfDeterminer['pca'].sizeCellX = 512
 config.measurePsf.psfDeterminer['pca'].sizeCellY = 512
 config.measurePsf.psfDeterminer['pca'].reducedChi2ForPsfCandidates = 10.0
-
-
 
 config.doApCorr = True
 

@@ -69,7 +69,7 @@ calibrations:
               validRange: true
               validStartName: validStart
               validEndName: validEnd
-              template: BIAS/%(calibDate)s/NONE/%(ccd)s_BIAS_%(calibDate)s.fits
+              template: BIAS/NONE/BIAS_%(ccd)s_%(calibDate)s.fits
 
           dark:
               python: lsst.afw.image.ImageF
@@ -85,7 +85,7 @@ calibrations:
               validRange: true
               validStartName: validStart
               validEndName: validEnd
-              template: DARK/%(calibDate)s/NONE/%(ccd)s_DARK_%(calibDate)s.fits
+              template: DARK/NONE/DARK_%(ccd)s_%(calibDate)s.fits
             
           flat:
               python: lsst.afw.image.ImageF
@@ -103,7 +103,7 @@ calibrations:
               validRange: true
               validStartName: validStart
               validEndName: validEnd
-              template: FLAT/%(calibDate)s/%(filter)s/%(ccd)s_FLAT_%(calibDate)s.fits
+              template: FLAT/%(filter)s/FLAT_%(ccd)s_%(calibDate)s.fits
             
 datasets:
        icExpBackground:
@@ -113,9 +113,9 @@ datasets:
        src:
           template: 'sci-results/%(dateObs)s/%(filter)s/src/src-%(ccd)s-%(run)s.fits'
        icSrc:
-          template: 'sci-results/%(dateObs)s/%(filter)s/icSrc/icSrc-%(ccd)s-%(visit)s.fits'
+          template: 'sci-results/%(dateObs)s/%(filter)s/icSrc/icSrc-%(ccd)s-%(run)s.fits'
        srcMatch: 
-          template: 'sci-results/%(dateObs)s/%(filter)s/src/SRCMATCH-%(ccd)s-%(visit)s.fits'
+          template: 'sci-results/%(dateObs)s/%(filter)s/src/SRCMATCH-%(ccd)s-%(run)s.fits'
        singleFrameDriver_metadata:
           persistable: PropertySet
           python: lsst.daf.base.PropertySet
@@ -123,7 +123,7 @@ datasets:
           tables:
                  - raw
                  - raw_visit
-          template: 'singleFrameDriver_metadata/%(dateObs)s/%(filter)s/calexp-%(ccd)s-%(visit)s.boost'
+          template: 'singleFrameDriver_metadata/%(dateObs)s/%(filter)s/calexp-%(ccd)s-%(run)s.boost'
        deepCoadd_measMatch:
           template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits
        deepDiff_diaSrc:
@@ -133,11 +133,11 @@ datasets:
        wcs:
            persistable: ExposureF
            python: lsst.afw.image.ExposureF
-           template: '%(visit)s/calexp/wcs-%(visit)s_%(ccd)s.fits'
+           template: '%(run)s/calexp/wcs-%(run)s_%(ccd)s.fits'
        forced_src:
-          template: '%(filter)s/tract%(tract)d/FORCEDSRC-%(visit)s-%(ccd)s.fits'
+          template: '%(filter)s/tract%(tract)d/FORCEDSRC-%(run)s-%(ccd)s.fits'
        forcedPhotCcd_metadata:
-           template: '%(filter)s/tract%(tract)d/forcedPhotCcd_metadata/%(visit)s-%(ccd)s.boost'
+           template: '%(filter)s/tract%(tract)d/forcedPhotCcd_metadata/%(run)s-%(ccd)s.boost'
 #####################SingleVisitDriver#################################
        singleVisitDriver_metadata:
           persistable: PropertySet
