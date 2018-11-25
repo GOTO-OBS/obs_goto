@@ -5,13 +5,13 @@ for sub in ("mergeCoaddDetections", "measureCoaddSources", "mergeCoaddMeasuremen
     path = os.path.join(getPackageDir("obs_goto"), "config", sub + ".py")
     if os.path.exists(path):
         getattr(config, sub).load(path)
+config.doDetection=True
 
-config.measureCoaddSources.deblend.maxFootprintSize = 0
-config.measureCoaddSources.deblend.maxFootprintArea = 2000
+
 
 for i in [
         #'base_GaussianFlux', Needed for PSF in imageDifference.py
-        'base_SdssShape',
+        #'base_SdssShape',
         'base_ScaledApertureFlux',
         #'base_CircularApertureFlux', Needed for zeropoint
         'base_Blendedness',

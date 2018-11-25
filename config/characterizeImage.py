@@ -92,6 +92,7 @@ config.measurePsf.starSelector['objectSize'].nSigmaClip = 10.0
 #    config.measurePsf.psfDeterminer.name = "psfex"
 #except ImportError as e:
 #    print("WARNING: Unable to use psfex: %s" % e)
+
 config.measurePsf.psfDeterminer.name = "pca"
 config.measurePsf.psfDeterminer['pca'].nEigenComponents = 6
 config.measurePsf.psfDeterminer['pca'].spatialOrder = 6

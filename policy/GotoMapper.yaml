@@ -207,3 +207,7 @@ datasets:
            python: lsst.daf.base.PropertySet
            tables: raw
            template: ''
+       deepCoadd_measMatch:
+            template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits
+       deepCoadd_measMatchFull:
+            template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatchFull-%(filter)s-%(tract)d-%(patch)s.fits
