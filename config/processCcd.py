@@ -26,6 +26,8 @@ config.charImage.load(os.path.join(getPackageDir("obs_goto"), "config", "charact
 #Calibrate configs:
 config.doCalibrate = True # Do we need to calibrate for difference imaging?
 
+config.calibrate.measurement.slots.calibFlux='base_CircularApertureFlux_9_0'
+
 for i in [
         #'base_GaussianFlux', Needed for PSF in imageDifference.py
         'base_SdssShape',
@@ -58,8 +60,8 @@ config.calibrate.detection.isotropicGrow = True
 #config.calibrate.load(os.path.join(configDir, "cmodel.py"))
 
 #config.calibrate.deblend.maskLimits["SAT"] =0
-#config.calibrate.detection.doTempLocalBackground=True
-#config.calibrate.detection.tempLocalBackground.binSize = 128
+config.calibrate.detection.doTempLocalBackground=True
+config.calibrate.detection.tempLocalBackground.binSize = 32
 
 config.calibrate.astrometry.forceKnownWcs = True
 config.calibrate.doAstrometry = False
@@ -86,9 +88,13 @@ for source, target in [('B', 'g'), ('G', 'g'), ('R', 'r'), ('L', 'g')]:
     config.calibrate.photoRefObjLoader.filterMap[source]=target
 
 config.calibrate.photoCal.photoCatName = "ps1_pv3_3pi_20170110"
-config.calibrate.doApCorr = False
+config.calibrate.doApCorr = True
 
+config.calibrate.astromRefObjLoader.retarget(LoadIndexedReferenceObjectsTask)
+config.calibrate.astromRefObjLoader.ref_dataset_name = "ps1_pv3_3pi_20170110"
 
+for source, target in [('B', 'g'), ('G', 'g'), ('R', 'r'), ('L', 'g')]:
+    config.calibrate.astromRefObjLoader.filterMap[source]=target
 
 #config.calibrate.astrometry.matcher.minSnr = 3.
 
@@ -105,11 +111,11 @@ config.calibrate.doApCorr = False
 
 
 #Sets the maximum match radius for astrometry matching:
-#config.calibrate.astrometry.matcher.maxMatchDistArcSec = 2.
-#config.calibrate.astrometry.matcher.maxOffsetPix = 50
+config.calibrate.astrometry.matcher.maxMatchDistArcSec = 2.
+config.calibrate.astrometry.matcher.maxOffsetPix = 50
 #config.calibrate.astromRefObjLoader.pixelMargin = 10
 #config.calibrate.astrometry.matcher.maxRotationDeg = 1.0
-#config.calibrate.astrometry.wcsFitter.order = 4
+config.calibrate.astrometry.wcsFitter.order = 4
 
 
 #config.calibrate.astrometry.sourceSelection.flags.bad= ["base_PixelFlags_flag_edge"]
@@ -129,4 +135,3 @@ config.calibrate.doApCorr = False
 
 #config.calibrate.photoCal.magLimit = 18
 #config.calibrate.photoCal.doSelectUnresolved = False
-

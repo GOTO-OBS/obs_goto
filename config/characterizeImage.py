@@ -8,6 +8,8 @@ configDir = os.path.join(getPackageDir("obs_goto"), "config")
 #Our own performs (almost) blind astrometry with aNet straight after ISR.
 #from lsst.obs.goto.gotoCharTask import GotoCharacterizeImageTask
 #config.retarget(GotoCharacterizeImageTask)
+config.measurement.slots.calibFlux='base_CircularApertureFlux_9_0'
+config.measureApCorr.refFluxName='base_CircularApertureFlux_6_0'
 
 config.doWriteExposure=True
 config.doEarlyAstrometry=True
@@ -101,7 +103,7 @@ config.measurePsf.psfDeterminer['pca'].reducedChi2ForPsfCandidates = 10.0
 
 
 
-config.doApCorr = False
+config.doApCorr = True
 
 #config.refObjLoader.defaultFilter ='m'
 

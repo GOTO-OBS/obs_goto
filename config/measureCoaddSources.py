@@ -1,7 +1,7 @@
 from lsst.obs.goto.printDict  import printDict
 import os.path
 from lsst.utils import getPackageDir
-
+from lsst.meas.algorithms import LoadIndexedReferenceObjectsTask
 #obj = printDict(config, path=['config'])
 #quit()
 
@@ -15,7 +15,9 @@ for source, target in [('B', 'g'), ('G', 'g'), ('R', 'r'), ('L', 'g')]:
     config.match.refObjLoader.filterMap[source]=target
 #config.load(os.path.join(getPackageDir("obs_goto"), "config", "cmodel.py"))
 #quit()
+
 config.doMatchSources=False
 #config.doWriteMatchesDenormalized = True
 config.match.matchRadius=1.0
 config.deblend.maxFootprintArea=1000000
+
