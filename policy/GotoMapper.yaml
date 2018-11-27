@@ -26,10 +26,13 @@ exposures:
          recipe: lossyBasic
        deepCoadd_psfMatchedWarp:
          template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/psfMatchedWarp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits
+         recipe: lossyBasic
        deepDiff_differenceExp:
          template: deepDiff/%(dateObs)s/%(filter)s/diffexp-%(ccd)s-%(visit)s.fits
+         recipe: lossyBasic
        deepDiff_matchedExp:
          template: deepDiff/%(dateObs)s/%(filter)s/matchexp-%(ccd)s-%(visit)s.fits
+         recipe: lossyBasic
 ################################SingleVisitDriver########################################
        visitCoadd_calexp:
          recipe: lossyBasic
