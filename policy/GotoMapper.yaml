@@ -22,10 +22,10 @@ exposures:
          template: sci-results/%(dateObs)s/%(filter)s/calexp/calexp-%(ccd)s-%(run)s.fits
          recipe: lossyBasic
        deepCoadd_directWarp:
-         template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/warp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits
+         template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/warp-%(filter)s-%(tract)d-%(patch)s-%(run)s.fits
          recipe: lossyBasic
        deepCoadd_psfMatchedWarp:
-         template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/psfMatchedWarp-%(filter)s-%(tract)d-%(patch)s-%(visit)s.fits
+         template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/psfMatchedWarp-%(filter)s-%(tract)d-%(patch)s-%(run)s.fits
          recipe: lossyBasic
        deepDiff_differenceExp:
          template: deepDiff/%(dateObs)s/%(filter)s/diffexp-%(ccd)s-%(visit)s.fits

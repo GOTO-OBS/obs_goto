@@ -1,6 +1,8 @@
 from lsst.obs.goto.printDict  import printDict
 from lsst.pipe.tasks.selectImages import PsfWcsSelectImagesTask
+from lsst.obs.goto.makeGotoCoaddTempExp import GotoMakeCoaddTempExpTask
 
+config.makeCoaddTempExp.retarget(GotoMakeCoaddTempExpTask)
 #config.assembleCoadd.select.retarget(PsfWcsSelectImagesTask)
 #config.select.retarget(PsfWcsSelectImagesTask)
 
