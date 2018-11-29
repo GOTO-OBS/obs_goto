@@ -25,6 +25,8 @@ config.doAstrometry = False
 config.astrometry.forceKnownWcs = True
 config.doPhotoCal = True
 
+config.detection.threshold = 20.
+
 colors = config.photoCal.match.referenceSelection.colorLimits
 config.photoCal.colorterms.load(os.path.join(configDir, 'colorterms.py'))
 config.photoCal.applyColorTerms = True
