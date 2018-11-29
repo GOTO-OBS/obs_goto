@@ -13,7 +13,7 @@ config.measureApCorr.refFluxName='base_CircularApertureFlux_6_0'
 
 config.doWriteExposure=True
 config.doEarlyAstrometry=True
-config.earlyAstrometry.detection.includeThresholdMultiplier = 10.0
+config.earlyAstrometry.detection.includeThresholdMultiplier = 20.0
 #config.earlyAstrometry.astromRefObjLoader.filterMap = {'L':'v'}
 for source, target in [('B', 'b'), ('G', 'v'), ('R', 'm'), ('L', 'v')]:
     config.earlyAstrometry.astromRefObjLoader.filterMap[source]=target
@@ -44,13 +44,13 @@ config.earlyAstrometry.astrometry.solver.useWcsRaDecCenter = True
 config.earlyAstrometry.astrometry.solver.useWcsParity = True
 config.earlyAstrometry.astrometry.solver.useWcsPixelScale = True
 config.earlyAstrometry.astrometry.solver.raDecSearchRadius = 5.
-config.earlyAstrometry.astrometry.solver.maxStars = 1000
-config.earlyAstrometry.astrometry.solver.catalogMatchDist = 30.
-config.earlyAstrometry.astrometry.solver.pixelScaleUncertainty= 1.2
+config.earlyAstrometry.astrometry.solver.maxStars = 500
+config.earlyAstrometry.astrometry.solver.catalogMatchDist = 10.
+config.earlyAstrometry.astrometry.solver.pixelScaleUncertainty= 1.1
 #config.earlyAstrometry.astrometry.solver.filterMap = {'L':'v'}
 for source, target in [('B', 'b'), ('G', 'v'), ('R', 'm'), ('L', 'v')]:
     config.earlyAstrometry.astrometry.solver.filterMap[source]=target
-config.earlyAstrometry.astrometry.solver.pixelMargin = 1000
+config.earlyAstrometry.astrometry.solver.pixelMargin = 50
 config.earlyAstrometry.astrometry.solver.sipOrder = 3
 config.earlyAstrometry.astrometry.solver.calculateSip = True
 config.earlyAstrometry.astrometry.solver.maxIter = 20
