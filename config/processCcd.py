@@ -43,7 +43,7 @@ for i in [
         ]:
     config.calibrate.measurement.plugins[i].doMeasure=False
         
-config.calibrate.detection.thresholdValue = 5.0
+config.calibrate.detection.thresholdValue = 20.0
 config.calibrate.detection.minPixels = 10
 config.calibrate.doDeblend = True
 config.calibrate.deblend.maxFootprintSize = 0
