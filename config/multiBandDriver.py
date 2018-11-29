@@ -1,12 +1,21 @@
 import os.path
 from lsst.utils import getPackageDir
+from lsst.meas.algorithms import SourceDetectionTask
+from lsst.obs.goto.propagateGotoVisitFlags import PropagateGotoVisitFlagsTask 
 
 for sub in ("mergeCoaddDetections", "measureCoaddSources", "mergeCoaddMeasurements", "forcedPhotCoadd"):
     path = os.path.join(getPackageDir("obs_goto"), "config", sub + ".py")
     if os.path.exists(path):
         getattr(config, sub).load(path)
 config.doDetection=True
+config.detectCoaddSources.detection.retarget(SourceDetectionTask)
+config.detectCoaddSources.doScaleVariance=False
+config.detectCoaddSources.detection.thresholdValue = 3.0
 
+config.measureCoaddSources.deblend.maxFootprintArea = 2000
+config.measureCoaddSources.deblend.propagateAllPeaks = False
+
+config.measureCoaddSources.propagateFlags.retarget(PropagateGotoVisitFlagsTask)
 
 
 for i in [
