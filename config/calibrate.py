@@ -1,4 +1,3 @@
-#Calibrate configs:
 import os.path
 from lsst.utils import getPackageDir
 from lsst.meas.algorithms import ColorLimit
@@ -22,27 +21,30 @@ for i in [
     config.measurement.plugins[i].doMeasure=False
 
 config.doAstrometry = False
-config.astrometry.forceKnownWcs = True
 config.doPhotoCal = True
+config.doApCorr = False
+#config.astrometry.forceKnownWcs = True
 
-config.detection.threshold = 20.
+config.detection.threshold = 50.
 
-colors = config.photoCal.match.referenceSelection.colorLimits
-config.photoCal.colorterms.load(os.path.join(configDir, 'colorterms.py'))
-config.photoCal.applyColorTerms = True
-
-config.photoCal.match.referenceSelection.doMagLimit = True
-config.photoCal.match.referenceSelection.magLimit.fluxField = "i_flux"
-colors["r-i"] = ColorLimit(primary="r_flux", secondary="i_flux", maximum=0.5)
-colors["g-r"] = ColorLimit(primary="g_flux", secondary="r_flux", minimum=0.0)
-config.photoCal.match.referenceSelection.magLimit.maximum = 19.0
-config.photoCal.match.referenceSelection.magLimit.minimum = 13.0
-
+config.photoCal.photoCatName = "ps1_pv3_3pi_20170110"
 config.photoRefObjLoader.retarget(LoadIndexedReferenceObjectsTask)
 config.photoRefObjLoader.ref_dataset_name = "ps1_pv3_3pi_20170110"
-
 for source, target in [('B', 'g'), ('G', 'g'), ('R', 'r'), ('L', 'g')]:
     config.photoRefObjLoader.filterMap[source]=target
     
-config.photoCal.photoCatName = "ps1_pv3_3pi_20170110"
-config.doApCorr = False
+config.photoCal.match.referenceSelection.doMagLimit = True
+config.photoCal.match.referenceSelection.magLimit.fluxField = "i_flux"
+config.photoCal.match.referenceSelection.magLimit.minimum = 13.0
+config.photoCal.match.referenceSelection.magLimit.maximum = 19.0
+
+config.photoCal.applyColorTerms = True
+config.photoCal.colorterms.load(os.path.join(configDir, 'colorterms.py'))
+colors = config.photoCal.match.referenceSelection.colorLimits
+colors["r-i"] = ColorLimit(primary="r_flux", secondary="i_flux", maximum=0.5)
+colors["g-r"] = ColorLimit(primary="g_flux", secondary="r_flux", minimum=0.0)
+
+
+    
+
+
