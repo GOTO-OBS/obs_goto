@@ -25,7 +25,7 @@ config.doPhotoCal = True
 config.doApCorr = False
 #config.astrometry.forceKnownWcs = True
 
-config.detection.threshold = 50.
+config.detection.threshold = 5.
 
 config.photoCal.photoCatName = "ps1_pv3_3pi_20170110"
 config.photoRefObjLoader.retarget(LoadIndexedReferenceObjectsTask)

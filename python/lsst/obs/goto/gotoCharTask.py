@@ -43,7 +43,7 @@ class GotoCharacterizeImageTask(CharacterizeImageTask):
         elif exposure is None:
             raise RuntimeError("doUnpersist false; exposure must be provided")
         
-        exposure = dataRef.get("postISRCCD", immediate=True)
+        #exposure = dataRef.get("postISRCCD", immediate=True)
         exposureIdInfo = dataRef.get("expIdInfo")
 
         if not exposure.hasPsf():
