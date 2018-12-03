@@ -7,7 +7,7 @@ from lsst.meas.algorithms import LoadIndexedReferenceObjectsTask
 configDir = os.path.join(getPackageDir("obs_goto"), "config")
 
 #ISR:
-config.isr.doWrite=True
+config.isr.doWrite=False
 config.isr.doAddDistortionModel = False
 config.isr.doDefect = False
 config.isr.doAssembleIsrExposures = False
@@ -30,7 +30,7 @@ config.calibrate.measurement.slots.calibFlux='base_CircularApertureFlux_9_0'
 
 for i in [
         #'base_GaussianFlux', Needed for PSF in imageDifference.py
-        'base_SdssShape',
+#        'base_SdssShape',    Needed for shape information for 4th-year project
         'base_ScaledApertureFlux',
         #'base_CircularApertureFlux', Needed for zeropoint
         'base_Blendedness',
@@ -66,7 +66,7 @@ config.calibrate.detection.tempLocalBackground.binSize = 32
 config.calibrate.astrometry.forceKnownWcs = True
 config.calibrate.doAstrometry = False
 config.calibrate.doPhotoCal = True
-
+config.calibrate.doWriteMatches = False
 
 colors = config.calibrate.photoCal.match.referenceSelection.colorLimits
 config.calibrate.photoCal.colorterms.load(os.path.join(configDir, 'colorterms.py'))
@@ -78,8 +78,6 @@ colors["r-i"] = ColorLimit(primary="r_flux", secondary="i_flux", maximum=0.5)
 colors["g-r"] = ColorLimit(primary="g_flux", secondary="r_flux", minimum=0.0)
 config.calibrate.photoCal.match.referenceSelection.magLimit.maximum = 19.0
 config.calibrate.photoCal.match.referenceSelection.magLimit.minimum = 13.0
-
-
 
 config.calibrate.photoRefObjLoader.retarget(LoadIndexedReferenceObjectsTask)
 config.calibrate.photoRefObjLoader.ref_dataset_name = "ps1_pv3_3pi_20170110"
@@ -111,11 +109,11 @@ for source, target in [('B', 'g'), ('G', 'g'), ('R', 'r'), ('L', 'g')]:
 
 
 #Sets the maximum match radius for astrometry matching:
-config.calibrate.astrometry.matcher.maxMatchDistArcSec = 2.
-config.calibrate.astrometry.matcher.maxOffsetPix = 50
+#config.calibrate.astrometry.matcher.maxMatchDistArcSec = 2.
+#config.calibrate.astrometry.matcher.maxOffsetPix = 50
 #config.calibrate.astromRefObjLoader.pixelMargin = 10
 #config.calibrate.astrometry.matcher.maxRotationDeg = 1.0
-config.calibrate.astrometry.wcsFitter.order = 4
+#config.calibrate.astrometry.wcsFitter.order = 4
 
 
 #config.calibrate.astrometry.sourceSelection.flags.bad= ["base_PixelFlags_flag_edge"]
