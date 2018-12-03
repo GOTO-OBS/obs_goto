@@ -50,3 +50,14 @@ class GotoParseTask(ParseTask):
         ccd = md.get("INSTRUME")
         return int(ccd.strip('UT'))
 
+    def translateJd(self, md):
+        jd = md.get('JD')
+        return float(JD-2400000.5)
+
+    def translateSurvey(self, md):
+        tileName = md.get('TILENAME')
+        event = md.getEvent('EVENT')
+        if (tileName != 'NA') and (event == 'NA'):
+            return 'T'
+        else:
+            return 'F'
