@@ -12,7 +12,9 @@ config.parse.translation = {'dataType':'IMGTYPE',
 
 config.parse.translators = {'dateObs':'translateDate',
                             'taiObs':'translateDate',
-                            'visit':'translateVisit'}
+                            'visit':'translateVisit',
+                            'mjd':'translateJd',
+                            'survey':'translateSurvey'}
 
 config.register.visit = ['visit', 'run', 'ccd', 'filter', 'dateObs','taiObs']
 
@@ -26,5 +28,7 @@ config.register.columns = {'run':'int',
                            'expTime':'double',
                            'dateObs':'text',
                            'taiObs':'text',
-                           'field':'text'}
+                           'mjd':'double',
+                           'field':'text',
+                           'survey':'text'}
 
