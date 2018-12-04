@@ -65,4 +65,4 @@ config.measurePsf.psfDeterminer['pca'].reducedChi2ForPsfCandidates = 10.0
 config.doApCorr = True
 config.measureApCorr.refFluxName='base_CircularApertureFlux_6_0'
 
-config.doWrite=False
+config.doWrite = False
