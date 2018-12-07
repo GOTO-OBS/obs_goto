@@ -1,29 +1,28 @@
 import os.path
 from lsst.utils import getPackageDir
 from lsst.meas.algorithms import SourceDetectionTask
-from lsst.obs.goto.propagateGotoVisitFlags import PropagateGotoVisitFlagsTask 
+from lsst.obs.goto.multibandDriver import MultiBandDriverTask
 
+
+
+#config.retarget(MultiBandDriverTask)
 for sub in ("mergeCoaddDetections", "measureCoaddSources", "mergeCoaddMeasurements", "forcedPhotCoadd"):
     path = os.path.join(getPackageDir("obs_goto"), "config", sub + ".py")
     if os.path.exists(path):
         getattr(config, sub).load(path)
 config.doDetection=True
-config.detectCoaddSources.detection.retarget(SourceDetectionTask)
-config.detectCoaddSources.doScaleVariance=False
-config.detectCoaddSources.detection.thresholdValue = 3.0
-
-config.measureCoaddSources.deblend.maxFootprintArea = 2000
-config.measureCoaddSources.deblend.propagateAllPeaks = False
-
-config.measureCoaddSources.propagateFlags.retarget(PropagateGotoVisitFlagsTask)
-
+#config.detectCoaddSources.detection.retarget(SourceDetectionTask)
+config.detectCoaddSources.doScaleVariance=True
+#config.detectCoaddSources.detection.thresholdValue = 3.0
+config.detectCoaddSources.detection.doTempWideBackground=False
 
 for i in [
         #'base_GaussianFlux', Needed for PSF in imageDifference.py
-        #'base_SdssShape',
+        'base_SdssShape',
         'base_ScaledApertureFlux',
         #'base_CircularApertureFlux', Needed for zeropoint
         'base_Blendedness',
+        'base_NaiveCentroid',
         'base_LocalBackground',
         #'base_Jacobian',
         #'base_FPPosition',
