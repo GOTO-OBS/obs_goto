@@ -1,6 +1,9 @@
 import os.path
+from lsst.utils import getPackageDir
 from lsst.meas.algorithms import ColorLimit
 from lsst.meas.algorithms import LoadIndexedReferenceObjectsTask
+
+configDir = os.path.join(getPackageDir("obs_goto"), "config")
 
 #Detection:
 config.detection.thresholdValue = 50.0
