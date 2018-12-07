@@ -1,19 +1,17 @@
 import os.path
 from lsst.utils import getPackageDir
 from lsst.meas.algorithms import SourceDetectionTask
-from lsst.obs.goto.multibandDriver import MultiBandDriverTask
 
-
-
-#config.retarget(MultiBandDriverTask)
-for sub in ("mergeCoaddDetections", "measureCoaddSources", "mergeCoaddMeasurements", "forcedPhotCoadd"):
+for sub in ("mergeCoaddDetections",
+            "measureCoaddSources",
+            "mergeCoaddMeasurements",
+            "forcedPhotCoadd"):
     path = os.path.join(getPackageDir("obs_goto"), "config", sub + ".py")
     if os.path.exists(path):
         getattr(config, sub).load(path)
+
 config.doDetection=True
-#config.detectCoaddSources.detection.retarget(SourceDetectionTask)
 config.detectCoaddSources.doScaleVariance=True
-#config.detectCoaddSources.detection.thresholdValue = 3.0
 config.detectCoaddSources.detection.doTempWideBackground=False
 
 for i in [
@@ -24,8 +22,8 @@ for i in [
         'base_Blendedness',
         'base_NaiveCentroid',
         'base_LocalBackground',
-        #'base_Jacobian',
-        #'base_FPPosition',
+        'base_Jacobian',
+        'base_FPPosition',
         'base_Variance',
         'base_InputCount',
         #'base_SkyCoord', Needed for zeropoint
