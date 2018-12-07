@@ -1,8 +1,6 @@
 from lsst.obs.goto.ingest import GotoParseTask
 config.parse.retarget(GotoParseTask)
 
-from lsst.obs.goto.printDict  import printDict
-
 config.parse.translation = {'dataType':'IMGTYPE',
                             'expTime':'EXPTIME',
                             'filter':'FILTER',
