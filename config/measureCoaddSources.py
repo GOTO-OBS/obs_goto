@@ -20,7 +20,7 @@ config.doMatchSources=False
 config.match.matchRadius=1.0
 config.deblend.maxFootprintArea=10000
 
-config.measurement.plugins['base_CircularApertureFlux'].radii=[3.0, 4.5, 6.0, 9.0, 12.0]
+config.measurement.plugins['base_CircularApertureFlux'].radii=[3.0, 4.5, 6.0, 9.0, 12.0,24.0,48.0]
 config.deblend.propagateAllPeaks = False
 config.propagateFlags.retarget(PropagateGotoVisitFlagsTask)
 config.doPropagateFlags=True
