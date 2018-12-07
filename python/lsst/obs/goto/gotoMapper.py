@@ -86,17 +86,18 @@ class GotoMapper(CameraMapper):
         return self._computeCcdExposureId(dataId)
 
     def bypass_ccdExposureId_bits(self, datasetType, pythonType, location, dataId):
-        return 30
+        return 24+6
 
     def _computeCoaddExposureId(self, dataId):
         '''
         Here I'm saying: 
-           - we've got up to (2**2) tracts;
-           - we've got up to 256 (2**8) patches in each dimension
-        Currently, I'm not incorporating filter information. 
+           - we've got up to 1024 (2**10) tracts;
+           - we've got up to 64 (2**6) patches in each dimension
+        Currently, I'm not incorporating filter information.
+        The remaining 64-22 = 42 bits are left for source numbers
         '''
-        nbit_tract = 8
-        nbit_patch = 8
+        nbit_tract = 10
+        nbit_patch = 6
         tract = int(dataId['tract'])
 
         patchX, patchY = [int(patch) for patch in dataId['patch'].split(',')]
@@ -105,13 +106,14 @@ class GotoMapper(CameraMapper):
         return oid
 
     def bypass_deepCoaddId_bits(self, *args, **kwargs):
-        return 32
+        #Up to 1024 (2**10) tracts each containing up to 64x64 (2**6x2**6) patches
+        return 10+6+6 
 
     def bypass_deepCoaddId(self, datasetType, pythonType, location, dataId):
         return self._computeCoaddExposureId(dataId)
 
     def bypass_deepMergedCoaddId_bits(self, *args, **kwargs):
-         return 32
+         return 10+6+6
 
     def bypass_deepMergedCoaddId(self, datasetType, pythonType, location, dataId):
         return self._computeCoaddExposureId(dataId)
