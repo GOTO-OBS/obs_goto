@@ -214,3 +214,16 @@ datasets:
             template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits
        deepCoadd_measMatchFull:
             template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatchFull-%(filter)s-%(tract)d-%(patch)s.fits
+########ForcedPhotDriver###############
+       forcedPhotDriver_config:
+            persistable: Config
+            storage: ConfigStorage
+            python: lsst.obs.goto.forcedPhotDriver.ForcedPhotDriverConfig
+            template: config/ForcedPhotDriver.py
+       forcedPhotDriver_metadata:
+            persistable: PropertySet
+            storage: BoostStorage
+            python: lsst.daf.base.PropertySet
+            tables: raw
+            template: 'forcedPhotDriver_metadata/%(dateObs)s/%(filter)s/forced-%(ccd)s-%(run)s.boost'
+            
