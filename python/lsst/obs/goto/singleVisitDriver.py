@@ -6,7 +6,7 @@ from lsst.ip.isr import IsrTask
 from .astrometry import AstrometryTask
 from lsst.pipe.tasks.warpAndPsfMatch import WarpAndPsfMatchTask
 from lsst.pipe.tasks.snapCombine import SnapCombineTask
-from lsst.pipe.tasks.characterizeImage import CharacterizeImageTask
+from .gotoCharTask import GotoCharacterizeImageTask
 from lsst.pipe.tasks.calibrate import CalibrateTask
 from .forcedPhotVisit import ForcedPhotVisitTask 
 from lsst.meas.base.forcedPhotCcd import imageOverlapsTract
@@ -67,7 +67,7 @@ class SingleVisitDriverConfig(Config):
         doc="""Sums two exposures""")
 
     charImage = ConfigurableField(
-        target=CharacterizeImageTask,
+        target=GotoCharacterizeImageTask,
         doc="""Task to characterize a coadded visit frame:
             - detect sources, usually at high S/N
             - estimate the background, which is subtracted from the image and returned as field "background"
@@ -176,9 +176,11 @@ class SingleVisitDriverTask(BatchPoolTask):
                 self.log.warn("Unable to perform ISR for %s" % (selectRef.dataId,))
                 continue
             try:
-                exposure = self.astrometry.run(
+                exposure = self.characterize.run(
                     dataRef=selectRef,
-                    exposure=exposure)
+                    exposure=exposure,
+                    doPsf=False, doApCorr=False,
+                    doWrite=False, doCalc=False).exposure
                 if exposure.hasWcs():
                     if refWcs == None:
                         refWcs=exposure.getWcs()
@@ -272,6 +274,7 @@ class SingleVisitDriverTask(BatchPoolTask):
 
         if imageOverlapsTract(tract, wcs, box):
             selectRef.dataId['tract'] = tract.getId()
+
         
     def writeMetadata(self, dataRef):
         '''

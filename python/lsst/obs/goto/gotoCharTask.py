@@ -32,7 +32,8 @@ class GotoCharacterizeImageTask(CharacterizeImageTask):
         self.makeSubtask("astrometry", refObjLoader=astromRefObjLoader,
                          schema=self.schema)
         
-    def run(self, dataRef, exposure=None, background=None, doUnpersist=True):
+    def run(self, dataRef, exposure=None, background=None, doUnpersist=True,
+            doPsf=True, doApCorr=True, doWrite=True, doCalc=True):
 
         self.log.info("gotoCharTask Processing %s" % (dataRef.dataId))
 
@@ -76,7 +77,7 @@ class GotoCharacterizeImageTask(CharacterizeImageTask):
                                             sourceCat=sourceCat)
 
         measPsfRes = pipeBase.Struct(cellSet=None)
-        if self.config.doMeasurePsf:
+        if doPsf and self.config.doMeasurePsf:
             if self.measurePsf.usesMatches:
                 matches = self.ref_match.loadAndMatch(exposure=exposure, sourceCat=sourceCat).matches
             else:
@@ -89,14 +90,15 @@ class GotoCharacterizeImageTask(CharacterizeImageTask):
         # perform final repair with final PSF
         self.repair.run(exposure=exposure)
 
-        if self.config.doApCorr:
+        if doApCorr and self.config.doApCorr:
             apCorrMap = self.measureApCorr.run(exposure=exposure, catalog=sourceCat).apCorrMap
             exposure.getInfo().setApCorrMap(apCorrMap)
             self.applyApCorr.run(catalog=sourceCat, apCorrMap=exposure.getInfo().getApCorrMap())
 
-        self.catalogCalculation.run(sourceCat)
+        if doCalc:
+            self.catalogCalculation.run(sourceCat)
         
-        if self.config.doWrite:
+        if doWrite and self.config.doWrite:
             dataRef.put(sourceCat, "icSrc")
             if self.config.doWriteExposure:
                 dataRef.put(exposure, "icExp")
