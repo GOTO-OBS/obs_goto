@@ -3,7 +3,6 @@ from lsst.ctrl.pool.pool import Pool
 from lsst.pex.config import Config, ConfigurableField, Field
 from lsst.pipe.base import ArgumentParser, ConfigDatasetType, TaskRunner, DataIdContainer
 from lsst.ip.isr import IsrTask
-from .astrometry import AstrometryTask
 from lsst.pipe.tasks.warpAndPsfMatch import WarpAndPsfMatchTask
 from lsst.pipe.tasks.snapCombine import SnapCombineTask
 from .gotoCharTask import GotoCharacterizeImageTask
@@ -54,18 +53,6 @@ class SingleVisitDriverConfig(Config):
         - provide a preliminary WCS
         """)
 
-    astrometry = ConfigurableField(
-        target = AstrometryTask,
-        doc="""Task to obtain an initial WCS should your raw data not come with a WCS solution.""")
-    
-    warp = ConfigurableField(
-        target = WarpAndPsfMatchTask,
-        doc = """Warps and optionally PSF matches (the latter set to False by default)""")
-
-    snapCombine = ConfigurableField(
-        target=SnapCombineTask,
-        doc="""Sums two exposures""")
-
     charImage = ConfigurableField(
         target=GotoCharacterizeImageTask,
         doc="""Task to characterize a coadded visit frame:
@@ -74,6 +61,14 @@ class SingleVisitDriverConfig(Config):
             - estimate a PSF model, which is added to the exposure
             - interpolate over defects and cosmic rays, updating the image, variance and mask planes
             """)
+
+    warp = ConfigurableField(
+        target = WarpAndPsfMatchTask,
+        doc = """Warps and optionally PSF matches (the latter set to False by default)""")
+
+    snapCombine = ConfigurableField(
+        target=SnapCombineTask,
+        doc="""Sums two exposures""")
 
     calibrate = ConfigurableField(
         target=CalibrateTask,
@@ -125,7 +120,6 @@ class SingleVisitDriverTask(BatchPoolTask):
         BatchPoolTask.__init__(self, **kwargs)
         self.butler = butler
         self.makeSubtask("isr")
-        self.makeSubtask("astrometry")
         self.makeSubtask("warp")
         self.makeSubtask("snapCombine")
         self.makeSubtask("charImage")
@@ -176,9 +170,10 @@ class SingleVisitDriverTask(BatchPoolTask):
                 self.log.warn("Unable to perform ISR for %s" % (selectRef.dataId,))
                 continue
             try:
-                exposure = self.characterize.run(
+                exposure = self.charImage.run(
                     dataRef=selectRef,
                     exposure=exposure,
+                    doUnpersist=False,
                     doPsf=False, doApCorr=False,
                     doWrite=False, doCalc=False).exposure
                 if exposure.hasWcs():
