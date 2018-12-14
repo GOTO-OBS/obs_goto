@@ -138,7 +138,7 @@ datasets:
            python: lsst.afw.image.ExposureF
            template: '%(run)s/calexp/wcs-%(run)s_%(ccd)s.fits'
        forced_src:
-          template: '%(filter)s/tract%(tract)d/FORCEDSRC-%(run)s-%(ccd)s.fits'
+          template: 'forcedPhot/%(dateObs)s/%(filter)s/src/src-%(ccd)s-%(run)s.fits'
        forcedPhotCcd_metadata:
            template: '%(filter)s/tract%(tract)d/forcedPhotCcd_metadata/%(run)s-%(ccd)s.boost'
 #####################SingleVisitDriver#################################
