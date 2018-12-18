@@ -22,7 +22,8 @@ config.measurement.undeblended['base_CircularApertureFlux'].radii=[6.0, 9.0, 12.
 
 config.measurement.plugins.names=['base_TransformedCentroid',
                                   'base_CircularApertureFlux',
-                                  'base_TransformedShape']
+                                  'base_TransformedShape',
+                                  'base_PixelFlags']
 
 #Currently breaks when doing aperture corrections; fix this.
 config.doApCorr=True
