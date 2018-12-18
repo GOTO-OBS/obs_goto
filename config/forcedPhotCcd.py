@@ -8,7 +8,6 @@ for i in [
         'base_ScaledApertureFlux',#Not needed
         #'base_CircularApertureFlux',
 #        'base_TransformedCentroid',
-#        'base_TransformedShape',
         'base_Blendedness', #Not needed
         'base_LocalBackground', #Not needed
         'base_Variance', #Not needed
@@ -20,12 +19,13 @@ for i in [
 config.measurement.plugins['base_CircularApertureFlux'].radii=[6.0, 9.0, 12.0, 24.0, 48.0]
 config.measurement.undeblended['base_CircularApertureFlux'].radii=[6.0, 9.0, 12.0, 24.0, 48.0]
 
+# Turn off TransformedShape as it slows measurement down a lot, yet doesn't
+# affect the measurement of flux. 
 config.measurement.plugins.names=['base_TransformedCentroid',
                                   'base_CircularApertureFlux',
-                                  'base_TransformedShape']
+                                  #'base_TransformedShape',
+                                  ]
 
 #Currently breaks when doing aperture corrections; fix this.
 config.doApCorr=True
-
-#Forced measurement currently takes about 5.5 minutes. Why is it so slow compared to normal measurement?...Because it has to warp the shapes of the apertures to match the WCS
 
