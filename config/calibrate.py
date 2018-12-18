@@ -6,7 +6,7 @@ from lsst.meas.algorithms import LoadIndexedReferenceObjectsTask
 configDir = os.path.join(getPackageDir("obs_goto"), "config")
 
 #Detection:
-config.detection.thresholdValue = 50.0
+config.detection.thresholdValue = 30.0
 config.detection.minPixels = 10
 config.detection.isotropicGrow = True
 config.detection.doTempLocalBackground=True
@@ -40,6 +40,7 @@ config.doAstrometry = False
 
 #Photometric calibration:
 config.doPhotoCal = True
+config.photoCal.match.matchRadius = 1.24
 config.photoCal.colorterms.load(os.path.join(configDir, 'colorterms.py'))
 config.photoCal.applyColorTerms = True
 config.photoCal.match.referenceSelection.doMagLimit = True
