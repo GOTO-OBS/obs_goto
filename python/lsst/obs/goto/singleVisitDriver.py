@@ -143,6 +143,7 @@ class SingleVisitDriverTask(BatchPoolTask):
 
     def run(self, rawRefList, butler):
         pool = Pool("visits")
+        pool.cacheClear()
         pool.storeSet(butler=butler)
 
         #Make unique combinations of visit and CCD number:
@@ -169,6 +170,7 @@ class SingleVisitDriverTask(BatchPoolTask):
             except:
                 self.log.warn("Unable to perform ISR for %s" % (selectRef.dataId,))
                 continue
+            
             try:
                 exposure = self.charImage.run(
                     dataRef=selectRef,
@@ -195,10 +197,11 @@ class SingleVisitDriverTask(BatchPoolTask):
                     except:
                         self.log.warn("Unable to warp %s" % (selectRef.dataId,))
                         continue
+            
                 #Write the warps (including the first, unwarped, exposure)
                 if self.config.doWrite and self.config.doWriteWarps:
                     selectRef.put(exposure, 'warpCCD')
-            
+        
             if coaddExposure == None:
                 coaddExposure = exposure
             else:
@@ -223,26 +226,24 @@ class SingleVisitDriverTask(BatchPoolTask):
                 dataRef=selectRef,
                 exposure=charRes.exposure,
                 background=charRes.background,
-                doUnpersist=False,
-                icSourceCat=charRes.sourceCat)
+                doUnpersist=False)
         except:
             self.log.warn("Unable to calibrate %s" % (selectRef.dataId,))
             return
-        
+
         if self.config.doWrite:
             selectRef.put(calibRes.exposure, 'visitCoadd_calexp')
             selectRef.put(calibRes.sourceCat, 'visitCoadd_src')
             selectRef.put(calibRes.background, 'visitCoadd_calexpBackground')
-        
+
         self.getTract(selectRef)        
         try:
             forced = self.forcedPhot.run(
                 selectRef,
-                exposure=exposure)
+                exposure=calibRes.exposure)
         except:
             self.log.warn("Unable to perform forced photometry on %s" % (selectRef.dataId,))
 
-        return
             
     def selectExposures(self, visitCcdId, rawRefList):
         return [rawRef

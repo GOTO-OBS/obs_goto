@@ -10,7 +10,11 @@ config.forcedPhot.load(os.path.join(getPackageDir("obs_goto"), "config", "forced
 #Don't write to calexp, 
 config.calibrate.doWrite = False
 
-#Instead write to visitCalexp, visitSrc etc...
-config.doWrite = True
+#Trying to stop memory leak:
+config.calibrate.doDeblend = False
+config.calibrate.doApCorr = False
+
+#Currently not writing to visitCalexp, visitSrc etc...
+config.doWrite = False
 
 
