@@ -236,7 +236,7 @@ class SingleVisitDriverTask(BatchPoolTask):
             selectRef.put(calibRes.sourceCat, 'visitCoadd_src')
             selectRef.put(calibRes.background, 'visitCoadd_calexpBackground')
 
-        self.getTract(selectRef)        
+        self.getTract(selectRef, calibRes.exposure)                
         try:
             forced = self.forcedPhot.run(
                 selectRef,
@@ -250,7 +250,7 @@ class SingleVisitDriverTask(BatchPoolTask):
                 for rawRef in rawRefList if
                 ((rawRef.dataId['visit']<<4)+rawRef.dataId['ccd']) == visitCcdId]    
 
-    def getTract(self, selectRef):
+    def getTract(self, selectRef, exposure):
         """
         Forced photometry needs the tract id for the exposure.
         This delivers the tract that covers the centre of the exposure;
@@ -263,9 +263,8 @@ class SingleVisitDriverTask(BatchPoolTask):
         #The skymap will be the same for all exposures, so could move this out:
         skymap = selectRef.get("deepCoadd_skyMap")
 
-        md = selectRef.get("visitCoadd_calexp_md", immediate=True)
-        wcs = lsst.afw.geom.makeSkyWcs(md)
-        box = lsst.geom.Box2D(lsst.afw.image.bboxFromMetadata(md))
+        wcs = exposure.getWcs()
+        box = lsst.geom.Box2D(exposure.getBBox())
         tract = skymap.findTract(wcs.pixelToSky(box.getCenter()))
 
         if imageOverlapsTract(tract, wcs, box):
