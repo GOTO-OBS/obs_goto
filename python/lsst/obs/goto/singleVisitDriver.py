@@ -220,7 +220,7 @@ class SingleVisitDriverTask(BatchPoolTask):
         except:
             self.log.warn("Unable to characterize %s" % (selectRef.dataId,))
             return
-        
+
         try:
             calibRes = self.calibrate.run(
                 dataRef=selectRef,
@@ -231,11 +231,16 @@ class SingleVisitDriverTask(BatchPoolTask):
             self.log.warn("Unable to calibrate %s" % (selectRef.dataId,))
             return
 
+        #Save the photometric calibration:
+        selectRef.put(calibRes.exposure.getCalib(), 'visitCoadd_calib')
+        selectRef.put(calibRes.exposure.getPsf(), 'visitCoadd_psf')
+        selectRef.put(calibRes.exposure.getMetadata(), 'visitCoadd_calexp_meta')
+        
         if self.config.doWrite:
             selectRef.put(calibRes.exposure, 'visitCoadd_calexp')
             selectRef.put(calibRes.sourceCat, 'visitCoadd_src')
             selectRef.put(calibRes.background, 'visitCoadd_calexpBackground')
-
+            
         self.getTract(selectRef, calibRes.exposure)                
         try:
             forced = self.forcedPhot.run(
