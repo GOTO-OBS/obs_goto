@@ -20,10 +20,14 @@ class FakeSourcesTestTask(BaseFakeSourcesTask):
     _DefaultName = "fakeSourcesTest"
 
     # Ground truth position and intensities for the fake sources
-    fakeSources = [(positionTuple(800, 435), 11342),
-                   (positionTuple(400, 350), 18235),
-                   (positionTuple(1834, 379), 13574),
-                   (positionTuple(1234, 642), 12456)]
+    fakeSources = [(positionTuple(800, 435), 1342),
+                   (positionTuple(400, 350), 8235),
+                   (positionTuple(1834, 379), 3574),
+                   (positionTuple(1234, 642), 2456),
+                   (positionTuple(2226, 4735), 11342),
+                   (positionTuple(400, 3050), 18235),
+                   (positionTuple(1834, 6379), 13574),
+                   (positionTuple(5234, 642), 12456)]
     def __init__(self, **kwargs):
         BaseFakeSourcesTask.__init__(self, **kwargs)
 
