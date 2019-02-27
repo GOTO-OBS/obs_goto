@@ -3,8 +3,8 @@ import lsst.afw.geom as afwGeom
 import numpy as np
 
 # This is copying from afw/tests/testAmpInfoTable.py:
-readout = [[22.3,23.1],[23.0,22.1],[23.0,24.4]]
-gain_all = [[0.53,0.54],[0.52,0.52],[0.59,0.59]]
+readout = [[20.9,20.6],[23.0,22.1],[22.1,20.7],[23.0,23.4]]
+gain_all = [[0.65,0.65],[0.52,0.52],[0.59,0.57],[0.59,0.59]]
 
 def addAmp(ampCatalog,i,rN,gain_s):
     record = ampCatalog.addNew()
@@ -58,11 +58,11 @@ def makeCcd(ccdId):
     schema = afwTable.AmpInfoTable.makeMinimalSchema()
     ampCatalog = afwTable.AmpInfoCatalog(schema)
     for i in range(2):
-        addAmp(ampCatalog, i,readout[ccdId][i],gain_all[ccdId][i])
+        addAmp(ampCatalog, i,readout[ccdId-1][i],gain_all[ccdId-1][i])
     return ampCatalog.writeFits('g%s_goto.fits' %ccdId)
 
 def main():
-    for i in range(3):
+    for i in range(1,5):
         camera = makeCcd(i)
 
 if __name__ == "__main__":
