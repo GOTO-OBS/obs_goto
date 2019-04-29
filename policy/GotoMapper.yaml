@@ -194,6 +194,26 @@ datasets:
            python: lsst.afw.table.SourceCatalog
            template: 'visitCoadd/%(dateObs)s/%(filter)s/forced/src/src-%(ccd)s-%(visit)s.fits'
            tables: raw
+       visitCoadd_calib:
+           persistable: Calib
+           storage: FitsCatalogStorage
+           python: lsst.afw.image.Calib
+           tables: raw
+           template: 'visitCoadd/%(dateObs)s/%(filter)s/sci/calib/calib-%(ccd)s-%(visit)s.fits'
+       visitCoadd_psf:
+           persistable: Psf
+           storage: FitsCatalogStorage
+           python: lsst.meas.algorithms.PcaPsf
+           tables: raw
+           template: 'visitCoadd/%(dateObs)s/%(filter)s/sci/psf/psf-%(ccd)s-%(visit)s.fits'
+       visitCoadd_calexp_meta:
+           persistable: PropertyList
+           storage: PickleStorage
+           python: lsst.daf.base.propertyContainer.propertyList
+           tables:
+                  -raw
+                  -raw_visit
+           template: visitCoadd_calexp_md/%(dateObs)s/%(filter)s/calexp_md/calexp_md-%(ccd)s-%(visit)s.pkl
        visitCoadd_forced_src_schema:
            persistable: ignored
            storage: FitsCatalogStorage
