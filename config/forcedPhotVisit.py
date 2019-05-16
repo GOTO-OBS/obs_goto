@@ -1,5 +1,5 @@
 for i in [
-        'base_PsfFlux',#Not needed
+        #'base_PsfFlux',#Not needed
         'base_PeakLikelihoodFlux',#Not needed
         'base_GaussianFlux',#Not needed
         'base_NaiveCentroid',
@@ -10,7 +10,7 @@ for i in [
 #        'base_TransformedCentroid',
 #        'base_TransformedShape',
         'base_Blendedness', #Not needed
-        'base_LocalBackground', #Not needed
+        #'base_LocalBackground', #Not needed 
         'base_Variance', #Not needed
         'base_InputCount', #Not needed
          ]:
@@ -22,8 +22,10 @@ config.measurement.undeblended['base_CircularApertureFlux'].radii=[4.5, 6.0, 9.0
 
 config.measurement.plugins.names=['base_TransformedCentroid',
                                   'base_CircularApertureFlux',
+                                  'base_PsfFlux',
                                   'base_TransformedShape',
-                                  'base_PixelFlags']
+                                  'base_PixelFlags',
+                                  'base_LocalBackground']
 
 #Currently breaks when doing aperture corrections; fix this.
 #config.doApCorr=True
