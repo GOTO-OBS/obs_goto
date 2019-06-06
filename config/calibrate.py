@@ -46,7 +46,7 @@ config.photoCal.applyColorTerms = True
 config.photoCal.match.referenceSelection.doMagLimit = True
 config.photoCal.match.referenceSelection.magLimit.fluxField = "i_flux"
 config.photoCal.match.referenceSelection.magLimit.maximum = 19.0
-config.photoCal.match.referenceSelection.magLimit.minimum = 13.0
+config.photoCal.match.referenceSelection.magLimit.minimum = 11.0
 
 colors = config.photoCal.match.referenceSelection.colorLimits
 colors["r-i"] = ColorLimit(primary="r_flux", secondary="i_flux", maximum=0.5)
