@@ -7,6 +7,8 @@ config.charImage.load(os.path.join(getPackageDir("obs_goto"), "config", "charact
 config.calibrate.load(os.path.join(getPackageDir("obs_goto"), "config", "calibrate.py"))
 config.forcedPhot.load(os.path.join(getPackageDir("obs_goto"), "config", "forcedPhotVisit.py"))
 
+config.calibrate.icSourceFieldsToCopy = ["calib_psfCandidate", "calib_psfUsed", "calib_psf_reserved"]
+
 #Don't write to calexp, 
 config.calibrate.doWrite = False
 
