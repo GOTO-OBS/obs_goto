@@ -141,7 +141,7 @@ class SingleVisitDriverTask(BatchPoolTask):
                                ContainerClass=RawDataIdContainer)
         return parser
 
-    def run(self, rawRefList, butler):
+    def runDataRef(self, rawRefList, butler):
         pool = Pool("visits")
         pool.cacheClear()
         pool.storeSet(butler=butler)
@@ -164,7 +164,7 @@ class SingleVisitDriverTask(BatchPoolTask):
         coaddExposure = None
         
         for selectRef in selectList:
-            
+        
             try:
                 exposure = self.isr.runDataRef(selectRef).exposure
             except:
@@ -173,9 +173,8 @@ class SingleVisitDriverTask(BatchPoolTask):
             
             try:
                 exposure = self.charImage.run(
-                    dataRef=selectRef,
                     exposure=exposure,
-                    doUnpersist=False,
+                    exposureIdInfo=selectRef.get("expIdInfo"),
                     doPsf=False, doApCorr=False,
                     doWrite=False, doCalc=False).exposure
                 if exposure.hasWcs():
@@ -214,19 +213,16 @@ class SingleVisitDriverTask(BatchPoolTask):
         
         try:
             charRes = self.charImage.run(
-                dataRef=selectRef,
-                exposure=coaddExposure,
-                doUnpersist=False)
+                exposureIdInfo=selectRef.get("expIdInfo"),
+                exposure=coaddExposure)
         except:
             self.log.warn("Unable to characterize %s" % (selectRef.dataId,))
             return
 
         try:
             calibRes = self.calibrate.run(
-                dataRef=selectRef,
                 exposure=charRes.exposure,
-                background=charRes.background,
-                doUnpersist=False)
+                background=charRes.background)
         except:
             self.log.warn("Unable to calibrate %s" % (selectRef.dataId,))
             return
