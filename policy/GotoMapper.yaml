@@ -133,10 +133,10 @@ datasets:
           template: deepDiff/%(dateObs)s/%(filter)s/diaSrc-%(ccd)s-%(visit)s.fits
        deepDiff_metadata:
            template: 'deepDiff_metadata/%(dateObs)s/%(filter)s/diaSrc-%(ccd)s-%(visit)s.fits'
-       wcs:
-           persistable: ExposureF
-           python: lsst.afw.image.ExposureF
-           template: '%(run)s/calexp/wcs-%(run)s_%(ccd)s.fits'
+       #wcs:
+       #    persistable: ExposureF
+       #    python: lsst.afw.image.ExposureF
+       #    template: '%(run)s/calexp/wcs-%(run)s_%(ccd)s.fits'
        forced_src:
           template: 'forcedPhot/%(dateObs)s/%(filter)s/src/src-%(ccd)s-%(run)s.fits'
        forcedPhotCcd_metadata:
