@@ -40,7 +40,7 @@ class GotoCharacterizeImageTask(CharacterizeImageTask):
             self.installSimplePsf.run(exposure=exposure)
 
         #Repair cosmic rays
-        self.repair.run(exposure=exposure, keepCRs=True)
+        #self.repair.run(exposure=exposure, keepCRs=True)
             
         # subtract an initial estimate of background level
         background = self.background.run(exposure).background
@@ -87,12 +87,6 @@ class GotoCharacterizeImageTask(CharacterizeImageTask):
         if doCalc:
             self.catalogCalculation.run(sourceCat)
         
-        if doWrite and self.config.doWrite:
-            dataRef.put(sourceCat, "icSrc")
-            if self.config.doWriteExposure:
-                dataRef.put(exposure, "icExp")
-                dataRef.put(background, "icExpBackground")
-
         return pipeBase.Struct(
             exposure=exposure,
             sourceCat=sourceCat,

@@ -11,8 +11,8 @@ config.isr.load(os.path.join(configDir, "isr.py"))
 #CharImage:
 #Retarget the characterize image task to my own in gotoCharTask.
 #Our own performs (almost) blind astrometry with aNet straight after ISR.
-from lsst.obs.goto.gotoCharTask import GotoCharacterizeImageTask
-config.charImage.retarget(GotoCharacterizeImageTask)
+#from lsst.obs.goto.gotoCharTask import GotoCharacterizeImageTask
+#config.charImage.retarget(GotoCharacterizeImageTask)
 config.charImage.load(os.path.join(configDir, "characterizeImage.py"))
 
 #Load Calibrate configurations
