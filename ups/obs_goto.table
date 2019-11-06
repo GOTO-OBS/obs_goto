@@ -6,7 +6,7 @@ setupRequired(meas_extensions_psfex)
 setupRequired(meas_modelfit)
 setupRequired(synpipe)
 setupRequired(meas_extensions_astrometryNet)
-setupRequired(astrometry_net_data goto)
+setupRequired(astrometry_net_data ucac4)
 #setupRequired(extras)
 
 envPrepend(PYTHONPATH, ${PRODUCT_DIR}/python)
