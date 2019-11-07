@@ -26,7 +26,7 @@ config.register.columns = {'run':'int',
                            'expTime':'double',
                            'dateObs':'text',
                            'taiObs':'text',
-                           'mjd':'double',
+                           'mjd':'int',
                            'field':'text',
                            'survey':'text'}
 

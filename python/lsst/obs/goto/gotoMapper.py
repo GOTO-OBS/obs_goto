@@ -36,7 +36,7 @@ class GotoMapper(CameraMapper):
                 'expTime': float,
                 'dateObs': str,
                 'taiObs': str,
-                'mjd': float,
+                'mjd': int,
                 'field': str,
                 'survey': str}
         for name in ("raw",
