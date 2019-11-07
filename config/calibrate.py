@@ -76,10 +76,10 @@ colors["g-r"] = ColorLimit(primary="g_flux", secondary="r_flux", minimum=0.0)
 
 from lsst.meas.algorithms import LoadIndexedReferenceObjectsTask
 config.photoRefObjLoader.retarget(LoadIndexedReferenceObjectsTask)
-config.photoRefObjLoader.ref_dataset_name = "ps1_pv3_3pi_20170110"
+config.photoRefObjLoader.ref_dataset_name = "ps1_pv3_3pi_20170110_GmagLT19"
 for source, target in [('B', 'g'), ('G', 'g'), ('R', 'r'), ('L', 'g')]:
     config.photoRefObjLoader.filterMap[source]=target
-config.photoCal.photoCatName = "ps1_pv3_3pi_20170110"    
+config.photoCal.photoCatName = "ps1_pv3_3pi_20170110_GmagLT19"    
 
 #Caliculate aperture correction?:
 config.doApCorr = True
