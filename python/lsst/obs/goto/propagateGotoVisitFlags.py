@@ -39,7 +39,7 @@ class PropagateGotoVisitFlagsTask(PropagateVisitFlagsTask):
         flags = self._keys.keys()
         counts = dict((f, numpy.zeros(len(coaddSources), dtype=int)) for f in flags)
         indices = numpy.array([s.getId() for s in coaddSources])  # Allowing for non-contiguous data
-        radius = self.config.matchRadius*geom.arcseconds
+        radius = self.config.matchRadius*afwGeom.arcseconds
 
         def processCcd(ccdSources, wcsUpdate):
             for sourceRecord in ccdSources:
