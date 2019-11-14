@@ -26,6 +26,6 @@ config.propagateFlags.retarget(PropagateGotoVisitFlagsTask)
 
 #Propogate flags from calexps?
 config.doPropagateFlags=True
-config.propagateFlags.flags={'calib_psfCandidate': 0.2,
-                             'calib_psfUsed': 0.2,
+config.propagateFlags.flags={'calib_psf_candidate': 0.2,
+                             'calib_psf_used': 0.2,
                              'calib_psf_reserved': 0.2}
