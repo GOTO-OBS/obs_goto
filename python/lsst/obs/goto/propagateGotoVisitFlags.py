@@ -28,7 +28,7 @@ import lsst.afw.table as afwTable
 from lsst.pipe.tasks.propagateVisitFlags import PropagateVisitFlagsTask
 
 class PropagateGotoVisitFlagsTask(PropagateVisitFlagsTask):
-    def run(self, butler, coaddSources, ccdInputs, coaddWcs):
+    def run(self, butler, coaddSources, ccdInputs, coaddWcs, visitCatalogs=None, wcsUpdates=None):
         """
         Need to retarget the run method as we use 'run' instead of 'visit'.
         """
