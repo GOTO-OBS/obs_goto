@@ -15,6 +15,9 @@ config.detectCoaddSources.detection.retarget(SourceDetectionTask)
 config.detectCoaddSources.doScaleVariance=True
 config.detectCoaddSources.detection.doTempWideBackground=False
 
+config.deblendCoaddSources.singleBandDeblend.maxFootprintArea=10000
+config.deblendCoaddSources.singleBandDeblend.propagateAllPeaks = False
+
 for i in [#'base_PixelFlags',
           #'base_SdssCentroid',#Needed for positions
           'base_NaiveCentroid',
