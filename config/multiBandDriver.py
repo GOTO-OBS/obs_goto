@@ -21,7 +21,7 @@ config.deblendCoaddSources.singleBandDeblend.propagateAllPeaks = False
 for i in [#'base_PixelFlags',
           #'base_SdssCentroid',#Needed for positions
           'base_NaiveCentroid',
-          'base_SdssShape',
+          #'base_SdssShape',
           'base_GaussianFlux', #Needed for PSF in imageDifference.py
           #'base_PsfFlux',
           #'base_CircularApertureFlux',
