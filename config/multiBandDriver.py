@@ -15,12 +15,15 @@ config.detectCoaddSources.detection.retarget(SourceDetectionTask)
 config.detectCoaddSources.doScaleVariance=True
 config.detectCoaddSources.detection.doTempWideBackground=False
 
+config.deblendCoaddSources.singleBandDeblend.maxFootprintArea=10000
+config.deblendCoaddSources.singleBandDeblend.propagateAllPeaks = False
+
 for i in [#'base_PixelFlags',
           #'base_SdssCentroid',#Needed for positions
           'base_NaiveCentroid',
           'base_SdssShape',
           'base_GaussianFlux', #Needed for PSF in imageDifference.py
-          'base_PsfFlux',
+          #'base_PsfFlux',
           #'base_CircularApertureFlux',
           #'base_SkyCoord',
           'base_Variance',

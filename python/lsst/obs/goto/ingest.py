@@ -24,7 +24,6 @@ class GotoParseTask(ParseTask):
 
     def translateDate(self, md):
 
-        #start = md.get("UTSTART")
         date = md.get("DATE-OBS")
         start = date[11:]
         date = date.strip()[:10]
@@ -51,8 +50,9 @@ class GotoParseTask(ParseTask):
         return int(ccd.strip('UT'))
 
     def translateJd(self, md):
-        jd = md.get('JD')
-        return float(jd-2400000.5)
+        date = self.translateDate(md)
+        t = Time(date, format='iso')
+        return int(t.mjd)
 
     def translateSurvey(self, md):
         tileName = md.get('TILENAME')

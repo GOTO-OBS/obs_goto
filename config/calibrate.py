@@ -1,7 +1,6 @@
 import os.path
 from lsst.utils import getPackageDir
 from lsst.meas.algorithms import ColorLimit
-from lsst.meas.algorithms import LoadIndexedReferenceObjectsTask
 
 configDir = os.path.join(getPackageDir("obs_goto"), "config")
 
@@ -34,9 +33,32 @@ for i in [
         ]: 
     config.measurement.plugins[i].doMeasure=False
 
-#Astrometry (now solved in GotoCharTask)
-config.astrometry.forceKnownWcs = True
-config.doAstrometry = False
+#Astrometry
+config.astrometry.forceKnownWcs = False
+config.doAstrometry = True
+
+from lsst.meas.extensions.astrometryNet import ANetAstrometryTask
+config.astrometry.retarget(ANetAstrometryTask)
+from lsst.meas.extensions.astrometryNet import LoadAstrometryNetObjectsTask
+config.astromRefObjLoader.retarget(LoadAstrometryNetObjectsTask)
+
+for source, target in [('B', 'b'), ('G', 'v'), ('R', 'm'), ('L', 'v')]:
+    config.astromRefObjLoader.filterMap[source]=target
+    config.astrometry.solver.filterMap[source]=target
+config.astrometry.solver.useWcsRaDecCenter = True
+config.astrometry.solver.useWcsParity = True
+config.astrometry.solver.useWcsPixelScale = True
+config.astrometry.solver.raDecSearchRadius = 5.
+config.astrometry.solver.maxStars = 1000
+config.astrometry.solver.catalogMatchDist = 120.
+config.astrometry.solver.pixelScaleUncertainty= 1.1
+config.astrometry.solver.pixelMargin = 1000
+config.astrometry.solver.sipOrder = 3
+config.astrometry.solver.calculateSip = True
+config.astrometry.solver.maxIter = 20
+config.astrometry.solver.matchDistanceSigma = 2.0
+config.astrometry.solver.cleaningParameter = 5.0
+config.astrometry.rejectThresh = 3.0
 
 #Photometric calibration:
 config.doPhotoCal = True
@@ -46,17 +68,18 @@ config.photoCal.applyColorTerms = True
 config.photoCal.match.referenceSelection.doMagLimit = True
 config.photoCal.match.referenceSelection.magLimit.fluxField = "i_flux"
 config.photoCal.match.referenceSelection.magLimit.maximum = 19.0
-config.photoCal.match.referenceSelection.magLimit.minimum = 13.0
+config.photoCal.match.referenceSelection.magLimit.minimum = 11.0
 
 colors = config.photoCal.match.referenceSelection.colorLimits
 colors["r-i"] = ColorLimit(primary="r_flux", secondary="i_flux", maximum=0.5)
 colors["g-r"] = ColorLimit(primary="g_flux", secondary="r_flux", minimum=0.0)
 
+from lsst.meas.algorithms import LoadIndexedReferenceObjectsTask
 config.photoRefObjLoader.retarget(LoadIndexedReferenceObjectsTask)
-config.photoRefObjLoader.ref_dataset_name = "ps1_pv3_3pi_20170110"
+config.photoRefObjLoader.ref_dataset_name = "ps1_pv3_3pi_20170110_GmagLT19"
 for source, target in [('B', 'g'), ('G', 'g'), ('R', 'r'), ('L', 'g')]:
     config.photoRefObjLoader.filterMap[source]=target
-config.photoCal.photoCatName = "ps1_pv3_3pi_20170110"    
+config.photoCal.photoCatName = "ps1_pv3_3pi_20170110_GmagLT19"    
 
 #Caliculate aperture correction?:
 config.doApCorr = True

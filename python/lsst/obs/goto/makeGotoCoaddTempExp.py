@@ -27,11 +27,9 @@ from lsst.pipe.tasks.makeCoaddTempExp import MakeCoaddTempExpTask
 class GotoMakeCoaddTempExpTask(MakeCoaddTempExpTask):
 
     @pipeBase.timeMethod
-    def run(self, patchRef, selectDataList=[]):
+    def runDataRef(self, patchRef, selectDataList=[]):
         """
-        This does the same job as MakeCoaddTempExp (so see that header for more information)
-        but we've had to change the visitid from "visit" to "run" as GOTO uses the latter 
-        as the unique identifyer. This change is also reflected in propogateGotoVisitFlags.py 
+        This does the same job as MakeCoaddTempExp (so see that header for more information) but we've had to change the visitid from "visit" to "run" as GOTO uses the latter as the unique identifyer. This change is also reflected in propogateGotoVisitFlags.py 
         """
         skyInfo = self.getSkyInfo(patchRef)
 
@@ -42,11 +40,12 @@ class GotoMakeCoaddTempExpTask(MakeCoaddTempExpTask):
             primaryWarpDataset = self.getTempExpDatasetName("direct")
 
         calExpRefList = self.selectExposures(patchRef, skyInfo, selectDataList=selectDataList)
+        
         if len(calExpRefList) == 0:
             self.log.warn("No exposures to coadd for patch %s", patchRef.dataId)
             return None
         self.log.info("Selected %d calexps for patch %s", len(calExpRefList), patchRef.dataId)
-        calExpRefList = [calExpRef for calExpRef in calExpRefList if calExpRef.datasetExists("calexp")]
+        calExpRefList = [calExpRef for calExpRef in calExpRefList if calExpRef.datasetExists(self.calexpType)]
         self.log.info("Processing %d existing calexps for patch %s", len(calExpRefList), patchRef.dataId)
 
         groupData = groupPatchExposures(patchRef, calExpRefList, self.getCoaddDatasetName(),
@@ -74,7 +73,37 @@ class GotoMakeCoaddTempExpTask(MakeCoaddTempExpTask):
             except (KeyError, ValueError):
                 visitId = i
 
-            exps = self.createTempExp(calexpRefList, skyInfo, visitId).exposures
+            calExpList = []
+            ccdIdList = []
+            dataIdList = []
+
+            for calExpInd, calExpRef in enumerate(calexpRefList):
+                self.log.info("Reading calexp %s of %s for Warp id=%s", calExpInd+1, len(calexpRefList),
+                              calExpRef.dataId)
+                try:
+                    ccdId = calExpRef.get("ccdExposureId", immediate=True)
+                except Exception:
+                    ccdId = calExpInd
+                try:
+                    # We augment the dataRef here with the tract, which is harmless for loading things
+                    # like calexps that don't need the tract, and necessary for meas_mosaic outputs,
+                    # which do.
+                    calExpRef = calExpRef.butlerSubset.butler.dataRef(self.calexpType,
+                                                                      dataId=calExpRef.dataId,
+                                                                      tract=skyInfo.tractInfo.getId())
+                    calExp = self.getCalibratedExposure(calExpRef, bgSubtracted=self.config.bgSubtracted)
+                except Exception as e:
+                    self.log.warn("Calexp %s not found; skipping it: %s", calExpRef.dataId, e)
+                    continue
+
+                if self.config.doApplySkyCorr:
+                    self.applySkyCorr(calExpRef, calExp)
+
+                calExpList.append(calExp)
+                ccdIdList.append(ccdId)
+                dataIdList.append(calExpRef.dataId)
+
+            exps = self.run(calExpList, ccdIdList, skyInfo, visitId, dataIdList).exposures
 
             if any(exps.values()):
                 dataRefList.append(tempExpRef)
@@ -88,4 +117,3 @@ class GotoMakeCoaddTempExpTask(MakeCoaddTempExpTask):
                         tempExpRef.put(exposure, self.getTempExpDatasetName(warpType))
 
         return dataRefList
-

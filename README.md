@@ -49,13 +49,13 @@ echo "lsst.obs.goto.gotoMapper.GotoMapper" > DATA/_mapper
 ingestImages.py DATA ./rawData/*.fits --mode=link --ignore-ingested
 
 constructBias.py DATA --calib DATA/CALIB --output=Cals --id dataType=BIAS --cores=6 --clobber-config
-ingestCalibs.py DATA --calib DATA/CALIB 'Cals/BIAS/*/NONE/*.fits' --validity 180
+ingestCalibs.py DATA --calib DATA/CALIB 'Cals/BIAS/NONE/*.fits' --validity 180
 
 constructDark.py DATA --calib DATA/CALIB --output=Cals --id dataType=DARK --cores=6 --clobber-config
-ingestCalibs.py DATA --calib DATA/CALIB 'Cals/DARK/*/NONE/*.fits' --validity 180
+ingestCalibs.py DATA --calib DATA/CALIB 'Cals/DARK/NONE/*.fits' --validity 180
 
 constructFlat.py DATA --calib DATA/CALIB --output=Cals --id dataType=FLAT filter=G --cores=6 --clobber-config
-ingestCalibs.py DATA --calib DATA/CALIB 'Cals/FLAT/*/*/*.fits' --validity 180 --config clobber=True
+ingestCalibs.py DATA --calib DATA/CALIB 'Cals/FLAT/*/*.fits' --validity 180 --config clobber=True
 
 singleFrameDriver.py DATA --rerun outSFD --calib DATA/CALIB --id filter=G --clobber-config --cores 6
 makeDiscreteSkyMap.py DATA --rerun outSFD:outMDSM --id filter=G --clobber-config

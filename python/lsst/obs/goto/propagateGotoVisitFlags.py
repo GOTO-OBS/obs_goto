@@ -28,30 +28,22 @@ import lsst.afw.table as afwTable
 from lsst.pipe.tasks.propagateVisitFlags import PropagateVisitFlagsTask
 
 class PropagateGotoVisitFlagsTask(PropagateVisitFlagsTask):
-    def run(self, butler, coaddSources, ccdInputs, coaddWcs):
+    def run(self, butler, coaddSources, ccdInputs, coaddWcs, visitCatalogs=None, wcsUpdates=None):
         """
+        Need to retarget the run method as we use 'run' instead of 'visit'.
         """
         
         if len(self.config.flags) == 0:
             return
 
         flags = self._keys.keys()
-        visitKey = ccdInputs.schema.find("visit").key
-        ccdKey = ccdInputs.schema.find("ccd").key
-        radius = self.config.matchRadius*afwGeom.arcseconds
-
-        self.log.info("Propagating flags %s from inputs" % (flags,))
-
         counts = dict((f, numpy.zeros(len(coaddSources), dtype=int)) for f in flags)
         indices = numpy.array([s.getId() for s in coaddSources])  # Allowing for non-contiguous data
+        radius = self.config.matchRadius*afwGeom.arcseconds
 
-        # Accumulate counts of flags being set
-        for ccdRecord in ccdInputs:
-            v = ccdRecord.get(visitKey)
-            c = ccdRecord.get(ccdKey)
-            ccdSources = butler.get("src", run=int(v), ccd=int(c), immediate=True)
+        def processCcd(ccdSources, wcsUpdate):
             for sourceRecord in ccdSources:
-                sourceRecord.updateCoord(ccdRecord.getWcs())
+                sourceRecord.updateCoord(wcsUpdate)
             for flag in flags:
                 # We assume that the flags will be relatively rare, so it is more efficient to match
                 # against a subset of the input catalog for each flag than it is to match once against
@@ -63,6 +55,31 @@ class PropagateGotoVisitFlagsTask(PropagateVisitFlagsTask):
                 for m in matches:
                     index = (numpy.where(indices == m.first.getId()))[0][0]
                     counts[flag][index] += 1
+
+        if visitCatalogs is not None:
+            if wcsUpdates is None:
+                raise pexExceptions.ValueError("If ccdInputs is a list of src catalogs, a list of wcs"
+                                               " updates for each catalog must be supplied in the "
+                                               "wcsUpdates parameter")
+            for i, ccdSource in enumerate(visitCatalogs):
+                processCcd(ccdSource, wcsUpdates[i])
+        else:
+            if ccdInputs is None:
+                raise pexExceptions.ValueError("The visitCatalogs and ccdInput parameters can't both be None")
+            visitKey = ccdInputs.schema.find("visit").key
+            ccdKey = ccdInputs.schema.find("ccd").key
+
+            self.log.info("Propagating flags %s from inputs" % (flags,))
+
+            # Accumulate counts of flags being set
+            for ccdRecord in ccdInputs:
+                v = ccdRecord.get(visitKey)
+                c = ccdRecord.get(ccdKey)
+                #Changed "visit" to "run" in the following line
+                #This is the only thing that differs from propagateVisitFlagsTask.
+                dataId = {"run": int(v), self.config.ccdName: int(c)}
+                ccdSources = butler.get("src", dataId=dataId, immediate=True)
+                processCcd(ccdSources, ccdRecord.getWcs())
 
         # Apply threshold
         for f in flags:

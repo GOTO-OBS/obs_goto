@@ -16,16 +16,14 @@ for source, target in [('B', 'g'),
 #We'll want to turn it on in the future.
 #config.load(os.path.join(getPackageDir("obs_goto"), "config", "cmodel.py"))
 
-config.deblend.maxFootprintArea=10000
-config.deblend.propagateAllPeaks = False
-
 config.measurement.plugins['base_CircularApertureFlux'].radii=[3.0, 4.5, 6.0, 9.0, 12.0,24.0,48.0]
+config.measurement.load(os.path.join(getPackageDir("obs_goto"), "config", "kron.py"))
 
 #This is needed as we use 'run' rather than visit:
 config.propagateFlags.retarget(PropagateGotoVisitFlagsTask)
 
 #Propogate flags from calexps?
 config.doPropagateFlags=True
-config.propagateFlags.flags={'calib_psfCandidate': 0.2,
-                             'calib_psfUsed': 0.2,
+config.propagateFlags.flags={'calib_psf_candidate': 0.2,
+                             'calib_psf_used': 0.2,
                              'calib_psf_reserved': 0.2}

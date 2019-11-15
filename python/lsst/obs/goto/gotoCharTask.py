@@ -32,26 +32,15 @@ class GotoCharacterizeImageTask(CharacterizeImageTask):
         self.makeSubtask("astrometry", refObjLoader=astromRefObjLoader,
                          schema=self.schema)
         
-    def run(self, dataRef, exposure=None, background=None, doUnpersist=True,
+    def run(self, exposure=None, exposureIdInfo=None, background=None,
             doPsf=True, doApCorr=True, doWrite=True, doCalc=True):
-
-        self.log.info("gotoCharTask Processing %s" % (dataRef.dataId))
-
-        if doUnpersist:
-            if exposure is not None or background is not None:
-                raise RuntimeError("doUnpersist true; exposure and background must be None")
-            exposure = dataRef.get("postISRCCD", immediate=True)
-        elif exposure is None:
-            raise RuntimeError("doUnpersist false; exposure must be provided")
-        
-        exposureIdInfo = dataRef.get("expIdInfo")
 
         if not exposure.hasPsf():
             self.log.warn("Using SimplePsf for astrometry source detection")
             self.installSimplePsf.run(exposure=exposure)
 
         #Repair cosmic rays
-        self.repair.run(exposure=exposure, keepCRs=True)
+        #self.repair.run(exposure=exposure, keepCRs=True)
             
         # subtract an initial estimate of background level
         background = self.background.run(exposure).background
@@ -98,12 +87,6 @@ class GotoCharacterizeImageTask(CharacterizeImageTask):
         if doCalc:
             self.catalogCalculation.run(sourceCat)
         
-        if doWrite and self.config.doWrite:
-            dataRef.put(sourceCat, "icSrc")
-            if self.config.doWriteExposure:
-                dataRef.put(exposure, "icExp")
-                dataRef.put(background, "icExpBackground")
-
         return pipeBase.Struct(
             exposure=exposure,
             sourceCat=sourceCat,

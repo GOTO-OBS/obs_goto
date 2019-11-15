@@ -29,14 +29,16 @@ class GotoMapper(CameraMapper):
         super(GotoMapper, self).__init__(policy, os.path.dirname(policyFile), **kwargs)
 
         # Ensure each dataset type of interest knows about the full range of keys available from the registry
-        keys = {'field': str,
-                'visit': int,
-                'filter': str,
+        keys = {'visit': int,
                 'ccd': int,
+                'filter': str,
+                'dataType': str,
+                'expTime': float,
                 'dateObs': str,
                 'taiObs': str,
-                'expTime': float,
-                'dataType': str}
+                'mjd': int,
+                'field': str,
+                'survey': str}
         for name in ("raw",
                      "postISRCCD", "calexp", "src", "icSrc", "srcMatch",
                     ):
