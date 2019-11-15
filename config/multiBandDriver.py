@@ -23,7 +23,7 @@ for i in [#'base_PixelFlags',
           'base_NaiveCentroid',
           'base_SdssShape',
           'base_GaussianFlux', #Needed for PSF in imageDifference.py
-          'base_PsfFlux',
+          #'base_PsfFlux',
           #'base_CircularApertureFlux',
           #'base_SkyCoord',
           'base_Variance',

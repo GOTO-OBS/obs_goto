@@ -17,6 +17,7 @@ for source, target in [('B', 'g'),
 #config.load(os.path.join(getPackageDir("obs_goto"), "config", "cmodel.py"))
 
 config.measurement.plugins['base_CircularApertureFlux'].radii=[3.0, 4.5, 6.0, 9.0, 12.0,24.0,48.0]
+config.measurement.load(os.path.join(getPackageDir("obs_goto"), "config", "kron.py"))
 
 #This is needed as we use 'run' rather than visit:
 config.propagateFlags.retarget(PropagateGotoVisitFlagsTask)
