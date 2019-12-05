@@ -5,6 +5,7 @@ config.parse.retarget(GotoCalibsParseTask)
 #These are the columns that appear in calibregistry.sqlite3:
 config.register.columns = {'ccd': 'int',
                            'filter': 'text',
+                           'path':'text',
                            'calibDate': 'text',
                            'validStart': 'text',
                            'validEnd': 'text'}
@@ -19,7 +20,7 @@ config.parse.translators = {'ccd': 'translate_ccd',
 config.register.unique = ['filter', 'ccd', 'calibDate']
 
 #The tables contained within the registry:
-config.register.tables = ['bias', 'dark', 'flat']
+config.register.tables = ['bias', 'dark', 'flat', 'defect']
 
 #I'm not sure what 'visit' is used for, but there must be at least
 #one common element between unique and visit.

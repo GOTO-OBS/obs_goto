@@ -107,7 +107,22 @@ calibrations:
               validStartName: validStart
               validEndName: validEnd
               template: FLAT/%(filter)s/FLAT_%(ccd)s_%(calibDate)s.fits
-            
+          defects:
+              columns:
+                - taiObs
+                - ccd
+              filter: false
+              level: ccd
+              obsTimeName: taiObs
+              persistable: ImageU
+              python: lsst.afw.image.ImageU
+              refCols: visit
+              reference: raw_visit
+              storage: FitsStorage
+              tables: defect
+              template: '%(path)s'
+              validRange: true 
+
 datasets:
        icExpBackground:
           template: 'sci-results/%(dateObs)s/%(filter)s/icExp/bkgd-icExp-%(ccd)s-%(run)s.fits'

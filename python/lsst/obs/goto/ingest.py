@@ -1,10 +1,21 @@
 from lsst.pipe.tasks.ingestCalibs import CalibsParseTask
-#from lsst.pipe.tasks.ingest import IngestTask, ParseTask, IngestArgumentParser
 from lsst.pipe.tasks.ingest import ParseTask
 from astropy.time import Time
 import re
 
 class GotoCalibsParseTask(CalibsParseTask):
+
+    def getInfo(self, filename):
+        """Get information about the image from the filename and/or its contents.
+        """
+        phuInfo, infoList = CalibsParseTask.getInfo(self, filename)
+        # Single-extension fits without EXTNAME can be a valid CP calibration product
+        # Use info of primary header unit
+        if not infoList:
+            infoList.append(phuInfo)
+        for info in infoList:
+            info['path'] = filename
+        return phuInfo, infoList
 
     def _translateFromCalibId(self, field, md):
         data = md.get("CALIB_ID")
@@ -12,14 +23,26 @@ class GotoCalibsParseTask(CalibsParseTask):
         return match.groups()[0]
 
     def translate_ccd(self, md):
-        return self._translateFromCalibId("ccd", md)
-    
+        
+        if md.exists("CALIB_ID"):
+            return self._translateFromCalibId("ccd", md)
+        else:
+            return 1
+
     def translate_filter(self, md):
-        return self._translateFromCalibId("filter", md)
-    
+        
+        if md.exists("CALIB_ID"):
+            return self._translateFromCalibId("filter", md)
+        else:
+            return "L"
+
     def translate_calibDate(self, md):
-        return self._translateFromCalibId("calibDate", md)
-    
+        
+        if md.exists("CALIB_ID"):
+            return self._translateFromCalibId("calibDate", md)
+        else:
+            return "2019-02-22"
+
 class GotoParseTask(ParseTask):
 
     def translateDate(self, md):

@@ -61,10 +61,14 @@ config.astrometry.solver.cleaningParameter = 5.0
 config.astrometry.rejectThresh = 3.0
 
 #Photometric calibration:
-config.doPhotoCal = True
+#JRM:
+#config.doPhotoCal = True
+config.doPhotoCal = False
+#####
 config.photoCal.match.matchRadius = 1.24
 config.photoCal.colorterms.load(os.path.join(configDir, 'colorterms.py'))
-config.photoCal.applyColorTerms = True
+#config.photoCal.applyColorTerms = True
+config.photoCal.applyColorTerms = False
 config.photoCal.match.referenceSelection.doMagLimit = True
 config.photoCal.match.referenceSelection.magLimit.fluxField = "i_flux"
 config.photoCal.match.referenceSelection.magLimit.maximum = 19.0
@@ -76,10 +80,10 @@ colors["g-r"] = ColorLimit(primary="g_flux", secondary="r_flux", minimum=0.0)
 
 from lsst.meas.algorithms import LoadIndexedReferenceObjectsTask
 config.photoRefObjLoader.retarget(LoadIndexedReferenceObjectsTask)
-config.photoRefObjLoader.ref_dataset_name = "ps1_pv3_3pi_20170110_GmagLT19"
+#config.photoRefObjLoader.ref_dataset_name = "ps1_pv3_3pi_20170110_GmagLT19"
 for source, target in [('B', 'g'), ('G', 'g'), ('R', 'r'), ('L', 'g')]:
     config.photoRefObjLoader.filterMap[source]=target
-config.photoCal.photoCatName = "ps1_pv3_3pi_20170110_GmagLT19"    
+#config.photoCal.photoCatName = "ps1_pv3_3pi_20170110_GmagLT19"    
 
 #Caliculate aperture correction?:
 config.doApCorr = True

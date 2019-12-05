@@ -3,13 +3,14 @@ from __future__ import absolute_import, division, print_function
 import re
 import os
 
+import numpy as np
 
 from lsst.daf.persistence import Policy
 from lsst.obs.base import CameraMapper, exposureFromImage
 import lsst.afw.image.utils as afwImageUtils
 import lsst.afw.image as afwImage
 import lsst.afw.geom as afwGeom
-from lsst.ip.isr import IsrTask
+import lsst.ip.isr as isr
 from .makeGotoRawVisitInfo import MakeGotoRawVisitInfo
 from astropy import coordinates, units 
 
@@ -189,15 +190,30 @@ class GotoMapper(CameraMapper):
                                         
     def bypass_Mask(self, datasetType, pythonType, location, dataID):
         print ("bypass_Mask")
-        return convertmask(location.getLocations()[0])
-    
-    def bypass_tsField(self, datasetType, pythonType, location, dataId):
-        #print 'tsField Location', location.getLocations()[0]
-        return 50, 50
+        #return convertmask(location.getLocations()[0])
 
     def _extractDetectorName(self, dataId):
         return int("%(ccd)d" % dataId)
     
+    def map_defects(self, dataId, write=False):
+        return self.mappings["defects"].map(self, dataId=dataId, write=write)
+
+    def bypass_defects(self, datasetType, pythonType, butlerLocation, dataId):
+        """Return a defect list based on butlerLocation returned by map_defects.
+        Use all nonzero pixels in the Community Pipeline Bad Pixel Masks.
+        """
+        bpmFitsPath = butlerLocation.getLocations()[0]
+        bpmImg = afwImage.ImageU(bpmFitsPath, allowUnsafe=True)
+        idxBad = np.nonzero(bpmImg.getArray())
+        mim = afwImage.MaskedImageU(bpmImg.getDimensions())
+        mim.getMask().getArray()[idxBad] |= mim.getMask().getPlaneBitMask("BAD")
+        return isr.getDefectListFromMask(mim, "BAD")
+
+    def std_defects(self, item, dataId):
+        """Return the defect list as it is. Do not standardize it to Exposure.
+        """
+        return item
+
 class GotoSimMapper(GotoMapper):
 
     def __init__(self, **kwargs):

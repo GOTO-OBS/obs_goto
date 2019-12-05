@@ -1,8 +1,11 @@
 config.doWrite=False
 config.doAddDistortionModel = False
-config.doDefect = False
+config.doDefect = True
 config.doAssembleIsrExposures = False
-config.doBias=True
-config.doDark=True
-config.doFlat=True
+######################################
+#JRM: These need to be changed back to True
+config.doBias=False
+config.doDark=False
+config.doFlat=False
+######################################
 config.doSaturationInterpolation = False
