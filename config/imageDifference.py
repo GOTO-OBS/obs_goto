@@ -1,6 +1,6 @@
 from lsst.ip.diffim.getTemplate import GetCalexpAsTemplateTask
 
-#config.getTemplate.retarget(GetCalexpAsTemplateTask)
+config.getTemplate.retarget(GetCalexpAsTemplateTask)
 
 config.doWriteMatchedExp=True
 
