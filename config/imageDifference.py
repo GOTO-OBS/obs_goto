@@ -5,9 +5,9 @@ config.getTemplate.retarget(GetCalexpAsTemplateTask)
 #What to do:
 config.doSelectSources = True
 config.doSubtract = True
-config.doPreConvolve = True
+config.doPreConvolve = False
 config.useGaussianForPreConvolution = True
-config.doDetection = False
+config.doDetection = True
 config.doMerge = False
 config.doMeasurement = False
 config.doDipoleFitting = False
@@ -29,7 +29,18 @@ config.sourceSelector.nSigmaClip = 10.0
 
 config.subtract.name='al'
 
-#config.detection.minPixels = 5
-#config.detection.thresholdValue=5.5
+# Size (rows) in pixels of each SpatialCell for spatial modeling
+config.subtract['al'].kernel['AL'].sizeCellX=256
+config.subtract['al'].kernel['AL'].sizeCellY=256
+
+config.subtract['al'].kernel['AL'].kernelSize=35
+config.subtract['al'].kernel['AL'].kernelSizeMin=35
+config.subtract['al'].kernel['AL'].kernelSizeMax=51
+
+config.subtract['al'].kernel['AL'].candidateResidualMeanMax=10.
+config.subtract['al'].kernel['AL'].candidateResidualStdMax=10.
+
+config.detection.minPixels = 5
+config.detection.thresholdValue=10.
 
 config.kernelSourcesFromRef=False
