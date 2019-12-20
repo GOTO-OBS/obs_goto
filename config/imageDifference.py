@@ -27,8 +27,8 @@ config.refObjLoader.filterMap={'L': 'g'}
 config.sourceSelector.widthStdAllowed = 10.0
 config.sourceSelector.nSigmaClip = 10.0
 
+#########If using AL#############
 config.subtract.name='al'
-
 # Size (rows) in pixels of each SpatialCell for spatial modeling
 config.subtract['al'].kernel['AL'].sizeCellX=256
 config.subtract['al'].kernel['AL'].sizeCellY=256
@@ -39,6 +39,9 @@ config.subtract['al'].kernel['AL'].kernelSizeMax=51
 
 config.subtract['al'].kernel['AL'].candidateResidualMeanMax=10.
 config.subtract['al'].kernel['AL'].candidateResidualStdMax=10.
+
+#########If using Zogy###########
+
 
 config.detection.minPixels = 5
 config.detection.thresholdValue=10.
