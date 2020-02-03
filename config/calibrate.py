@@ -1,6 +1,8 @@
 import os.path
 from lsst.utils import getPackageDir
 from lsst.meas.algorithms import ColorLimit
+from lsst.obs.goto.gotoPhotoCal import GotoPhotoCalTask
+config.photoCal.retarget(GotoPhotoCalTask)
 
 configDir = os.path.join(getPackageDir("obs_goto"), "config")
 

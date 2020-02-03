@@ -197,7 +197,7 @@ datasets:
        visitCoadd_calib:
            persistable: Calib
            storage: FitsCatalogStorage
-           python: lsst.afw.image.Calib
+           python: lsst.afw.image.PhotoCalib
            tables: raw
            template: 'visitCoadd/%(dateObs)s/%(filter)s/sci/calib/calib-%(ccd)s-%(visit)s.fits'
        visitCoadd_psf:
