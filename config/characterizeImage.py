@@ -35,13 +35,23 @@ config.repair.cosmicray.cond3_fac2 = 0.1
 #PSF determination:
 config.measurePsf.starSelector['objectSize'].widthStdAllowed = 10.0
 config.measurePsf.starSelector['objectSize'].nSigmaClip = 10.0
-config.measurePsf.psfDeterminer.name = "pca"
-config.measurePsf.psfDeterminer['pca'].nEigenComponents = 6
-config.measurePsf.psfDeterminer['pca'].spatialOrder = 2
-config.measurePsf.psfDeterminer['pca'].sizeCellX = 512
-config.measurePsf.psfDeterminer['pca'].sizeCellY = 512
-config.measurePsf.psfDeterminer['pca'].reducedChi2ForPsfCandidates = 50.0
-config.measurePsf.psfDeterminer['pca'].spatialReject = 50.0
+
+#Using PCA:
+#config.measurePsf.psfDeterminer.name = "pca"
+#config.measurePsf.psfDeterminer['pca'].nEigenComponents = 6
+#config.measurePsf.psfDeterminer['pca'].spatialOrder = 2
+#config.measurePsf.psfDeterminer['pca'].sizeCellX = 512
+#config.measurePsf.psfDeterminer['pca'].sizeCellY = 512
+#config.measurePsf.psfDeterminer['pca'].reducedChi2ForPsfCandidates = 50.0
+#config.measurePsf.psfDeterminer['pca'].spatialReject = 50.0
+
+#Using PSFEx:
+import lsst.meas.extensions.psfex.psfexPsfDeterminer
+config.measurePsf.psfDeterminer.name='psfex'
+config.measurePsf.psfDeterminer['psfex'].spatialOrder = 3
+config.measurePsf.psfDeterminer['psfex'].recentroid = True
+config.measurePsf.psfDeterminer['psfex'].psfexBasis = 'PIXEL_AUTO'
+config.measurePsf.psfDeterminer['psfex'].samplingSize = 0.0
 
 config.doApCorr = True
 config.measureApCorr.refFluxName='base_CircularApertureFlux_6_0'
