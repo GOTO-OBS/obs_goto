@@ -45,7 +45,7 @@ class GotoMakeCoaddTempExpTask(MakeCoaddTempExpTask):
             self.log.warn("No exposures to coadd for patch %s", patchRef.dataId)
             return None
         self.log.info("Selected %d calexps for patch %s", len(calExpRefList), patchRef.dataId)
-        calExpRefList = [calExpRef for calExpRef in calExpRefList if calExpRef.datasetExists(self.calexpType)]
+        calExpRefList = [calExpRef for calExpRef in calExpRefList if calExpRef.datasetExists("calexp")]
         self.log.info("Processing %d existing calexps for patch %s", len(calExpRefList), patchRef.dataId)
 
         groupData = groupPatchExposures(patchRef, calExpRefList, self.getCoaddDatasetName(),
@@ -88,7 +88,7 @@ class GotoMakeCoaddTempExpTask(MakeCoaddTempExpTask):
                     # We augment the dataRef here with the tract, which is harmless for loading things
                     # like calexps that don't need the tract, and necessary for meas_mosaic outputs,
                     # which do.
-                    calExpRef = calExpRef.butlerSubset.butler.dataRef(self.calexpType,
+                    calExpRef = calExpRef.butlerSubset.butler.dataRef("calexp",
                                                                       dataId=calExpRef.dataId,
                                                                       tract=skyInfo.tractInfo.getId())
                     calExp = self.getCalibratedExposure(calExpRef, bgSubtracted=self.config.bgSubtracted)
