@@ -1,7 +1,14 @@
-config.skyMap.patchInnerDimensions = [3000, 3000]
-config.skyMap.patchBorder = 100
-config.skyMap.projection="TAN"
-config.skyMap.pixelScale=1.24
+config.skyMap = "healpix"
+
+# Configuration for HealpixSkyMap
+config.skyMap["healpix"].log2NSide = 2
+config.skyMap["healpix"].pixelScale = 1.2
+config.skyMap["healpix"].patchInnerDimensions = (4000, 4000)
+config.skyMap["healpix"].patchBorder = 100 # Pixels
+config.skyMap["healpix"].tractOverlap = 0.1 # Degrees
+config.skyMap["healpix"].rotation = 45.
+config.skyMap["healpix"].projection = "TAN"
+
 
 
 
