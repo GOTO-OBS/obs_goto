@@ -25,9 +25,9 @@ config.kernelSourcesFromRef=True
 #config.subtract["al"].selectDetection.reEstimateBackground = True
 #config.getTemplate.warpType = "psfMatched"
 
-config.astrometer.matcher.maxMatchDistArcSec = 2.
-config.astrometer.wcsFitter.maxScatterArcsec = 10.0
-config.astrometer.matcher.numBrightStars=500
+#config.astrometer.matcher.maxMatchDistArcSec = 2.
+#config.astrometer.wcsFitter.maxScatterArcsec = 10.0
+#config.astrometer.matcher.numBrightStars=500
 
 config.detection.minPixels = 5
 
