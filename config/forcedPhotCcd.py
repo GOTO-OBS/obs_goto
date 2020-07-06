@@ -23,7 +23,7 @@ config.measurement.undeblended['base_CircularApertureFlux'].radii=[6.0, 9.0, 12.
 # affect the measurement of flux. 
 config.measurement.plugins.names=['base_TransformedCentroid',
                                   'base_CircularApertureFlux',
-                                  #'base_TransformedShape',
+                                  'base_TransformedShape',
                                   ]
 
 #Currently breaks when doing aperture corrections; fix this.
