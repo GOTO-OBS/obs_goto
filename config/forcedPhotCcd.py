@@ -29,3 +29,5 @@ config.measurement.plugins.names=['base_TransformedCentroid',
 #Currently breaks when doing aperture corrections; fix this.
 config.doApCorr=True
 
+#Skip any tract/patch combination that does not exist.
+config.references.skipMissing=True
