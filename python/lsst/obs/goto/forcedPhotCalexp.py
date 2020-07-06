@@ -13,7 +13,7 @@ class ForcedPhotCalexpTask(ForcedPhotCcdTask):
     _DefaultName = "forcedPhotCalexp"
     dataPrefix = ""
     
-    def run(self, dataRef, psfCache=None):
+    def runDataRef(self, dataRef, psfCache=None):
         """This does the same as ForcedPhotImageTask.run, but finds the
         required tract if it's not already contained in dataRef.
         """
@@ -32,7 +32,7 @@ class ForcedPhotCalexpTask(ForcedPhotCcdTask):
         self.log.info("Performing forced measurement on %s" % (dataRef.dataId,))
         self.attachFootprints(measCat, refCat, exposure, refWcs, dataRef)
 
-        self.measurement.run(measCat, exposure, refCat, refWcs, exposureId=self.getExposureId(dataRef))
+        self.measurement.runDataRef(measCat, exposure, refCat, refWcs, exposureId=self.getExposureId(dataRef))
 
         if self.config.doApCorr:
             self.applyApCorr.run(

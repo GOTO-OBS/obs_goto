@@ -33,8 +33,9 @@ class ForcedPhotDriverTask(BatchParallelTask):
                                help="data ID, e.g. --id visit=12345 ccd=67")
         return parser
 
-    def run(self, sensorRef):
+
+    def runDataRef(self, sensorRef):
         """Perform forced photometry on a single calexp
         """
         with self.logOperation("Performing forced photometry on  %s" % (sensorRef.dataId,)):
-            self.forcedPhot.run(sensorRef)
+            self.forcedPhot.runDataRef(sensorRef)
