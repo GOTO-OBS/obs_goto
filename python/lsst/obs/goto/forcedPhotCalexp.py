@@ -3,12 +3,13 @@ import lsst.afw.geom
 import lsst.afw.image
 from lsst.meas.base.forcedPhotCcd import ForcedPhotCcdTask, ForcedPhotCcdConfig, imageOverlapsTract
 from lsst.meas.base.forcedPhotImage import ForcedPhotImageTask, ForcedPhotImageConfig
+from lsst.meas.base.references import MultiBandReferencesTask, MultiBandReferencesConfig
 
 class ForcedPhotCalexpConfig(ForcedPhotCcdConfig):
     pass
 
 class ForcedPhotCalexpTask(ForcedPhotCcdTask):
-    
+
     ConfigClass = ForcedPhotCalexpConfig
     _DefaultName = "forcedPhotCalexp"
     dataPrefix = ""
@@ -27,12 +28,13 @@ class ForcedPhotCalexpTask(ForcedPhotCcdTask):
         if psfCache is not None:
             exposure.getPsf().setCacheSize(psfCache)
         refCat = self.fetchReferences(dataRef, exposure)
+
         measCat = self.measurement.generateMeasCat(exposure, refCat, refWcs,
                                                    idFactory=self.makeIdFactory(dataRef))
         self.log.info("Performing forced measurement on %s" % (dataRef.dataId,))
         self.attachFootprints(measCat, refCat, exposure, refWcs, dataRef)
 
-        self.measurement.runDataRef(measCat, exposure, refCat, refWcs, exposureId=self.getExposureId(dataRef))
+        self.measurement.run(measCat, exposure, refCat, refWcs, exposureId=self.getExposureId(dataRef))
 
         if self.config.doApCorr:
             self.applyApCorr.run(
@@ -54,3 +56,7 @@ class ForcedPhotCalexpTask(ForcedPhotCcdTask):
         
         if imageOverlapsTract(tract, wcs, box):
             selectRef.dataId['tract'] = tract.getId()
+
+class CosReferencesTask(MultiBandReferencesTask):
+    configClass = MultiBandReferencesConfig
+    datasetSuffix = "cos"

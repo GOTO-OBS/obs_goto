@@ -246,4 +246,14 @@ datasets:
             python: lsst.daf.base.PropertySet
             tables: raw
             template: 'forcedPhotDriver_metadata/%(dateObs)s/%(filter)s/forced-%(ccd)s-%(run)s.yaml'
-            
+########CosSurvey###############
+       deepCoadd_cos:
+            persistable: ignored
+            storage: FitsCatalogStorage
+            python: lsst.afw.table.SourceCatalog
+            template: deepCoadd-results/merged/%(tract)d/%(patch)s/cos-%(tract)d-%(patch)s.fits
+       deepCoadd_cos_schema:
+            persistable: SourceCatalog
+            storage: FitsCatalogStorage
+            python: lsst.afw.table.SourceCatalog
+            template: schema/deepCoadd_cos.fits
