@@ -14,7 +14,6 @@ config.doDetection=True
 config.detectCoaddSources.detection.retarget(SourceDetectionTask)
 config.detectCoaddSources.doScaleVariance=True
 config.detectCoaddSources.detection.doTempWideBackground=False
-
 config.deblendCoaddSources.singleBandDeblend.maxFootprintArea=10000
 config.deblendCoaddSources.singleBandDeblend.propagateAllPeaks = False
 

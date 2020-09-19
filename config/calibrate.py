@@ -86,5 +86,6 @@ config.photoCal.photoCatName = "ps1_pv3_3pi_20170110_GmagLT19"
 #Caliculate aperture correction?:
 config.doApCorr = True
 
-#Match to external catalog?
-config.doWriteMatches = False
+#Write astrometry matches??
+config.doWriteMatches = True
+#config.doWriteMatchesDenormalized = True

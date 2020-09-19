@@ -2,7 +2,7 @@
 from lsst.obs.goto.makeGotoCoaddTempExp import GotoMakeCoaddTempExpTask
 config.makeCoaddTempExp.retarget(GotoMakeCoaddTempExpTask)
 
-#Uncommentn this if we want to select frames based on PSF:
+#Uncomment this if we want to select frames based on PSF:
 #from lsst.pipe.tasks.selectImages import PsfWcsSelectImagesTask
 #config.assembleCoadd.select.retarget(PsfWcsSelectImagesTask)
 
