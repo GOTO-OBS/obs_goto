@@ -39,7 +39,7 @@ config.detectorList[0].bbox_x1=8175
 config.detectorList[0].bbox_x0=0
 
 # Name of detector slot
-config.detectorList[0].name='g1_goto'
+config.detectorList[0].name='g7_goto'
 
 # Pixel size in mm
 config.detectorList[0].pixelSize_x=0.006
@@ -68,7 +68,7 @@ config.detectorList[0].rollDeg=0.0
 config.detectorList[0].pitchDeg=0.0
 
 # Serial string associated with this specific detector
-config.detectorList[0].serial='1'
+config.detectorList[0].serial='7'
 
 # ID of detector slot
 config.detectorList[0].id=1
@@ -90,7 +90,7 @@ config.detectorList[1].bbox_x1=8175
 config.detectorList[1].bbox_x0=0
 
 # Name of detector slot
-config.detectorList[1].name='g2_goto'
+config.detectorList[1].name='g6_goto'
 
 # Pixel size in mm
 config.detectorList[1].pixelSize_x=0.006
@@ -119,7 +119,7 @@ config.detectorList[1].rollDeg=0.0
 config.detectorList[1].pitchDeg=0.0
 
 # Serial string associated with this specific detector
-config.detectorList[1].serial='2'
+config.detectorList[1].serial='6'
 
 # ID of detector slot
 config.detectorList[1].id=2
@@ -191,7 +191,7 @@ config.detectorList[3].bbox_x1=8175
 config.detectorList[3].bbox_x0=0
 
 # Name of detector slot
-config.detectorList[3].name='g4_goto'
+config.detectorList[3].name='g2_goto'
 
 # Pixel size in mm
 config.detectorList[3].pixelSize_x=0.006
@@ -220,7 +220,7 @@ config.detectorList[3].rollDeg=0.0
 config.detectorList[3].pitchDeg=0.0
 
 # Serial string associated with this specific detector
-config.detectorList[3].serial='4'
+config.detectorList[3].serial='2'
 
 # ID of detector slot
 config.detectorList[3].id=4
