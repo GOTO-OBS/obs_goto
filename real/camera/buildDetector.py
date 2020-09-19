@@ -13,7 +13,7 @@ gain_all = {
     'UT7':[0.65,0.65],
     'UT6':[0.52,0.52],
     'UT3':[0.59,0.57],
-    'UT2':[0.59,0.59]]
+    'UT2':[0.59,0.59]
     }
 
 def addAmp(ampCatalog,i,rN,gain_s):
@@ -74,7 +74,7 @@ def makeCcd(utId):
 def main():
     uts = ['UT2','UT3','UT6','UT7']
     for ut in uts:
-        camera = makeCcd(uts)
+        camera = makeCcd(ut)
 
 if __name__ == "__main__":
     main()
