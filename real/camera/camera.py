@@ -71,7 +71,7 @@ config.detectorList[0].pitchDeg=0.0
 config.detectorList[0].serial='7'
 
 # ID of detector slot
-config.detectorList[0].id=1
+config.detectorList[0].id=7
 
 
 config.detectorList[1]=lsst.afw.cameraGeom.cameraConfig.DetectorConfig()
@@ -122,7 +122,7 @@ config.detectorList[1].pitchDeg=0.0
 config.detectorList[1].serial='6'
 
 # ID of detector slot
-config.detectorList[1].id=2
+config.detectorList[1].id=6
 
 
 config.detectorList[2]=lsst.afw.cameraGeom.cameraConfig.DetectorConfig()
@@ -223,7 +223,7 @@ config.detectorList[3].pitchDeg=0.0
 config.detectorList[3].serial='2'
 
 # ID of detector slot
-config.detectorList[3].id=4
+config.detectorList[3].id=2
 # Name of this config
 #This isn't strictly required for CameraMapper
 #but I'm keeping it there as it seems like a good idea:
