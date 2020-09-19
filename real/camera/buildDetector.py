@@ -3,8 +3,18 @@ import lsst.afw.geom as afwGeom
 import numpy as np
 
 # This is copying from afw/tests/testAmpInfoTable.py:
-readout = [[20.9,20.6],[23.0,22.1],[22.1,20.7],[23.0,23.4]]
-gain_all = [[0.65,0.65],[0.52,0.52],[0.59,0.57],[0.59,0.59]]
+readout = {
+    'UT7':[20.9,20.6],
+    'UT6':[23.0,22.1],
+    'UT3':[22.1,20.7],
+    'UT2':[23.0,23.4]
+    }   
+gain_all = {
+    'UT7':[0.65,0.65],
+    'UT6':[0.52,0.52],
+    'UT3':[0.59,0.57],
+    'UT2':[0.59,0.59]
+    }
 
 def addAmp(ampCatalog,i,rN,gain_s):
     record = ampCatalog.addNew()
@@ -54,16 +64,17 @@ def addAmp(ampCatalog,i,rN,gain_s):
     record.setRawVerticalOverscanBBox(emptyBox)
     record.setRawPrescanBBox(emptyBox)
 
-def makeCcd(ccdId):
+def makeCcd(utId):
     schema = afwTable.AmpInfoTable.makeMinimalSchema()
     ampCatalog = afwTable.AmpInfoCatalog(schema)
     for i in range(2):
-        addAmp(ampCatalog, i,readout[ccdId-1][i],gain_all[ccdId-1][i])
-    return ampCatalog.writeFits('g%s_goto.fits' %ccdId)
+        addAmp(ampCatalog, i, readout[utId][i], gain_all[utId][i])
+    return ampCatalog.writeFits('g%s_goto.fits' % utId[-1])
 
 def main():
-    for i in range(1,5):
-        camera = makeCcd(i)
+    uts = ['UT2','UT3','UT6','UT7']
+    for ut in uts:
+        camera = makeCcd(ut)
 
 if __name__ == "__main__":
     main()
