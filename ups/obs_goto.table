@@ -1,15 +1,4 @@
 setupRequired(pipe_tasks)
-setupRequired(pipe_drivers)
-setupRequired(display_ds9)
-setupRequired(meas_extensions_photometryKron)
-setupRequired(meas_extensions_psfex)
-setupRequired(meas_modelfit)
-setupRequired(synpipe)
-#setupRequired(jointcal)
-setupRequired(meas_extensions_astrometryNet)
-setupRequired(astrometry_net_data ucac4)
-
-#setupRequired(extras)
-
+setupRequired(drp_pipe)
+setupRequired(ctrl_mpexec)
 envPrepend(PYTHONPATH, ${PRODUCT_DIR}/python)
-envPrepend(PATH, ${PRODUCT_DIR}/bin)
