@@ -1,2 +1,1 @@
-from .gotoMapper import *
-#import makeCamera
+from ._instrument import *

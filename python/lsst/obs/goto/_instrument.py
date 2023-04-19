@@ -21,26 +21,20 @@ class Goto(Instrument):
         self.configPaths = [os.path.join(packageDir, "config")]
 
     def getCamera(self):
-        '''
-        This grabs the camera information in the camera/u1_goto.yaml file.
-        '''
-        path = os.path.join(
-            getPackageDir("obs_goto"),
-            "camera",
-            'u1_goto.yaml')
-        camera = yamlCamera.makeCamera(path)
-        return camera
+        # I'm calling a single GOTO rig a single "camera".
+        # Each camera has eight UT's, each equiped with a single detector.
+        # As far as the pipeline is concerned, a rig is a single camera
+        # containing eight detectors.
+        # This method must be overridden by the child class.
+        return NotImplementedError()
 
     @classmethod
     def getName(cls):
-        '''
-        This must return the instrument name.
-        '''
-        return "Goto"
+        return NotImplementedError()
 
     def getRawFormatter(self, dataId):
-        from .rawFormatter import NeCamRawFormatter
-        return NeCamRawFormatter
+        from .rawFormatter import GotoRawFormatter
+        return GotoRawFormatter
 
     def makeDataIdTranslatorFactory(self):
         '''
@@ -56,13 +50,13 @@ class Goto(Instrument):
         camera = self.getCamera()
 
         #Register the instrument:
-        obsMax = 2**30 #GOTO can up to a billion images!
+        obsMax = 2**30 #GOTO can take up to a billion images!
         with registry.transaction():
             registry.syncDimensionData(
                 "instrument",
                 {
                     "name": self.getName(),
-                    "detector_max": 32,
+                    "detector_max": 8,
                     "visit_max": obsMax,
                     "exposure_max": obsMax,
                     "class_name": get_full_type_name(self)
@@ -85,3 +79,45 @@ class Goto(Instrument):
 
         #Registers the filter(s):
         self._registerFilters(registry)
+
+class North1(Goto):
+
+    def __init__(self, **kwargs):
+        # This inherits the configPaths from GotoRig
+        super().__init__(**kwargs)
+
+    def getCamera(self):
+        # I'm calling a single GOTO rig a single "camera".
+        # Each camera has eight UT's, each equiped with a single detector.
+        # As far as the pipeline is concerned,
+        path = os.path.join(
+            getPackageDir("obs_goto"),
+            "camera",
+            'n1_goto.yaml')
+        camera = yamlCamera.makeCamera(path)
+        return camera
+
+    @classmethod
+    def getName(cls):
+        return "North1"
+
+class North2(Goto):
+
+    def __init__(self, **kwargs):
+        # This inherits the configPaths from GotoRig
+        super().__init__(**kwargs)
+
+    def getCamera(self):
+        # I'm calling a single GOTO rig a single "camera".
+        # Each camera has eight UT's, each equiped with a single detector.
+        # As far as the pipeline is concerned,
+        path = os.path.join(
+            getPackageDir("obs_goto"),
+            "camera",
+            'n2_goto.yaml')
+        camera = yamlCamera.makeCamera(path)
+        return camera
+
+    @classmethod
+    def getName(cls):
+        return "North2"
