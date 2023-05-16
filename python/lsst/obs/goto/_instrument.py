@@ -4,6 +4,8 @@ from lsst.utils.introspection import get_full_type_name
 from lsst.obs.base import Instrument, yamlCamera
 from .gotoFilters import GOTO_FILTER_DEFINITIONS
 from lsst.afw.cameraGeom import makeCameraFromPath, CameraConfig
+#from .rawFormatter import GotoRawFormatter, North1RawFormatter, North2RawFormatter
+
 # Comment-out the following line if you put .translators/necam.py in the
 # astro_metadata_translator repository:
 from .translators import GotoTranslator
@@ -33,8 +35,14 @@ class Goto(Instrument):
         return NotImplementedError()
 
     def getRawFormatter(self, dataId):
-        from .rawFormatter import GotoRawFormatter
-        return GotoRawFormatter
+        if dataId['instrument'] == 'North1':
+            from .rawFormatter import North1RawFormatter, North2RawFormatter
+            return North1RawFormatter
+        elif dataId['instrument'] == 'North2':
+            from .rawFormatter import North2RawFormatter
+            return North2RawFormatter
+        else:
+            return NotImplementedError()
 
     def makeDataIdTranslatorFactory(self):
         '''

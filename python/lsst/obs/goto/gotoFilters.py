@@ -4,8 +4,8 @@ from lsst.obs.base import FilterDefinition, FilterDefinitionCollection
 
 GOTO_FILTER_DEFINITIONS = FilterDefinitionCollection(
         FilterDefinition(
-            physical_filter="Clear",
-            band="Clear",
-            alias={'Clear'}
+            physical_filter="L",
+            band="L",
+            alias={'L'}
             )
     )

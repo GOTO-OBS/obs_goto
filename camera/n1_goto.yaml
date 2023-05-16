@@ -1,0 +1,288 @@
+name: 'north1'
+plateScale: 1.24
+transforms:
+    nativeSys: 'FocalPlane'
+    FieldAngle:
+        transformType: "radial"
+        coeffs: [0.0, 1.0]
+CCDs:
+    ccd1:
+        name: "ccd1"
+        id: 1
+        serial: '1'
+        detectorType: 0
+        bbox: [[0,0], [6144, 4096]]
+        pixelSize: [1.,1.]
+        transformDict:
+            nativeSys: 'Pixels'
+            transforms: 'None'
+        refpos: [3072,2048]
+        offset: [0,0]
+        transposeDetector: False
+        pitch: 0.0
+        yaw: 0.0
+        roll: 0.0
+        amplifiers:
+            AMP_E2V:
+                rawBBox: [[0,0],[6144, 4096]]
+                hdu: 1
+                ixy: [0,0]
+                perAmpData: True
+                rawDataBBox: [[0,0],[6144, 4096]]
+                rawSerialOverscanBBox: [[0,0],[0, 0]]
+                rawParallelOverscanBBox: [[0,0],[0, 0]]
+                rawSerialPrescanBBox: [[0,0],[0, 0]]
+                readCorner: LL
+                gain: 0.5
+                readNoise: 20.
+                saturation: 65535
+                flipXY: [False, False]
+                linearityCoeffs: [0, 65535]
+                linearityType: "None"
+                linearityThreshold: 0
+                linearityMax: 65535
+    ccd2:
+        name: "ccd2"
+        id: 2
+        serial: '2'
+        detectorType: 0
+        bbox: [[0,0], [6144, 4096]]
+        pixelSize: [1.,1.]
+        transformDict:
+            nativeSys: 'Pixels'
+            transforms: 'None'
+        refpos: [3072,2048]
+        offset: [0,0]
+        transposeDetector: False
+        pitch: 0.0
+        yaw: 0.0
+        roll: 0.0
+        amplifiers:
+            AMP_E2V:
+                rawBBox: [[0,0],[6144, 4096]]
+                hdu: 1
+                ixy: [0,0]
+                perAmpData: True
+                rawDataBBox: [[0,0],[6144, 4096]]
+                rawSerialOverscanBBox: [[0,0],[0, 0]]
+                rawParallelOverscanBBox: [[0,0],[0, 0]]
+                rawSerialPrescanBBox: [[0,0],[0, 0]]
+                readCorner: LL
+                gain: 0.5
+                readNoise: 20.
+                saturation: 65535
+                flipXY: [False, False]
+                linearityCoeffs: [0, 65535]
+                linearityType: "None"
+                linearityThreshold: 0
+                linearityMax: 65535
+    ccd3:
+        name: "ccd3"
+        id: 3
+        serial: '3'
+        detectorType: 0
+        bbox: [[0,0], [6144, 4096]]
+        pixelSize: [1.,1.]
+        transformDict:
+            nativeSys: 'Pixels'
+            transforms: 'None'
+        refpos: [3072,2048]
+        offset: [0,0]
+        transposeDetector: False
+        pitch: 0.0
+        yaw: 0.0
+        roll: 0.0
+        amplifiers:
+            AMP_E2V:
+                rawBBox: [[0,0],[6144, 4096]]
+                hdu: 1
+                ixy: [0,0]
+                perAmpData: True
+                rawDataBBox: [[0,0],[6144, 4096]]
+                rawSerialOverscanBBox: [[0,0],[0, 0]]
+                rawParallelOverscanBBox: [[0,0],[0, 0]]
+                rawSerialPrescanBBox: [[0,0],[0, 0]]
+                readCorner: LL
+                gain: 0.5
+                readNoise: 20.
+                saturation: 65535
+                flipXY: [False, False]
+                linearityCoeffs: [0, 65535]
+                linearityType: "None"
+                linearityThreshold: 0
+                linearityMax: 65535
+    ccd4:
+        name: "ccd4"
+        id: 4
+        serial: '4'
+        detectorType: 0
+        bbox: [[0,0], [6144, 4096]]
+        pixelSize: [1.,1.]
+        transformDict:
+            nativeSys: 'Pixels'
+            transforms: 'None'
+        refpos: [3072,2048]
+        offset: [0,0]
+        transposeDetector: False
+        pitch: 0.0
+        yaw: 0.0
+        roll: 0.0
+        amplifiers:
+            AMP_E2V:
+                rawBBox: [[0,0],[6144, 4096]]
+                hdu: 1
+                ixy: [0,0]
+                perAmpData: True
+                rawDataBBox: [[0,0],[6144, 4096]]
+                rawSerialOverscanBBox: [[0,0],[0, 0]]
+                rawParallelOverscanBBox: [[0,0],[0, 0]]
+                rawSerialPrescanBBox: [[0,0],[0, 0]]
+                readCorner: LL
+                gain: 0.5
+                readNoise: 20.
+                saturation: 65535
+                flipXY: [False, False]
+                linearityCoeffs: [0, 65535]
+                linearityType: "None"
+                linearityThreshold: 0
+                linearityMax: 65535
+    ccd5:
+        name: "ccd5"
+        id: 5
+        serial: '5'
+        detectorType: 0
+        bbox: [[0,0], [6144, 4096]]
+        pixelSize: [1.,1.]
+        transformDict:
+            nativeSys: 'Pixels'
+            transforms: 'None'
+        refpos: [3072,2048]
+        offset: [0,0]
+        transposeDetector: False
+        pitch: 0.0
+        yaw: 0.0
+        roll: 0.0
+        amplifiers:
+            AMP_E2V:
+                rawBBox: [[0,0],[6144, 4096]]
+                hdu: 1
+                ixy: [0,0]
+                perAmpData: True
+                rawDataBBox: [[0,0],[6144, 4096]]
+                rawSerialOverscanBBox: [[0,0],[0, 0]]
+                rawParallelOverscanBBox: [[0,0],[0, 0]]
+                rawSerialPrescanBBox: [[0,0],[0, 0]]
+                readCorner: LL
+                gain: 0.5
+                readNoise: 20.
+                saturation: 65535
+                flipXY: [False, False]
+                linearityCoeffs: [0, 65535]
+                linearityType: "None"
+                linearityThreshold: 0
+                linearityMax: 65535
+    ccd6:
+        name: "ccd6"
+        id: 6
+        serial: '6'
+        detectorType: 0
+        bbox: [[0,0], [6144, 4096]]
+        pixelSize: [1.,1.]
+        transformDict:
+            nativeSys: 'Pixels'
+            transforms: 'None'
+        refpos: [3072,2048]
+        offset: [0,0]
+        transposeDetector: False
+        pitch: 0.0
+        yaw: 0.0
+        roll: 0.0
+        amplifiers:
+            AMP_E2V:
+                rawBBox: [[0,0],[6144, 4096]]
+                hdu: 1
+                ixy: [0,0]
+                perAmpData: True
+                rawDataBBox: [[0,0],[6144, 4096]]
+                rawSerialOverscanBBox: [[0,0],[0, 0]]
+                rawParallelOverscanBBox: [[0,0],[0, 0]]
+                rawSerialPrescanBBox: [[0,0],[0, 0]]
+                readCorner: LL
+                gain: 0.5
+                readNoise: 20.
+                saturation: 65535
+                flipXY: [False, False]
+                linearityCoeffs: [0, 65535]
+                linearityType: "None"
+                linearityThreshold: 0
+                linearityMax: 65535
+    ccd7:
+        name: "ccd7"
+        id: 7
+        serial: '7'
+        detectorType: 0
+        bbox: [[0,0], [6144, 4096]]
+        pixelSize: [1.,1.]
+        transformDict:
+            nativeSys: 'Pixels'
+            transforms: 'None'
+        refpos: [3072,2048]
+        offset: [0,0]
+        transposeDetector: False
+        pitch: 0.0
+        yaw: 0.0
+        roll: 0.0
+        amplifiers:
+            AMP_E2V:
+                rawBBox: [[0,0],[6144, 4096]]
+                hdu: 1
+                ixy: [0,0]
+                perAmpData: True
+                rawDataBBox: [[0,0],[6144, 4096]]
+                rawSerialOverscanBBox: [[0,0],[0, 0]]
+                rawParallelOverscanBBox: [[0,0],[0, 0]]
+                rawSerialPrescanBBox: [[0,0],[0, 0]]
+                readCorner: LL
+                gain: 0.5
+                readNoise: 20.
+                saturation: 65535
+                flipXY: [False, False]
+                linearityCoeffs: [0, 65535]
+                linearityType: "None"
+                linearityThreshold: 0
+                linearityMax: 65535
+    ccd8:
+        name: "ccd8"
+        id: 8
+        serial: '8'
+        detectorType: 0
+        bbox: [[0,0], [6144, 4096]]
+        pixelSize: [1.,1.]
+        transformDict:
+            nativeSys: 'Pixels'
+            transforms: 'None'
+        refpos: [3072,2048]
+        offset: [0,0]
+        transposeDetector: False
+        pitch: 0.0
+        yaw: 0.0
+        roll: 0.0
+        amplifiers:
+            AMP_E2V:
+                rawBBox: [[0,0],[6144, 4096]]
+                hdu: 1
+                ixy: [0,0]
+                perAmpData: True
+                rawDataBBox: [[0,0],[6144, 4096]]
+                rawSerialOverscanBBox: [[0,0],[0, 0]]
+                rawParallelOverscanBBox: [[0,0],[0, 0]]
+                rawSerialPrescanBBox: [[0,0],[0, 0]]
+                readCorner: LL
+                gain: 0.5
+                readNoise: 20.
+                saturation: 65535
+                flipXY: [False, False]
+                linearityCoeffs: [0, 65535]
+                linearityType: "None"
+                linearityThreshold: 0
+                linearityMax: 65535

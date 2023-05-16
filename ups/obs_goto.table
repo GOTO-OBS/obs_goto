@@ -1,4 +1,5 @@
 setupRequired(pipe_tasks)
 setupRequired(drp_pipe)
 setupRequired(ctrl_mpexec)
+setupRequired(cp_pipe)
 envPrepend(PYTHONPATH, ${PRODUCT_DIR}/python)
