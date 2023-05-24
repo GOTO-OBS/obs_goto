@@ -15,6 +15,10 @@ import lsst.pipe.base
 
 
 class ForcedPhotVisitConfig(ForcedPhotCcdConfig):
+    """
+    Testing pulsar github
+    """
+
     pass
 
 
